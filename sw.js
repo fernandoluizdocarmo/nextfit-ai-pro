@@ -1,96 +1,106 @@
-const CACHE_NAME = "treinox-ai-cache-v1";
+// sw.js - treinox.ai Service Worker
+// v3: Robust offline support — PWA works even when Render server is sleeping.
+
+const CACHE_NAME = "treinox-ai-cache-v3";
+
+// All static assets that must be pre-cached on install
 const ASSETS_TO_CACHE = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./app.js",
-  "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png"
+  "/",
+  "/index.html",
+  "/style.css",
+  "/app.js",
+  "/manifest.json",
+  "/icon-192.png",
+  "/icon-512.png"
 ];
 
-// Install event: cache all static assets
+// ─── Install: pre-cache all static assets ─────────────────────────────────────
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log("[Service Worker] Pre-caching static resources");
-      return cache.addAll(ASSETS_TO_CACHE);
-    }).then(() => {
-      return self.skipWaiting();
-    })
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        console.log("[SW] Pre-caching static assets...");
+        return cache.addAll(ASSETS_TO_CACHE);
+      })
+      .then(() => {
+        console.log("[SW] Pre-cache complete. Activating immediately.");
+        return self.skipWaiting(); // activate right away, no waiting for old SW
+      })
   );
 });
 
-// Activate event: clean up older caches
+// ─── Activate: remove old caches ──────────────────────────────────────────────
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            console.log("[Service Worker] Deleting obsolete cache:", cache);
-            return caches.delete(cache);
-          }
-        })
-      );
-    }).then(() => {
-      return self.clients.claim();
-    })
+    caches.keys()
+      .then((cacheNames) =>
+        Promise.all(
+          cacheNames
+            .filter((name) => name !== CACHE_NAME)
+            .map((name) => {
+              console.log("[SW] Deleting old cache:", name);
+              return caches.delete(name);
+            })
+        )
+      )
+      .then(() => {
+        console.log("[SW] Activated. Claiming all clients.");
+        return self.clients.claim(); // take control of all open tabs immediately
+      })
   );
 });
 
-// Fetch event: cache-first with network fallback for local assets, network-first for external/dynamic assets
+// ─── Fetch: Cache-First for local assets, Network-First for external ──────────
 self.addEventListener("fetch", (event) => {
-  // Only intercept HTTP/HTTPS requests
-  if (!event.request.url.startsWith(self.location.origin) && !event.request.url.startsWith("http")) {
-    return;
-  }
+  const url = new URL(event.request.url);
 
-  // Strategy: Cache First for static, local assets; Network First for external resources
-  const isLocalAsset = event.request.url.startsWith(self.location.origin);
+  // Only handle GET requests
+  if (event.request.method !== "GET") return;
+
+  // Skip chrome-extension and non-http requests
+  if (!event.request.url.startsWith("http")) return;
+
+  const isLocalAsset = url.origin === self.location.origin;
 
   if (isLocalAsset) {
+    // ── Cache-First strategy for own assets ────────────────────────────────
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
         if (cachedResponse) {
+          // Serve from cache immediately
           return cachedResponse;
         }
-        return fetch(event.request).then((networkResponse) => {
-          // Cache the newly fetched asset dynamically
-          if (networkResponse && networkResponse.status === 200) {
-            const responseToCache = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
-          }
-          return networkResponse;
-        }).catch(() => {
-          // If offline and not in cache
-          console.log("[Service Worker] Offline fetch failed for local asset:", event.request.url);
-        });
+
+        // Not in cache — try network
+        return fetch(event.request)
+          .then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+              const cloned = networkResponse.clone();
+              caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
+            }
+            return networkResponse;
+          })
+          .catch(() => {
+            // Network failed (server sleeping) — try to serve index.html as fallback
+            console.warn("[SW] Offline + no cache for:", event.request.url, "— serving index.html fallback.");
+            return caches.match("/") || caches.match("/index.html");
+          });
       })
     );
   } else {
-    // Network first for external resources (like remote GIFs/Videos, Google Fonts)
+    // ── Network-First for external resources (Fonts, GIFs, etc.) ──────────
     event.respondWith(
       fetch(event.request)
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
-            const responseToCache = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
+            const cloned = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
           }
           return networkResponse;
         })
         .catch(() => {
-          // Fallback to cache if network fails
-          return caches.match(event.request).then((cachedResponse) => {
-            if (cachedResponse) {
-              return cachedResponse;
-            }
-            console.log("[Service Worker] Offline fetch failed for external asset:", event.request.url);
-          });
+          // Fallback to cache for external resources
+          return caches.match(event.request);
         })
     );
   }

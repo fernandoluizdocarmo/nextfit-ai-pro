@@ -2,7 +2,7 @@
   "name": "treinox.ai - Personal Trainer de Elite",
   "short_name": "treinox.ai",
   "description": "Seu personal trainer inteligente de elite para geração de treinos, cronômetro de descanso e controle de cargas.",
-  "start_url": "./index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#12121c",
   "theme_color": "#12121c",
