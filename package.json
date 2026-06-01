@@ -1,0 +1,21 @@
+{
+  "name": "treinox.ai",
+  "version": "1.0.0",
+  "description": "treinox.ai - Personal Trainer de Elite Inteligente",
+  "main": "app.js",
+  "scripts": {
+    "start": "serve .",
+    "dev": "serve ."
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  },
+  "keywords": [
+    "fitness",
+    "ai",
+    "workout",
+    "trainer"
+  ],
+  "author": "",
+  "license": "ISC"
+}

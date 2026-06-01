@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>treinox.ai - Seu Personal Trainer de Elite</title>
+  <meta name="description" content="treinox.ai é seu aplicativo fitness definitivo. Geração de fichas inteligentes A/B/C, acompanhamento série por série com cargas personalizadas, cronômetro de descanso integrado e vídeos explicativos em HD de execução correta.">
+  
+  <!-- PWA Support & Mobile Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#12121c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="treinox.ai">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <!-- Material Symbols and Typography -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- LOGIN OVERLAY -->
+  <div id="login-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #12121c; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+    <div class="card" style="max-width: 400px; width: 90%; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+      <div style="margin-bottom: 2rem;">
+        <span class="material-symbols-outlined text-primary" style="font-size: 4rem;">fitness_center</span>
+        <h1 class="font-headline-lg mt-2 mb-1" style="font-size: 2rem; color: white;">treinox.ai</h1>
+        <p class="text-secondary" style="font-size: 0.95rem;">Faça login para acessar seu painel.</p>
+      </div>
+      <form id="login-form" onsubmit="event.preventDefault(); performLogin();">
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label" for="login-email">E-mail</label>
+          <input type="email" class="input-field" id="login-email" placeholder="seu@email.com" value="admin@nextfit.com" required>
+        </div>
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label" for="login-password">Senha</label>
+          <input type="password" class="input-field" id="login-password" placeholder="Sua senha secreta" value="123456" required>
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem; margin-top: 1.5rem;">
+          <span class="material-symbols-outlined">login</span> Entrar no treinox.ai
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MOBILE COMPACT HEADER -->
+  <header class="mobile-header">
+    <div class="mobile-logo">
+      <div class="mobile-logo-icon">
+        <span class="material-symbols-outlined" style="color: white; font-size: 1.25rem;">fitness_center</span>
+      </div>
+      <span class="mobile-logo-text">treinox.ai</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjbMKKIWKGidqfNL9RsnBx5VfllMJPikkHZVRQfI-nLipH8u96G1RDnD1cmusGhOesuBCpokywMapihy2UpBcHsI2hvGCHTSCBg1O_p3WcT6u01f_9Z-1rhnIE8R58TFXmkVlwYggBa7aeaA4ZEZUz-QLdGuiEyRxr_yofr4wCtEmkEoDVtQuWMdwZphCTZ9toSHWkv6Ndl_nJoZdT2ClG5Kq1WXdYKpzBBrWW2jJ3l15PxeQNqMA4dBDyxCeyYeNxZNd3NkDGwls" class="user-avatar" style="width: 32px; height: 32px; border-width: 1px;" alt="Avatar">
+    </div>
+  </header>
+
+  <div id="app-container">
+    
+    <!-- SIDEBAR FOR DESKTOP VIEWPORTS -->
+    <nav class="sidebar">
+      <div class="logo-container">
+        <div class="logo-icon">
+          <span class="material-symbols-outlined" style="color: white; font-size: 1.5rem;">fitness_center</span>
+        </div>
+        <span class="logo-text">treinox.ai</span>
+      </div>
+
+      <ul class="nav-links">
+        <li class="nav-item active" data-page="dashboard" id="nav-dash-link">
+          <a onclick="navigateTo('dashboard')">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Ficha Atual</span>
+          </a>
+        </li>
+        <li class="nav-item" data-page="generator" id="nav-gen-link">
+          <a onclick="navigateTo('generator')">
+            <span class="material-symbols-outlined">smart_toy</span>
+            <span>Criar Ficha</span>
+          </a>
+        </li>
+        <li class="nav-item" data-page="biblioteca" id="nav-lib-link">
+          <a onclick="navigateTo('biblioteca')">
+            <span class="material-symbols-outlined">menu_book</span>
+            <span>Biblioteca</span>
+          </a>
+        </li>
+        <li class="nav-item" data-page="historico" id="nav-hist-link">
+          <a onclick="navigateTo('historico')">
+            <span class="material-symbols-outlined">history</span>
+            <span>Histórico</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- User Card Info -->
+      <div class="user-profile-card">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjbMKKIWKGidqfNL9RsnBx5VfllMJPikkHZVRQfI-nLipH8u96G1RDnD1cmusGhOesuBCpokywMapihy2UpBcHsI2hvGCHTSCBg1O_p3WcT6u01f_9Z-1rhnIE8R58TFXmkVlwYggBa7aeaA4ZEZUz-QLdGuiEyRxr_yofr4wCtEmkEoDVtQuWMdwZphCTZ9toSHWkv6Ndl_nJoZdT2ClG5Kq1WXdYKpzBBrWW2jJ3l15PxeQNqMA4dBDyxCeyYeNxZNd3NkDGwls" class="user-avatar" alt="Foto Perfil">
+        <div class="user-info">
+          <h4>Fernando Carmo</h4>
+          <p>Membro Pro</p>
+        </div>
+      </div>
+      <button onclick="performLogout()" style="width: calc(100% - 2rem); margin: 0 1rem 1rem; display: flex; align-items: center; gap: 0.5rem; background: rgba(255,59,48,0.1); border: 1px solid rgba(255,59,48,0.3); color: #FF3B30; border-radius: 8px; padding: 0.6rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,59,48,0.2)'" onmouseout="this.style.background='rgba(255,59,48,0.1)'">
+        <span class="material-symbols-outlined" style="font-size: 1.1rem;">logout</span> Sair da Conta
+      </button>
+    </nav>
+
+    <!-- MOBILE NAVIGATION BOTTOM TAB-BAR -->
+    <nav class="mobile-nav">
+      <a class="mobile-nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')" id="mob-nav-dash">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span>Ficha</span>
+      </a>
+      <a class="mobile-nav-item" data-page="generator" onclick="navigateTo('generator')" id="mob-nav-gen">
+        <span class="material-symbols-outlined">smart_toy</span>
+        <span>Criar</span>
+      </a>
+      <a class="mobile-nav-item" data-page="biblioteca" onclick="navigateTo('biblioteca')" id="mob-nav-lib">
+        <span class="material-symbols-outlined">menu_book</span>
+        <span>Exercícios</span>
+      </a>
+      <a class="mobile-nav-item" data-page="historico" onclick="navigateTo('historico')" id="mob-nav-hist">
+        <span class="material-symbols-outlined">history</span>
+        <span>Histórico</span>
+      </a>
+    </nav>
+
+    <!-- MAIN APP WRAPPER -->
+    <main class="main-content">
+      
+      <!-- ============================================== -->
+      <!-- 1. DASHBOARD PAGE (CURRENT WORKOUT PLAN SPLIT) -->
+      <!-- ============================================== -->
+      <section id="dashboard" class="page active">
+        <div class="header-section">
+          <div class="header-title" style="flex: 1;">
+            <h1 id="dashboard-ficha-title">Ficha de Hipertrofia Elite</h1>
+            <p id="dashboard-ficha-info">Foco: Hipertrofia | Nível: Intermediário</p>
+            <div id="dashboard-ficha-validity" style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;"></div>
+          </div>
+          <button class="btn-secondary" style="border-color: rgba(255, 59, 48, 0.4); color: #FF3B30; padding: 0.6rem 1rem; flex-shrink: 0;" onclick="deleteCurrentFicha()" id="btn-delete-ficha">
+            <span class="material-symbols-outlined">delete</span> Apagar Ficha
+          </button>
+        </div>
+
+        <!-- Treino A, B, C Toggle Selection Row -->
+        <div class="split-tabs" id="split-toggle-row">
+          <button class="split-tab-btn active" data-split="A" id="btn-split-a">Treino A</button>
+          <button class="split-tab-btn" data-split="B" id="btn-split-b">Treino B</button>
+          <button class="split-tab-btn" data-split="C" id="btn-split-c">Treino C</button>
+        </div>
+
+        <div class="grid-container" id="dashboard-workout-content">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- 2. WORKOUT PLAYER SCREEN (FOCUSED EXECUTION)   -->
+      <!-- ============================================== -->
+      <section id="active-workout" class="page" style="display: none;">
+        <div class="header-section" style="margin-bottom: 1.5rem;">
+          <div class="header-title">
+            <h2 id="workout-exercise-title" style="font-size: 1.85rem;">Nome do Exercício</h2>
+            <p id="workout-exercise-subtitle" style="font-size: 0.9rem; color: var(--text-secondary);">Exercício 1 de 5 • Peito</p>
+          </div>
+          <button class="btn-secondary" style="border-color: rgba(255, 59, 48, 0.4); color: #FF3B30;" onclick="cancelActiveWorkout()" id="btn-cancel-workout">
+            <span class="material-symbols-outlined">cancel</span> Sair do Treino
+          </button>
+        </div>
+
+        <div class="workout-focus-container">
+          <!-- Left Col: Loop Video explanation & instructions -->
+          <div>
+            <div id="workout-video-container" style="margin-bottom: 1.5rem;">
+              <!-- Dynamic Video Loop Element rendered here -->
+            </div>
+            
+            <div class="card" id="workout-exercise-steps" style="padding: 1.5rem;">
+              <!-- Execution guidelines -->
+            </div>
+          </div>
+
+          <!-- Right Col: Checkboxes & weight input for each set -->
+          <div class="sets-tracker-card" id="workout-sets-container">
+            <!-- Dynamic interactive sets table -->
+          </div>
+        </div>
+
+        <!-- Controls (Next, Previous, Finish Workout) -->
+        <div class="header-section" style="margin-top: 2rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;" id="workout-nav-controls">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- 3. IA SMART WORKOUT GENERATOR PAGE             -->
+      <!-- ============================================== -->
+      <section id="generator" class="page">
+        <div class="header-section">
+          <div class="header-title">
+            <h1>Criador de Ficha Inteligente</h1>
+            <p>Monte o seu treino ideal baseado nas suas necessidades com nossa heurística profissional.</p>
+          </div>
+        </div>
+
+        <div class="card generator-card">
+          <div style="background: var(--primary-grad); padding: 1.5rem; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0; margin: -1.75rem -1.75rem 2rem -1.75rem; display: flex; align-items: center; gap: 0.75rem; box-shadow: var(--glow-orange);">
+            <span class="material-symbols-outlined" style="font-size: 2.25rem; color: white;">smart_toy</span>
+            <div>
+              <h2 style="color: white; font-size: 1.25rem;">treinox.ai Workout Builder</h2>
+              <p style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Geração instantânea e otimizada de treinos integrados em loop</p>
+            </div>
+          </div>
+
+          <form id="workout-gen-form" onsubmit="event.preventDefault(); generateIntelligentWorkout();">
+            <!-- Name -->
+            <div class="form-group">
+              <label class="form-label" for="user-name-input">Seu Nome</label>
+              <input type="text" class="input-field" id="user-name-input" placeholder="Digite seu nome (ex: Fernando)" required>
+            </div>
+
+            <!-- Objective Selector -->
+            <div class="form-group">
+              <label class="form-label">Qual é o seu objetivo?</label>
+              <input type="hidden" id="form-objective" value="Hipertrofia">
+              <div class="form-options-grid">
+                <div class="form-option-card selected" onclick="selectGeneratorOption('objective', 'Hipertrofia', this)">
+                  <span class="material-symbols-outlined icon">fitness_center</span>
+                  <span class="title">Hipertrofia</span>
+                  <span class="desc">Ganho de massa</span>
+                </div>
+                <div class="form-option-card" onclick="selectGeneratorOption('objective', 'Emagrecimento', this)">
+                  <span class="material-symbols-outlined icon">local_fire_department</span>
+                  <span class="title">Emagrecimento</span>
+                  <span class="desc">Perder gordura</span>
+                </div>
+                <div class="form-option-card" onclick="selectGeneratorOption('objective', 'Condicionamento', this)">
+                  <span class="material-symbols-outlined icon">directions_run</span>
+                  <span class="title">Saúde & Fit</span>
+                  <span class="desc">Condicionamento</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Level Selector -->
+            <div class="form-group">
+              <label class="form-label">Qual o seu nível de experiência?</label>
+              <input type="hidden" id="form-level" value="Intermediário">
+              <div class="form-options-grid">
+                <div class="form-option-card" onclick="selectGeneratorOption('level', 'Iniciante', this)">
+                  <span class="material-symbols-outlined icon">explore</span>
+                  <span class="title">Iniciante</span>
+                  <span class="desc">Menos de 6 meses</span>
+                </div>
+                <div class="form-option-card selected" onclick="selectGeneratorOption('level', 'Intermediário', this)">
+                  <span class="material-symbols-outlined icon">military_tech</span>
+                  <span class="title">Intermediário</span>
+                  <span class="desc">6 meses a 2 anos</span>
+                </div>
+                <div class="form-option-card" onclick="selectGeneratorOption('level', 'Avançado', this)">
+                  <span class="material-symbols-outlined icon">workspace_premium</span>
+                  <span class="title">Avançado</span>
+                  <span class="desc">Mais de 2 anos</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Routine Split Selection -->
+            <div class="form-group">
+              <label class="form-label" for="form-days">Quantos dias na semana você treina?</label>
+              <input type="number" class="input-field" id="form-days" placeholder="Ex: 3" min="1" max="7" value="3" required>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="form-time">Quanto tempo disponível por dia? (minutos)</label>
+              <input type="number" class="input-field" id="form-time" placeholder="Ex: 60" min="10" max="180" value="60" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-validity">Validade da ficha (semanas)</label>
+              <input type="hidden" id="form-validity" value="4">
+              <div class="form-options-grid">
+                <div class="form-option-card selected" onclick="selectGeneratorOption('validity', '4', this)">
+                  <span class="material-symbols-outlined icon">date_range</span>
+                  <span class="title">4 Semanas</span>
+                  <span class="desc">Recomendado</span>
+                </div>
+                <div class="form-option-card" onclick="selectGeneratorOption('validity', '6', this)">
+                  <span class="material-symbols-outlined icon">event</span>
+                  <span class="title">6 Semanas</span>
+                  <span class="desc">Intermediário</span>
+                </div>
+                <div class="form-option-card" onclick="selectGeneratorOption('validity', '8', this)">
+                  <span class="material-symbols-outlined icon">calendar_month</span>
+                  <span class="title">8 Semanas</span>
+                  <span class="desc">Avançado</span>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 1.15rem; font-size: 1.05rem; justify-content: center; margin-top: 1rem;" id="btn-generate-submit">
+              <span class="material-symbols-outlined">casino</span> Gerar Nova Ficha de Treino Pro
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- 4. EXERCISE LIBRARY TUTORIALS PAGE             -->
+      <!-- ============================================== -->
+      <section id="biblioteca" class="page">
+        <div class="header-section">
+          <div class="header-title">
+            <h1>Biblioteca de Exercícios</h1>
+            <p>Navegue pela lista completa de movimentos e confira a execução correta em vídeo.</p>
+          </div>
+        </div>
+
+        <div class="grid-container" id="library-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- 5. COMPLETED SESSIONS HISTORY LOGS             -->
+      <!-- ============================================== -->
+      <section id="historico" class="page">
+        <div class="header-section">
+          <div class="header-title" style="flex: 1;">
+            <h1>Histórico de Treinos</h1>
+            <p>Visualize as fichas completadas e acompanhe sua evolução de cargas.</p>
+          </div>
+          <button class="btn-secondary" style="border-color: rgba(255, 59, 48, 0.4); color: #FF3B30; padding: 0.6rem 1rem; flex-shrink: 0;" onclick="clearHistory()" id="btn-clear-history">
+            <span class="material-symbols-outlined">delete_sweep</span> Apagar Histórico
+          </button>
+        </div>
+        </div>
+
+        <div class="history-timeline" id="history-timeline">
+          <!-- Rendered dynamically from LocalStorage logs -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- DYNAMIC MODAL FOR DETAILED TUTORIALS & DETAILED HISTORY -->
+  <div class="modal-overlay" id="details-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title" style="font-size: 1.25rem; font-weight: 800;">Detalhes do Exercício</h3>
+        <button class="modal-close-btn" id="modal-close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        <!-- Rendered dynamically depending on context -->
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNTDOWN REST TIMER FULLSCREEN OVERLAY -->
+  <div class="rest-timer-overlay" id="rest-timer-screen">
+    <div style="text-align: center; max-width: 420px; padding: 2rem;">
+      <h2 class="timer-title">treinox.ai Rest</h2>
+      <p class="timer-subtitle" id="timer-exercise-name">Supino Reto com Barra</p>
+      
+      <div class="timer-circle-container">
+        <svg class="timer-circle-svg">
+          <circle class="timer-circle-bg" cx="130" cy="130" r="120" />
+          <circle class="timer-circle-progress" id="timer-circle-bar" cx="130" cy="130" r="120" />
+        </svg>
+        <div class="timer-text" id="timer-time-display">
+          01:30
+          <span class="timer-subtext">Descanse</span>
+        </div>
+      </div>
+
+      <div class="timer-buttons-row">
+        <button class="btn-secondary" style="border-radius: 50%; width: 48px; height: 48px; padding: 0; justify-content: center;" onclick="adjustRestTimer(-10)" title="Diminuir 10 segundos">
+          <span class="material-symbols-outlined" style="font-size: 1.5rem;">remove</span>
+        </button>
+        <button class="btn-primary" style="border-radius: 50%; width: 64px; height: 64px; padding: 0; justify-content: center; background: var(--primary-grad);" onclick="pauseRestTimer()" title="Pausar / Retomar">
+          <span class="material-symbols-outlined" id="timer-pause-icon" style="font-size: 2rem; color: white;">pause</span>
+        </button>
+        <button class="btn-secondary" style="border-radius: 50%; width: 48px; height: 48px; padding: 0; justify-content: center;" onclick="adjustRestTimer(10)" title="Aumentar 10 segundos">
+          <span class="material-symbols-outlined" style="font-size: 1.5rem;">add</span>
+        </button>
+      </div>
+
+      <button class="btn-secondary" style="margin-top: 2rem; border-color: rgba(255,255,255,0.1); width: 100%; justify-content: center; text-transform: uppercase;" onclick="closeRestTimer()">
+        Pular Descanso <span class="material-symbols-outlined" style="font-size: 1.1rem;">fast_forward</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- FICHA EXPIRATION ALERT MODAL -->
+  <div class="expiration-modal-overlay" id="expiration-modal">
+    <div class="expiration-modal-card">
+      <div class="expiration-modal-icon">
+        <span class="material-symbols-outlined">schedule</span>
+      </div>
+      <h2 class="expiration-modal-title">Sua Ficha Está Expirando!</h2>
+      <p class="expiration-modal-text" id="expiration-modal-text">
+        Sua ficha atual expira em <strong id="expiration-days-left">3</strong> dias.
+        Recomendamos criar uma nova ficha para continuar evoluindo com exercícios variados!
+      </p>
+      <div class="expiration-modal-info">
+        <span class="material-symbols-outlined">auto_awesome</span>
+        <span>O treinox.ai vai usar sua ficha atual como referência para gerar uma nova ficha com exercícios diferentes!</span>
+      </div>
+      <div class="expiration-modal-buttons">
+        <button class="btn-primary" onclick="renewFichaFromExpiration()" style="flex: 1; justify-content: center;">
+          <span class="material-symbols-outlined">autorenew</span> Renovar Ficha Agora
+        </button>
+        <button class="btn-secondary" onclick="dismissExpirationModal()" style="flex: 0.6; justify-content: center;">
+          Ignorar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
