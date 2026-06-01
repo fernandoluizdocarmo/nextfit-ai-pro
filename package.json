@@ -4,8 +4,8 @@
   "description": "treinox.ai - Personal Trainer de Elite Inteligente",
   "main": "app.js",
   "scripts": {
-    "start": "serve .",
-    "dev": "serve ."
+    "start": "serve -l $PORT",
+    "dev": "serve"
   },
   "dependencies": {
     "serve": "^14.2.4"
