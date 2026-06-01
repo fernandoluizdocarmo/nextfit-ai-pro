@@ -28,7 +28,10 @@ app.listen(PORT, () => {
   startKeepAlive();
 });
 
-// ─── Keep-Alive: ping itself every 10 minutes ─────────────────────────────────
+// ─── Keep-Alive: self-ping every 4 minutes ────────────────────────────────────
+// NOTE: This only works while the server is already awake.
+// For guaranteed uptime, also configure an external pinger at cron-job.org
+// to GET https://treinox-ai.onrender.com/ping every 5 minutes.
 function startKeepAlive() {
   const externalUrl = process.env.RENDER_EXTERNAL_URL;
 
@@ -40,23 +43,28 @@ function startKeepAlive() {
   }
 
   const pingUrl = `${externalUrl}/ping`;
-  const INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
+  const INTERVAL_MS = 4 * 60 * 1000; // 4 minutes — well within Render's 15min sleep threshold
 
-  console.log(`🔔 Keep-alive enabled – pinging ${pingUrl} every 10 minutes.`);
+  console.log(`🔔 Keep-alive enabled – pinging ${pingUrl} every 4 minutes.`);
 
-  setInterval(() => {
-    const client = pingUrl.startsWith("https") ? https : http;
+  // Ping immediately on startup so logs confirm it's working
+  pingServer(pingUrl);
 
-    const req = client.get(pingUrl, (res) => {
-      console.log(
-        `💓 Keep-alive ping → ${new Date().toISOString()} | Status: ${res.statusCode}`
-      );
-    });
+  setInterval(() => pingServer(pingUrl), INTERVAL_MS);
+}
 
-    req.on("error", (err) => {
-      console.error(`⚠️  Keep-alive ping failed: ${err.message}`);
-    });
+function pingServer(pingUrl) {
+  const client = pingUrl.startsWith("https") ? https : http;
 
-    req.end();
-  }, INTERVAL_MS);
+  const req = client.get(pingUrl, (res) => {
+    console.log(
+      `💓 Keep-alive ping → ${new Date().toISOString()} | Status: ${res.statusCode}`
+    );
+  });
+
+  req.on("error", (err) => {
+    console.error(`⚠️  Keep-alive ping failed: ${err.message}`);
+  });
+
+  req.end();
 }
