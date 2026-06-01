@@ -2,13 +2,13 @@
   "name": "treinox.ai",
   "version": "1.0.0",
   "description": "treinox.ai - Personal Trainer de Elite Inteligente",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "serve -l $PORT",
-    "dev": "serve"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
-    "serve": "^14.2.4"
+    "express": "^4.18.2"
   },
   "keywords": [
     "fitness",

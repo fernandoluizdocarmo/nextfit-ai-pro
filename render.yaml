@@ -3,4 +3,4 @@ services:
     name: nextfit-ai-pro
     runtime: node
     buildCommand: npm install
-    startCommand: npm start
+    startCommand: node server.js

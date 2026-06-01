@@ -2,8 +2,11 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Install the serve package globally to serve static files
-RUN npm install -g serve
+# Copy package files first for better layer caching
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --production
 
 # Copy all project files into the container
 COPY . .
@@ -11,5 +14,5 @@ COPY . .
 # Expose port 3000 (standard, Render will route the HTTP traffic automatically)
 EXPOSE 3000
 
-# Run the server, binding to the dynamic PORT environment variable provided by Render
-CMD ["sh", "-c", "serve -l $PORT"]
+# Run the custom Express server with keep-alive
+CMD ["node", "server.js"]
