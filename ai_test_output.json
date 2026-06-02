@@ -1,0 +1,109 @@
+﻿{
+  "name": "Ficha de Treino - Hipertrofia Intermediário (3x Semana)",
+  "aiRationale": "Este plano de treino de 3 dias foca em otimizar a hipertrofia muscular para um nível intermediário, dividindo o corpo em grupos musculares para permitir recuperação adequada e volume de treino eficaz dentro de 60 minutos por sessão.",
+  "treinoA": {
+    "name": "Treino A - Peito, Ombro, Tríceps",
+    "exercises": [
+      {
+        "id": "supino_reto",
+        "setsCount": 4,
+        "reps": "8-12",
+        "weight": "Progresso"
+      },
+      {
+        "id": "desenvolvimento_ombro",
+        "setsCount": 4,
+        "reps": "8-12",
+        "weight": "Progresso"
+      },
+      {
+        "id": "crucifixo_maquina",
+        "setsCount": 3,
+        "reps": "10-15",
+        "weight": "Progresso"
+      },
+      {
+        "id": "elevacao_lateral",
+        "setsCount": 3,
+        "reps": "10-15",
+        "weight": "Progresso"
+      },
+      {
+        "id": "triceps_pulley",
+        "setsCount": 3,
+        "reps": "10-15",
+        "weight": "Progresso"
+      }
+    ]
+  },
+  "treinoB": {
+    "name": "Treino B - Costas, Bíceps, Pernas",
+    "exercises": [
+      {
+        "id": "puxada_frente",
+        "setsCount": 4,
+        "reps": "8-12",
+        "weight": "Progresso"
+      },
+      {
+        "id": "remada_curvada",
+        "setsCount": 4,
+        "reps": "8-12",
+        "weight": "Progresso"
+      },
+      {
+        "id": "agachamento_barra",
+        "setsCount": 4,
+        "reps": "8-12",
+        "weight": "Progresso"
+      },
+      {
+        "id": "rosca_direta",
+        "setsCount": 3,
+        "reps": "10-15",
+        "weight": "Progresso"
+      },
+      {
+        "id": "mesa_flexora",
+        "setsCount": 3,
+        "reps": "10-15",
+        "weight": "Progresso"
+      }
+    ]
+  },
+  "treinoC": {
+    "name": "Treino C - Pernas, Panturrilhas, Core",
+    "exercises": [
+      {
+        "id": "leg_press",
+        "setsCount": 4,
+        "reps": "8-12",
+        "weight": "Progresso"
+      },
+      {
+        "id": "cadeira_extensora",
+        "setsCount": 3,
+        "reps": "10-15",
+        "weight": "Progresso"
+      },
+      {
+        "id": "panturrilha_maquina",
+        "setsCount": 4,
+        "reps": "12-20",
+        "weight": "Progresso"
+      },
+      {
+        "id": "prancha_abdominal",
+        "setsCount": 3,
+        "reps": "30-60 seg",
+        "weight": "Progresso"
+      },
+      {
+        "id": "prancha_abdominal",
+        "setsCount": 3,
+        "reps": "30-60 seg",
+        "weight": "Progresso"
+      }
+    ]
+  }
+}
