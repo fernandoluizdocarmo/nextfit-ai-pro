@@ -9,10 +9,10 @@ const http = require("http");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ─── Gemini API Key (via env var or hardcoded fallback for local dev) ─────────
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = "gemini-1.5-flash";
-const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+// ─── Groq API Key (via env var or hardcoded fallback for local dev) ─────────
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const GROQ_MODEL = "llama-3.1-70b-versatile";
+const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(express.json({ limit: "2mb" }));
@@ -25,49 +25,50 @@ app.get("/ping", (req, res) => {
   res.send("OK");
 });
 
-// ─── API Endpoint: Generate Workout via Gemini ────────────────────────────────
+// ─── API Endpoint: Generate Workout via Groq ────────────────────────────────
 app.post("/api/generate-workout", async (req, res) => {
-  if (!GEMINI_API_KEY) {
-    return res.status(500).json({ error: "API Key do Gemini não está configurada no servidor (Variável de ambiente GEMINI_API_KEY ausente)." });
+  if (!GROQ_API_KEY) {
+    return res.status(500).json({ error: "API Key do Groq não está configurada no servidor (Variável de ambiente GROQ_API_KEY ausente)." });
   }
 
   const { prompt } = req.body;
 
-  const keyToLog = GEMINI_API_KEY 
-    ? `${GEMINI_API_KEY.slice(0, 6)}...${GEMINI_API_KEY.slice(-4)}`
+  const keyToLog = GROQ_API_KEY 
+    ? `${GROQ_API_KEY.slice(0, 6)}...${GROQ_API_KEY.slice(-4)}`
     : "undefined";
-  console.log(`[API Request] Using Gemini key: ${keyToLog}`);
+  console.log(`[API Request] Using Groq key: ${keyToLog}`);
 
   if (!prompt) {
     return res.status(400).json({ error: "Prompt é obrigatório." });
   }
 
-  if (!GEMINI_API_KEY) {
-    return res.status(500).json({ error: "Chave da API Gemini não configurada no servidor." });
+  if (!GROQ_API_KEY) {
+    return res.status(500).json({ error: "Chave da API Groq não configurada no servidor." });
   }
 
   try {
     const payload = JSON.stringify({
-      contents: [
+      model: GROQ_MODEL,
+      messages: [
         {
-          parts: [{ text: prompt }]
+          role: "user",
+          content: prompt
         }
       ],
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 2048,
-        responseMimeType: "application/json"
-      }
+      temperature: 0.7,
+      max_tokens: 2048,
+      response_format: { type: "json_object" }
     });
 
     const responseText = await new Promise((resolve, reject) => {
-      const urlObj = new URL(GEMINI_ENDPOINT);
+      const urlObj = new URL(GROQ_ENDPOINT);
       const options = {
         hostname: urlObj.hostname,
         path: urlObj.pathname + urlObj.search,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${GROQ_API_KEY}`,
           "Content-Length": Buffer.byteLength(payload)
         }
       };
@@ -85,18 +86,18 @@ app.post("/api/generate-workout", async (req, res) => {
 
     const parsed = JSON.parse(responseText);
 
-    // Extract text from Gemini response structure
-    const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text;
+    // Extract text from Groq response structure
+    const text = parsed?.choices?.[0]?.message?.content;
 
     if (!text) {
-      console.error("Gemini response missing text:", JSON.stringify(parsed, null, 2));
-      return res.status(502).json({ error: "Resposta inválida da API Gemini.", raw: parsed });
+      console.error("Groq response missing text:", JSON.stringify(parsed, null, 2));
+      return res.status(502).json({ error: "Resposta inválida da API Groq.", raw: parsed });
     }
 
     res.json({ text });
 
   } catch (err) {
-    console.error("Erro ao chamar a API Gemini:", err.message);
+    console.error("Erro ao chamar a API Groq:", err.message);
     res.status(500).json({ error: "Erro interno ao chamar a IA. " + err.message });
   }
 });
