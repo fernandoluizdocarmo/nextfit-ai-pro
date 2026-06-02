@@ -10,8 +10,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ─── Gemini API Key (via env var or hardcoded fallback for local dev) ─────────
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "AIzaSyA5PBs9juleORHRBHIQek-kt_QzYln0O54";
-const GEMINI_MODEL = "gemini-1.5-flash";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_MODEL = "gemini-1.5-flash-latest";
 const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
@@ -25,11 +25,12 @@ app.get("/ping", (req, res) => {
   res.send("OK");
 });
 
-// ─── Gemini AI Proxy Endpoint ─────────────────────────────────────────────────
-// POST /api/generate-workout
-// Body: { prompt: string }
-// Returns: { text: string } with the raw Gemini response
+// ─── API Endpoint: Generate Workout via Gemini ────────────────────────────────
 app.post("/api/generate-workout", async (req, res) => {
+  if (!GEMINI_API_KEY) {
+    return res.status(500).json({ error: "API Key do Gemini não está configurada no servidor (Variável de ambiente GEMINI_API_KEY ausente)." });
+  }
+
   const { prompt } = req.body;
 
   const keyToLog = GEMINI_API_KEY 
