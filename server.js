@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 // ─── Gemini API Key (via env var or hardcoded fallback for local dev) ─────────
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "AIzaSyA5PBs9juleORHRBHIQek-kt_QzYln0O54";
-const GEMINI_MODEL = "gemini-2.0-flash";
+const GEMINI_MODEL = "gemini-1.5-flash";
 const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
