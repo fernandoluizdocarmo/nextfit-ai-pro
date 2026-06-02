@@ -1,7 +1,7 @@
 // sw.js - treinox.ai Service Worker
-// v4: Added Sex selector and updated validity periods
+// v5: Added Sex selector and updated validity periods + better error reporting
 
-const CACHE_NAME = "treinox-ai-cache-v4";
+const CACHE_NAME = "treinox-ai-cache-v5";
 
 // All static assets that must be pre-cached on install
 const ASSETS_TO_CACHE = [

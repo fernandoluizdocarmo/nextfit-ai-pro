@@ -1554,7 +1554,20 @@ const generateIntelligentWorkout = async () => {
       body: JSON.stringify({ prompt })
     });
 
-    if (!response.ok) throw new Error(`Servidor respondeu com status ${response.status}`);
+    if (!response.ok) {
+      let details = "";
+      try {
+        const errJson = await response.json();
+        if (errJson.raw?.error?.message) {
+          details = errJson.raw.error.message;
+        } else {
+          details = errJson.error || JSON.stringify(errJson);
+        }
+      } catch (e) {
+        details = "Erro desconhecido";
+      }
+      throw new Error(`Servidor respondeu com status ${response.status} - ${details}`);
+    }
 
     const { text, error } = await response.json();
     if (error) throw new Error(error);
