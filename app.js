@@ -678,13 +678,8 @@ const renderDashboard = () => {
     exerciseRowsHtml += `
       <div class="exercise-row">
         <div class="exercise-img-wrapper" onclick="openExerciseDetailsModal('${exRef.id}')">
-          ${dbEx.video ? `
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${dbEx.video}?modestbranding=1&controls=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
-            <div class="play-badge"><span class="material-symbols-outlined">play_arrow</span></div>
-          ` : `
-            <img src="${dbEx.gif || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(dbEx.name) + '&background=1E1E2E&color=FF5E00&size=128&font-size=0.33'}" alt="${dbEx.name}" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'">
-            <div class="play-badge"><span class="material-symbols-outlined">play_arrow</span></div>
-          `}
+          <img src="${dbEx.gif || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(dbEx.name) + '&background=1E1E2E&color=FF5E00&size=128&font-size=0.33'}" alt="${dbEx.name}" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'">
+          ${dbEx.video ? `<a href="https://www.youtube.com/watch?v=${dbEx.video}" target="_blank" rel="noopener" class="play-badge" title="Ver vídeo completo"><span class="material-symbols-outlined">play_circle</span></a>` : `<div class="play-badge"><span class="material-symbols-outlined">play_arrow</span></div>`}
         </div>
         <div class="exercise-info-text">
           <h3 class="exercise-name">${dbEx.name}</h3>
@@ -740,17 +735,18 @@ const renderLibrary = () => {
     html += `
       <div class="card col-span-4" style="cursor: pointer;" onclick="openExerciseDetailsModal('${key}')">
         <div style="position: relative; border-radius: var(--border-radius-md); overflow: hidden; aspect-ratio: 16/9; background: #000; margin-bottom: 1rem;">
-          ${ex.video ? `
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${ex.video}?modestbranding=1&controls=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0;"></iframe>
-          ` : `
-            <img src="${ex.gif || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(ex.name) + '&background=1A1A26&color=FF5E00&size=256&font-size=0.3'}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'" />
-          `}
+          <img src="${ex.gif || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(ex.name) + '&background=1A1A26&color=FF5E00&size=256&font-size=0.3'}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'" />
           <div style="position: absolute; bottom: 0.75rem; left: 0.75rem;">
             <span class="badge badge-orange">${ex.muscle}</span>
           </div>
           <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,94,0,0.9); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--glow-orange);">
             <span class="material-symbols-outlined" style="color: white; font-size: 1.5rem;">play_arrow</span>
           </div>
+          ${ex.video ? `
+            <a href="https://www.youtube.com/watch?v=${ex.video}" target="_blank" rel="noopener" style="position: absolute; bottom: 0.75rem; right: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.5rem 0.75rem; background: rgba(255, 94, 0, 0.95); border-radius: 4px; text-decoration: none; color: white; font-size: 0.8rem; font-weight: 600; z-index: 10;" title="Abrir vídeo completo no YouTube" onclick="event.stopPropagation();">
+              📺 YouTube
+            </a>
+          ` : ''}
         </div>
         <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">${ex.name}</h3>
         <p class="text-secondary" style="font-size: 0.85rem; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
@@ -875,14 +871,15 @@ const renderActiveWorkoutExercise = () => {
   // Render Exercise Illustration
   const videoCard = document.getElementById("workout-video-container");
   videoCard.innerHTML = `
-    <div class="video-player-card" style="position: relative; overflow: hidden; max-width: 100%; border-radius: var(--border-radius-md); box-shadow: 0 4px 15px rgba(0,0,0,0.5); background: #1a1a2e; aspect-ratio: 16/9;">
-      ${dbEx.video ? `
-        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${dbEx.video}?modestbranding=1&controls=1&autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; width: 100%; height: 100%;"></iframe>
-      ` : `
-        <img src="${exImage}" alt="${dbEx.name}" style="width: 100%; display: block; max-height: 300px; object-fit: contain; background: #1a1a2e;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'; this.style.objectFit='cover';">
-      `}
+    <div class="video-player-card" style="position: relative; overflow: hidden; max-width: 100%; border-radius: var(--border-radius-md); box-shadow: 0 4px 15px rgba(0,0,0,0.5); background: #1a1a2e;">
+      <img src="${exImage}" alt="${dbEx.name}" style="width: 100%; display: block; max-height: 300px; object-fit: contain; background: #1a1a2e;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'; this.style.objectFit='cover';">
       <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 1rem; text-align: center;">
         <span class="badge badge-orange">${dbEx.muscle}</span>
+        ${dbEx.video ? `
+          <a href="https://www.youtube.com/watch?v=${dbEx.video}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-left: 0.75rem; padding: 0.5rem 1rem; background: rgba(255, 94, 0, 0.95); border-radius: 4px; text-decoration: none; color: white; font-size: 0.85rem; font-weight: 600;" title="Abrir vídeo completo no YouTube">
+            📺 Ver completo
+          </a>
+        ` : ''}
       </div>
     </div>
   `;
@@ -1273,12 +1270,13 @@ const openExerciseDetailsModal = (exId) => {
   const exImage = ex.gif || `https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80`;
 
   modalContent.innerHTML = `
-    <div style="border-radius: var(--border-radius-md); overflow: hidden; background: #1a1a2e; margin-bottom: 1.5rem; border: 1px solid var(--border-light); text-align: center; aspect-ratio: 16/9;">
+    <div style="border-radius: var(--border-radius-md); overflow: hidden; background: #1a1a2e; margin-bottom: 1.5rem; border: 1px solid var(--border-light); text-align: center; position: relative;">
+      <img src="${exImage}" alt="${ex.name}" style="max-width: 100%; max-height: 300px; object-fit: contain; display: block; margin: 0 auto; background: #1a1a2e;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80';">
       ${ex.video ? `
-        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${ex.video}?modestbranding=1&controls=1&autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; width: 100%; height: 100%;"></iframe>
-      ` : `
-        <img src="${exImage}" alt="${ex.name}" style="max-width: 100%; max-height: 280px; object-fit: contain; display: block; margin: 0 auto; background: #1a1a2e;" onerror="this.parentElement.style.backgroundImage='url(https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80)'; this.parentElement.style.backgroundSize='cover'; this.style.display='none';">
-      `}
+        <a href="https://www.youtube.com/watch?v=${ex.video}" target="_blank" rel="noopener" style="position: absolute; bottom: 0.75rem; right: 0.75rem; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.25rem; background: rgba(255, 94, 0, 0.95); border-radius: 6px; text-decoration: none; color: white; font-size: 0.95rem; font-weight: 600; z-index: 10;" title="Abrir vídeo completo no YouTube">
+          📺 Ver vídeo completo
+        </a>
+      ` : ''}
     </div>
     
     <div style="margin-bottom: 1.25rem; display: flex; gap: 0.5rem;">
