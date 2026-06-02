@@ -32,6 +32,11 @@ app.get("/ping", (req, res) => {
 app.post("/api/generate-workout", async (req, res) => {
   const { prompt } = req.body;
 
+  const keyToLog = GEMINI_API_KEY 
+    ? `${GEMINI_API_KEY.slice(0, 6)}...${GEMINI_API_KEY.slice(-4)}`
+    : "undefined";
+  console.log(`[API Request] Using Gemini key: ${keyToLog}`);
+
   if (!prompt) {
     return res.status(400).json({ error: "Prompt é obrigatório." });
   }
