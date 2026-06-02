@@ -584,7 +584,45 @@ const renderDashboard = () => {
 
   // Update header text
   document.getElementById("dashboard-ficha-title").textContent = ficha.name;
-  document.getElementById("dashboard-ficha-info").textContent = `Foco: ${ficha.objective} | Nível: ${ficha.level}`;
+  const sexLabel = ficha.sex ? `Sexo: ${ficha.sex} | ` : '';
+  document.getElementById("dashboard-ficha-info").textContent = `${sexLabel}Foco: ${ficha.objective} | Nível: ${ficha.level}${ficha.emphasis ? ` | Ênfase: ${ficha.emphasis}` : ''}`;
+
+  // Inject AI badge if AI-generated
+  const fichaInfoEl = document.getElementById("dashboard-ficha-info");
+  const existingBadge = document.getElementById("ai-generated-badge");
+  if (existingBadge) existingBadge.remove();
+  const existingRationale = document.getElementById("ai-rationale-banner");
+  if (existingRationale) existingRationale.remove();
+
+  if (ficha.aiGenerated) {
+    // Badge next to title
+    const badge = document.createElement("span");
+    badge.id = "ai-generated-badge";
+    badge.innerHTML = `<span class="material-symbols-outlined" style="font-size:0.85rem;vertical-align:middle;">smart_toy</span> Gemini AI`;
+    badge.style.cssText = `
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      background: linear-gradient(135deg, #FF6B00, #FF9A00);
+      color: white; font-size: 0.7rem; font-weight: 700;
+      padding: 0.2rem 0.6rem; border-radius: 20px;
+      margin-left: 0.5rem; letter-spacing: 0.04em;
+      vertical-align: middle; text-transform: uppercase;
+    `;
+    document.getElementById("dashboard-ficha-title").appendChild(badge);
+
+    // AI rationale banner
+    if (ficha.aiRationale) {
+      const rationale = document.createElement("div");
+      rationale.id = "ai-rationale-banner";
+      rationale.style.cssText = `
+        margin-top: 0.75rem; padding: 0.7rem 1rem;
+        background: rgba(255,107,0,0.08); border-left: 3px solid #FF6B00;
+        border-radius: 4px; font-size: 0.82rem; color: rgba(255,255,255,0.7);
+        display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5;
+      `;
+      rationale.innerHTML = `<span class="material-symbols-outlined" style="font-size:1rem;color:#FF6B00;flex-shrink:0;margin-top:0.05rem;">lightbulb</span><span><strong style="color:#FF9A00;">IA explica:</strong> ${ficha.aiRationale}</span>`;
+      fichaInfoEl.parentNode.insertBefore(rationale, fichaInfoEl.nextSibling);
+    }
+  }
 
   const validityContainer = document.getElementById("dashboard-ficha-validity");
   if (validityContainer) {
@@ -1344,14 +1382,295 @@ const clearHistory = () => {
   }
 };
 
-const generateIntelligentWorkout = () => {
+// ─── GEMINI AI WORKOUT GENERATOR ─────────────────────────────────────────────
+
+const AVAILABLE_EXERCISES = {
+  supino_reto: "Supino Reto com Barra (Peito)",
+  supino_inclinado_halter: "Supino Inclinado com Halteres (Peito)",
+  crucifixo_maquina: "Crucifixo na Máquina - Peck Deck (Peito)",
+  crucifixo_polia: "Crossover na Polia (Peito)",
+  agachamento_barra: "Agachamento Livre com Barra (Pernas/Glúteos)",
+  agachamento_hack: "Agachamento Hack Máquina (Pernas)",
+  leg_press: "Leg Press 45° (Pernas/Glúteos)",
+  cadeira_extensora: "Cadeira Extensora (Quadríceps)",
+  mesa_flexora: "Mesa Flexora (Posterior de coxa)",
+  stiff_barra: "Stiff com Barra (Posterior de coxa/Glúteos)",
+  panturrilha_maquina: "Panturrilha Máquina (Panturrilha)",
+  rosca_direta: "Rosca Direta com Halteres (Bíceps)",
+  rosca_martelo: "Rosca Martelo com Halteres (Bíceps/Antebraço)",
+  triceps_pulley: "Tríceps no Pulley com Corda (Tríceps)",
+  triceps_testa: "Tríceps Testa com Barra EZ (Tríceps)",
+  desenvolvimento_ombro: "Desenvolvimento de Ombros com Halteres (Ombros)",
+  elevacao_lateral: "Elevação Lateral com Halteres (Ombros)",
+  elevacao_frontal: "Elevação Frontal com Halteres (Ombros)",
+  remada_alta: "Remada Alta na Polia (Ombros/Trapézio)",
+  remada_curvada: "Remada Unilateral com Halter (Costas)",
+  remada_baixa_triangulo: "Remada Baixa Sentado com Triângulo (Costas)",
+  puxada_frente: "Puxada Frontal Pulldown (Costas/Latíssimo)",
+  prancha_abdominal: "Prancha Abdominal (Core/Abdômen)",
+  abdominal_infra: "Abdominal Infra no Banco (Core/Abdômen)",
+  esteira: "Cardio - Corrida na Esteira (Cardio)",
+  bicicleta_ergometrica: "Cardio - Bicicleta Ergométrica (Cardio)"
+};
+
+const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis) => {
+  const exerciseList = Object.entries(AVAILABLE_EXERCISES)
+    .map(([id, desc]) => `- ${id}: ${desc}`)
+    .join("\n");
+
+  const splitNames = days <= 2
+    ? "treinoA e treinoB (somente 2 treinos)"
+    : "treinoA, treinoB e treinoC (3 treinos no esquema A/B/C)";
+
+  return `Você é um personal trainer especialista em musculação. Crie uma ficha de treino personalizada completa em JSON para o seguinte aluno:
+
+Nome: ${name}
+Sexo: ${sex}
+Objetivo: ${objective}
+Nível: ${level}
+Dias de treino por semana: ${days}
+Tempo disponível por sessão: ${time} minutos
+${emphasis ? `Ênfase muscular desejada: ${emphasis}` : "Sem ênfase específica"}
+
+IMPORTANTE: Use APENAS os IDs exatos da lista abaixo. Não invente exercícios novos.
+
+EXERCÍCIOS DISPONÍVEIS:
+${exerciseList}
+
+RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum texto antes ou depois do JSON):
+{
+  "name": "Nome da ficha (inclua o nome do aluno)",
+  "objective": "${objective}",
+  "level": "${level}",
+  "days": ${days},
+  "time": ${time},
+  "emphasis": "${emphasis || ""}",
+  "aiGenerated": true,
+  "aiRationale": "Breve explicação (1-2 frases) de por que você montou essa ficha assim",
+  "treinoA": {
+    "name": "Treino A - [grupos musculares]",
+    "exercises": [
+      { "id": "id_do_exercicio", "setsCount": 3, "reps": "8-12", "weight": 20 }
+    ]
+  },
+  "treinoB": {
+    "name": "Treino B - [grupos musculares]",
+    "exercises": [
+      { "id": "id_do_exercicio", "setsCount": 3, "reps": "10-15", "weight": 15 }
+    ]
+  },
+  "treinoC": {
+    "name": "Treino C - [grupos musculares]",
+    "exercises": [
+      { "id": "id_do_exercicio", "setsCount": 3, "reps": "8-12", "weight": 20 }
+    ]
+  }
+}
+
+Regras:
+- Para cada treino, inclua entre 4 e 6 exercícios
+- Distribua os grupos musculares de forma inteligente para o objetivo de ${objective}
+- Sugira cargas iniciais (weight em kg) realistas para nível ${level}
+- Para cardio (esteira, bicicleta), use setsCount: 1 e reps em formato texto como "20 minutos"
+- Para prancha/abdominal, use reps em texto como "40 segundos"
+- Se days <= 2, retorne apenas treinoA e treinoB (deixe treinoC igual ao treinoB)
+- Adapte a intensidade ao tempo disponível por sessão (${time} minutos)`;
+};
+
+const showAILoadingOverlay = () => {
+  let overlay = document.getElementById("ai-loading-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "ai-loading-overlay";
+    overlay.style.cssText = `
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(18, 18, 28, 0.92); backdrop-filter: blur(12px);
+      z-index: 9999; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1.5rem;
+    `;
+    overlay.innerHTML = `
+      <div style="position: relative; width: 80px; height: 80px;">
+        <div style="
+          width: 80px; height: 80px; border-radius: 50%;
+          border: 3px solid rgba(255, 107, 0, 0.2);
+          border-top-color: #FF6B00;
+          animation: ai-spin 0.9s linear infinite;
+        "></div>
+        <span class="material-symbols-outlined" style="
+          position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+          font-size: 2rem; color: #FF6B00;
+          animation: ai-pulse 1.5s ease-in-out infinite;
+        ">smart_toy</span>
+      </div>
+      <div style="text-align: center; max-width: 320px;">
+        <h3 style="font-size: 1.3rem; font-weight: 800; color: white; margin-bottom: 0.5rem;">
+          IA Gerando sua Ficha...
+        </h3>
+        <p id="ai-loading-status" style="font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.5;">
+          Analisando seu perfil e montando o treino ideal com Gemini AI
+        </p>
+      </div>
+      <style>
+        @keyframes ai-spin { to { transform: rotate(360deg); } }
+        @keyframes ai-pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+      </style>
+    `;
+    document.body.appendChild(overlay);
+  } else {
+    overlay.style.display = "flex";
+  }
+};
+
+const hideAILoadingOverlay = () => {
+  const overlay = document.getElementById("ai-loading-overlay");
+  if (overlay) overlay.style.display = "none";
+};
+
+const updateAILoadingStatus = (msg) => {
+  const el = document.getElementById("ai-loading-status");
+  if (el) el.textContent = msg;
+};
+
+const generateIntelligentWorkout = async () => {
   const name = document.getElementById("user-name-input").value.trim() || "Atleta treinox.ai";
+  const sex = document.getElementById("form-sex").value || "Masculino";
   const objective = document.getElementById("form-objective").value;
   const level = document.getElementById("form-level").value;
   const days = parseInt(document.getElementById("form-days").value) || 3;
   const time = parseInt(document.getElementById("form-time").value) || 60;
+  const emphasis = document.getElementById("form-emphasis").value.trim();
+  const validityWeeks = parseInt(document.getElementById("form-validity").value) || 4;
 
-  // Custom heuristic algorithm to build custom schedules
+  // Try AI generation first
+  showAILoadingOverlay();
+
+  try {
+    updateAILoadingStatus("Conectando ao Gemini AI e analisando seu perfil...");
+    const prompt = buildGeminiPrompt(name, sex, objective, level, days, time, emphasis);
+
+    const response = await fetch("/api/generate-workout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    });
+
+    if (!response.ok) throw new Error(`Servidor respondeu com status ${response.status}`);
+
+    const { text, error } = await response.json();
+    if (error) throw new Error(error);
+
+    updateAILoadingStatus("Validando e aplicando a ficha gerada pela IA...");
+
+    // Parse the JSON returned by Gemini
+    let aiData;
+    try {
+      // Gemini sometimes wraps in ```json ... ``` blocks, strip those
+      const cleaned = text.replace(/```json\s*/gi, "").replace(/```\s*/gi, "").trim();
+      aiData = JSON.parse(cleaned);
+    } catch (parseErr) {
+      throw new Error("A IA retornou uma resposta em formato inválido. Tentando geração local...");
+    }
+
+    // Validate that all exercise IDs exist in our DB
+    const validIds = Object.keys(EXERCISES_DB);
+    const sanitizeExercises = (exercises) => {
+      if (!Array.isArray(exercises)) return [];
+      return exercises.filter(ex => {
+        if (!validIds.includes(ex.id)) {
+          console.warn(`[AI] Exercício desconhecido ignorado: ${ex.id}`);
+          return false;
+        }
+        return true;
+      }).map(ex => ({
+        id: ex.id,
+        setsCount: Math.max(1, parseInt(ex.setsCount) || 3),
+        reps: String(ex.reps || "10-12"),
+        weight: Math.max(0, parseFloat(ex.weight) || 0)
+      }));
+    };
+
+    if (state.currentFicha) {
+      state.previousFicha = JSON.parse(JSON.stringify(state.currentFicha));
+    }
+
+    const newFicha = {
+      id: "ficha_ai_" + Date.now(),
+      name: aiData.name || `Ficha IA ${objective} (${name})`,
+      objective,
+      level,
+      days,
+      time,
+      sex,
+      emphasis: emphasis || null,
+      aiGenerated: true,
+      aiRationale: aiData.aiRationale || null,
+      treinoA: {
+        name: aiData.treinoA?.name || "Treino A",
+        exercises: sanitizeExercises(aiData.treinoA?.exercises)
+      },
+      treinoB: {
+        name: aiData.treinoB?.name || "Treino B",
+        exercises: sanitizeExercises(aiData.treinoB?.exercises)
+      },
+      treinoC: {
+        name: aiData.treinoC?.name || "Treino C",
+        exercises: sanitizeExercises(aiData.treinoC?.exercises || aiData.treinoB?.exercises)
+      },
+      createdAt: Date.now(),
+      validityWeeks,
+      expiresAt: Date.now() + validityWeeks * 7 * 24 * 60 * 60 * 1000
+    };
+
+    // Ensure treinos have at least some exercises (fallback per-treino if AI messed up)
+    ["treinoA", "treinoB", "treinoC"].forEach(key => {
+      if (!newFicha[key] || newFicha[key].exercises.length === 0) {
+        console.warn(`[AI] ${key} ficou sem exercícios válidos, usando fallback heurístico`);
+        newFicha[key] = generateHeuristicFicha(objective, level, name)[key];
+      }
+    });
+
+    state.currentFicha = newFicha;
+    state.currentSplit = "A";
+    state.expirationAlertDismissed = false;
+    saveStateToStorage();
+
+    state.history.push({
+      date: Date.now(),
+      fichaName: newFicha.name,
+      split: "N/A",
+      duration: 0,
+      maxWeight: 0,
+      logs: []
+    });
+    saveStateToStorage();
+
+    hideAILoadingOverlay();
+    playAlertSound("double-beep");
+
+    // Show AI rationale if available
+    const rationaleMsg = newFicha.aiRationale
+      ? `\n\n💡 IA explica: ${newFicha.aiRationale}`
+      : "";
+    alert(`🤖 Ficha "${newFicha.name}" gerada com sucesso pela IA Gemini!${rationaleMsg}`);
+    navigateTo("dashboard");
+
+  } catch (aiError) {
+    console.error("[AI] Erro na geração com Gemini:", aiError.message);
+    hideAILoadingOverlay();
+
+    // Fallback to heuristic
+    console.log("[AI] Usando gerador heurístico como fallback...");
+    generateHeuristicWorkout({
+      name, sex, objective, level, days, time, emphasis,
+      validityWeeks,
+      fallbackReason: aiError.message
+    });
+  }
+};
+
+// ─── HEURISTIC GENERATOR (kept as fallback) ───────────────────────────────────
+
+const generateHeuristicFicha = (objective, level, name = "Atleta") => {
   const plans = {
     "Hipertrofia": {
       name: `Ficha Hipertrofia Elite (${name})`,
@@ -1454,49 +1773,45 @@ const generateIntelligentWorkout = () => {
     }
   };
 
+  return plans[objective] || plans["Hipertrofia"];
+};
+
+const generateHeuristicWorkout = ({ name, sex, objective, level, days, time, emphasis, validityWeeks, fallbackReason }) => {
   if (state.currentFicha) {
     state.previousFicha = JSON.parse(JSON.stringify(state.currentFicha));
   }
 
-  // Get selected validity weeks from form
-  const validityWeeks = parseInt(document.getElementById("form-validity").value) || 4;
+  const selectedType = generateHeuristicFicha(objective, level, name);
 
-  // Select base and customize
-  const selectedType = plans[objective] || plans["Hipertrofia"];
-  
-  // Clone selected plan structure
   const newFicha = JSON.parse(JSON.stringify(selectedType));
   newFicha.id = "ficha_" + Date.now();
   newFicha.objective = objective;
   newFicha.level = level;
   newFicha.days = days;
   newFicha.time = time;
+  newFicha.sex = sex || null;
+  newFicha.emphasis = emphasis || null;
   newFicha.name = `${newFicha.name} - ${days}x na semana (${time} min)`;
   newFicha.createdAt = Date.now();
   newFicha.validityWeeks = validityWeeks;
   newFicha.expiresAt = Date.now() + validityWeeks * 7 * 24 * 60 * 60 * 1000;
+  newFicha.aiGenerated = false;
 
-  // Dynamic intelligent rotation to prevent repeating previous exercises
   const prevIds = getPreviousExerciseIds();
   ["treinoA", "treinoB", "treinoC"].forEach(tKey => {
     if (newFicha[tKey] && newFicha[tKey].exercises) {
-      newFicha[tKey].exercises = newFicha[tKey].exercises.map(ex => {
-        const rotatedId = getAlternativeExercise(ex.id, prevIds);
-        return {
-          ...ex,
-          id: rotatedId
-        };
-      });
+      newFicha[tKey].exercises = newFicha[tKey].exercises.map(ex => ({
+        ...ex,
+        id: getAlternativeExercise(ex.id, prevIds)
+      }));
     }
   });
 
-  // Active new ficha in state
   state.currentFicha = newFicha;
   state.currentSplit = "A";
-  state.expirationAlertDismissed = false; // Reset expiration alert for new ficha
+  state.expirationAlertDismissed = false;
   saveStateToStorage();
 
-  // Add Ficha created log to history
   state.history.push({
     date: Date.now(),
     fichaName: newFicha.name,
@@ -1507,10 +1822,12 @@ const generateIntelligentWorkout = () => {
   });
   saveStateToStorage();
 
-  // Play alert success
   playAlertSound("double-beep");
 
-  alert(`Ficha "${newFicha.name}" criada com sucesso pelo treinox.ai!`);
+  const fallbackNote = fallbackReason
+    ? `\n\n⚠️ A IA não estava disponível (${fallbackReason}). Ficha gerada pelo motor local.`
+    : "";
+  alert(`Ficha "${newFicha.name}" criada com sucesso!${fallbackNote}`);
   navigateTo("dashboard");
 };
 
