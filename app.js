@@ -7,7 +7,7 @@ const EXERCISES_DB = {
     name: "Supino Reto com Barra",
     muscle: "Peito",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg",
-    video: "qz0aAi7NWS4",
+    videoUrl: "https://videos.pexels.com/video-files/10700879/10700879-hd_1280_720_24fps.mp4",
     steps: [
       "Deite-se no banco plano com os pés apoiados firmemente no chão.",
       "Segure a barra com uma pegada ligeiramente mais larga que a largura dos ombros.",
@@ -21,7 +21,7 @@ const EXERCISES_DB = {
     name: "Supino Inclinado com Halteres",
     muscle: "Peito",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Incline_Dumbbell_Press/0.jpg",
-    video: "8iPEnn-ltC8",
+    videoUrl: "https://videos.pexels.com/video-files/8722401/8722401-hd_1280_720_24fps.mp4",
     steps: [
       "Ajuste o banco para uma inclinação entre 30 e 45 graus.",
       "Sente-se e apoie os halteres sobre as coxas, depois deite-se levantando os halteres.",
@@ -35,7 +35,7 @@ const EXERCISES_DB = {
     name: "Crucifixo na Máquina (Peck Deck)",
     muscle: "Peito",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Butterfly/0.jpg",
-    video: "E8_Vnd4K1O8",
+    videoUrl: "https://videos.pexels.com/video-files/6455731/6455731-hd_1280_720_30fps.mp4",
     steps: [
       "Sente-se no aparelho mantendo as costas bem apoiadas.",
       "Segure os pegadores com os braços semi-flexionados.",
@@ -49,7 +49,7 @@ const EXERCISES_DB = {
     name: "Crossover na Polia (Crucifixo Cabo)",
     muscle: "Peito",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Cable_Crossover/0.jpg",
-    video: "LIgn1zWxzyI",
+    videoUrl: "https://videos.pexels.com/video-files/7974640/7974640-hd_1280_720_30fps.mp4",
     steps: [
       "Posicione as polias na altura média ou alta e dê um passo à frente.",
       "Mantenha uma leve flexão nos cotovelos e incline levemente o tronco.",
@@ -63,7 +63,7 @@ const EXERCISES_DB = {
     name: "Agachamento Livre com Barra",
     muscle: "Pernas",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Full_Squat/0.jpg",
-    video: "Dy28eq2PjNM",
+    videoUrl: "https://videos.pexels.com/video-files/8722501/8722501-hd_1280_720_24fps.mp4",
     steps: [
       "Apoie a barra sobre a musculatura do trapézio.",
       "Afaste os pés na largura dos ombros, apontando os dedos ligeiramente para fora.",
@@ -77,7 +77,7 @@ const EXERCISES_DB = {
     name: "Agachamento Hack Máquina",
     muscle: "Pernas",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Hack_Squat/0.jpg",
-    video: "_u-SJiZaW6U",
+    videoUrl: "https://videos.pexels.com/video-files/10700879/10700879-hd_1280_720_24fps.mp4",
     steps: [
       "Posicione-se no Hack com os ombros apoiados e as costas firmes no encosto.",
       "Coloque os pés na plataforma na largura dos ombros.",
@@ -91,7 +91,7 @@ const EXERCISES_DB = {
     name: "Leg Press 45º",
     muscle: "Pernas",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Leg_Press/0.jpg",
-    video: "6UEc16QVy78",
+    videoUrl: "https://videos.pexels.com/video-files/8722490/8722490-hd_1280_720_24fps.mp4",
     steps: [
       "Sente-se no Leg Press e apoie os pés na plataforma na largura dos ombros.",
       "Destrave o aparelho e desça o peso flexionando os joelhos controladamente.",
@@ -104,7 +104,7 @@ const EXERCISES_DB = {
     name: "Cadeira Extensora",
     muscle: "Pernas",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Leg_Extensions/0.jpg",
-    video: "ZLa7tJzqdA0",
+    videoUrl: "https://videos.pexels.com/video-files/8722485/8722485-hd_1280_720_24fps.mp4",
     steps: [
       "Sente-se na máquina com as costas bem apoiadas.",
       "Ajuste o rolo logo acima do peito do pé.",
@@ -118,7 +118,7 @@ const EXERCISES_DB = {
     name: "Mesa Flexora",
     muscle: "Pernas",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Lying_Leg_Curls/0.jpg",
-    video: "1Ew3Jj-QDQU",
+    videoUrl: "https://videos.pexels.com/video-files/8722483/8722483-hd_1280_720_24fps.mp4",
     steps: [
       "Deite-se de bruços na máquina.",
       "Posicione o rolo acima do calcanhar.",
@@ -132,7 +132,7 @@ const EXERCISES_DB = {
     name: "Stiff com Barra",
     muscle: "Pernas",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Stiff-Legged_Barbell_Deadlift/0.jpg",
-    video: "2wnLNHmFAMg",
+    video: "",
     steps: [
       "Fique em pé segurando a barra com os braços estendidos à frente das coxas.",
       "Mantenha as pernas semi-estendidas (joelhos destravados) e costas retas.",
@@ -146,7 +146,7 @@ const EXERCISES_DB = {
     name: "Panturrilha Máquina",
     muscle: "Pernas",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Standing_Calf_Raises/0.jpg",
-    video: "u9O0Zyw3kyI",
+    videoUrl: "https://videos.pexels.com/video-files/8722500/8722500-hd_1280_720_24fps.mp4",
     steps: [
       "Posicione os ombros sob as almofadas e as pontas dos pés no degrau.",
       "Desça os calcanhares o máximo que puder alongando a panturrilha.",
@@ -159,7 +159,7 @@ const EXERCISES_DB = {
     name: "Rosca Direta com Halteres",
     muscle: "Braços",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Dumbbell_Alternate_Bicep_Curl/0.jpg",
-    video: "jYvj4eCfbWo",
+    videoUrl: "https://videos.pexels.com/video-files/8722502/8722502-hd_1280_720_24fps.mp4",
     steps: [
       "Fique de pé com um halter em cada mão.",
       "Mantenha os cotovelos próximos ao tronco o tempo todo.",
@@ -172,7 +172,7 @@ const EXERCISES_DB = {
     name: "Rosca Martelo com Halteres",
     muscle: "Braços",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Hammer_Curls/0.jpg",
-    video: "zC3nLlEvin0",
+    videoUrl: "https://videos.pexels.com/video-files/8722503/8722503-hd_1280_720_24fps.mp4",
     steps: [
       "Fique em pé segurando os halteres com as palmas das mãos voltadas para dentro (pegada neutra).",
       "Mantenha os cotovelos colados ao tronco.",
@@ -186,7 +186,7 @@ const EXERCISES_DB = {
     name: "Tríceps no Pulley com Corda",
     muscle: "Braços",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Triceps_Pushdown/0.jpg",
-    video: "0-y8QhSvbEE",
+    videoUrl: "https://videos.pexels.com/video-files/8722498/8722498-hd_1280_720_24fps.mp4",
     steps: [
       "Em pé de frente para a polia alta, segure a corda.",
       "Mantenha os cotovelos colados ao lado do corpo.",
@@ -200,7 +200,7 @@ const EXERCISES_DB = {
     name: "Tríceps Testa com Barra EZ",
     muscle: "Braços",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/EZ-Bar_Triceps_Extension/0.jpg",
-    video: "L8Aq5HPH5ZI",
+    videoUrl: "https://videos.pexels.com/video-files/8722499/8722499-hd_1280_720_24fps.mp4",
     steps: [
       "Deite-se no banco plano segurando a barra EZ acima do peito com braços estendidos.",
       "Flexione apenas os cotovelos, descendo a barra em direção à testa.",
@@ -214,7 +214,7 @@ const EXERCISES_DB = {
     name: "Desenvolvimento de Ombros com Halteres",
     muscle: "Ombros",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Dumbbell_Shoulder_Press/0.jpg",
-    video: "YKOXMjcRaoQ",
+    videoUrl: "https://videos.pexels.com/video-files/8722508/8722508-hd_1280_720_24fps.mp4",
     steps: [
       "Sente-se em um banco a 90 graus.",
       "Segure os halteres na altura dos ombros.",
@@ -227,7 +227,7 @@ const EXERCISES_DB = {
     name: "Elevação Lateral com Halteres",
     muscle: "Ombros",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Side_Lateral_Raise/0.jpg",
-    video: "J4qvdUyMPLI",
+    videoUrl: "https://videos.pexels.com/video-files/8722510/8722510-hd_1280_720_24fps.mp4",
     steps: [
       "Fique de pé com halteres ao lado do corpo.",
       "Eleve os braços lateralmente mantendo leve flexão nos cotovelos.",
@@ -240,7 +240,7 @@ const EXERCISES_DB = {
     name: "Elevação Frontal com Halteres",
     muscle: "Ombros",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Dumbbell_Front_Raise/0.jpg",
-    video: "xMhfvCqStYw",
+    videoUrl: "https://videos.pexels.com/video-files/8722511/8722511-hd_1280_720_24fps.mp4",
     steps: [
       "Fique em pé com os halteres à frente das coxas.",
       "Eleve um braço de cada vez ou ambos para a frente até a altura dos ombros.",
@@ -253,7 +253,7 @@ const EXERCISES_DB = {
     name: "Remada Alta na Polia",
     muscle: "Ombros",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Upright_Cable_Row/0.jpg",
-    video: "VY5DXNMF_rk",
+    videoUrl: "https://videos.pexels.com/video-files/8722512/8722512-hd_1280_720_24fps.mp4",
     steps: [
       "Fique em pé de frente para a polia baixa, segurando a barra reta.",
       "Puxe a barra para cima rente ao corpo em direção ao queixo.",
@@ -267,7 +267,7 @@ const EXERCISES_DB = {
     name: "Remada Unilateral com Halter",
     muscle: "Costas",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/One-Arm_Dumbbell_Row/0.jpg",
-    video: "w6UzfvTYsck",
+    videoUrl: "https://videos.pexels.com/video-files/8722506/8722506-hd_1280_720_24fps.mp4",
     steps: [
       "Apoie um joelho e a mão do mesmo lado em um banco plano.",
       "Puxe o halter em direção ao quadril.",
@@ -280,7 +280,7 @@ const EXERCISES_DB = {
     name: "Remada Baixa Sentado com Triângulo",
     muscle: "Costas",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Seated_Cable_Rows/0.jpg",
-    video: "GZbfZ033pfE",
+    videoUrl: "https://videos.pexels.com/video-files/8722507/8722507-hd_1280_720_24fps.mp4",
     steps: [
       "Sente-se no aparelho, apoie os pés e segure o puxador triângulo.",
       "Mantenha a postura ereta e puxe o triângulo em direção ao abdômen inferior.",
@@ -294,7 +294,7 @@ const EXERCISES_DB = {
     name: "Puxada Frontal (Pulldown)",
     muscle: "Costas",
     gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Wide-Grip_Lat_Pulldown/0.jpg",
-    video: "U70KT0d0t90",
+    videoUrl: "https://videos.pexels.com/video-files/8722513/8722513-hd_1280_720_24fps.mp4",
     steps: [
       "Sente-se no aparelho de puxada e trave os joelhos.",
       "Segure a barra com a pegada aberta.",
@@ -678,8 +678,15 @@ const renderDashboard = () => {
     exerciseRowsHtml += `
       <div class="exercise-row">
         <div class="exercise-img-wrapper" onclick="openExerciseDetailsModal('${exRef.id}')">
-          <img src="${dbEx.gif || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(dbEx.name) + '&background=1E1E2E&color=FF5E00&size=128&font-size=0.33'}" alt="${dbEx.name}" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'">
-          ${dbEx.video ? `<a href="https://www.youtube.com/watch?v=${dbEx.video}" target="_blank" rel="noopener" class="play-badge" title="Ver vídeo completo"><span class="material-symbols-outlined">play_circle</span></a>` : `<div class="play-badge"><span class="material-symbols-outlined">play_arrow</span></div>`}
+          ${dbEx.videoUrl ? `
+            <video style="width: 100%; height: 100%; object-fit: cover;" autoplay muted loop>
+              <source src="${dbEx.videoUrl}" type="video/mp4">
+              <img src="${dbEx.gif}" alt="${dbEx.name}">
+            </video>
+          ` : `
+            <img src="${dbEx.gif || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(dbEx.name) + '&background=1E1E2E&color=FF5E00&size=128&font-size=0.33'}" alt="${dbEx.name}" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'">
+          `}
+          <div class="play-badge"><span class="material-symbols-outlined">play_arrow</span></div>
         </div>
         <div class="exercise-info-text">
           <h3 class="exercise-name">${dbEx.name}</h3>
@@ -735,18 +742,20 @@ const renderLibrary = () => {
     html += `
       <div class="card col-span-4" style="cursor: pointer;" onclick="openExerciseDetailsModal('${key}')">
         <div style="position: relative; border-radius: var(--border-radius-md); overflow: hidden; aspect-ratio: 16/9; background: #000; margin-bottom: 1rem;">
-          <img src="${ex.gif || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(ex.name) + '&background=1A1A26&color=FF5E00&size=256&font-size=0.3'}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'" />
+          ${ex.videoUrl ? `
+            <video style="width: 100%; height: 100%; object-fit: cover;" autoplay muted loop>
+              <source src="${ex.videoUrl}" type="video/mp4">
+              <img src="${ex.gif}" alt="${ex.name}">
+            </video>
+          ` : `
+            <img src="${ex.gif || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(ex.name) + '&background=1A1A26&color=FF5E00&size=256&font-size=0.3'}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'" />
+          `}
           <div style="position: absolute; bottom: 0.75rem; left: 0.75rem;">
             <span class="badge badge-orange">${ex.muscle}</span>
           </div>
           <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,94,0,0.9); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--glow-orange);">
             <span class="material-symbols-outlined" style="color: white; font-size: 1.5rem;">play_arrow</span>
           </div>
-          ${ex.video ? `
-            <a href="https://www.youtube.com/watch?v=${ex.video}" target="_blank" rel="noopener" style="position: absolute; bottom: 0.75rem; right: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.5rem 0.75rem; background: rgba(255, 94, 0, 0.95); border-radius: 4px; text-decoration: none; color: white; font-size: 0.8rem; font-weight: 600; z-index: 10;" title="Abrir vídeo completo no YouTube" onclick="event.stopPropagation();">
-              📺 YouTube
-            </a>
-          ` : ''}
         </div>
         <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">${ex.name}</h3>
         <p class="text-secondary" style="font-size: 0.85rem; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
@@ -871,15 +880,17 @@ const renderActiveWorkoutExercise = () => {
   // Render Exercise Illustration
   const videoCard = document.getElementById("workout-video-container");
   videoCard.innerHTML = `
-    <div class="video-player-card" style="position: relative; overflow: hidden; max-width: 100%; border-radius: var(--border-radius-md); box-shadow: 0 4px 15px rgba(0,0,0,0.5); background: #1a1a2e;">
-      <img src="${exImage}" alt="${dbEx.name}" style="width: 100%; display: block; max-height: 300px; object-fit: contain; background: #1a1a2e;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'; this.style.objectFit='cover';">
+    <div class="video-player-card" style="position: relative; overflow: hidden; max-width: 100%; border-radius: var(--border-radius-md); box-shadow: 0 4px 15px rgba(0,0,0,0.5); background: #1a1a2e; aspect-ratio: 16/9;">
+      ${dbEx.videoUrl ? `
+        <video style="width: 100%; height: 100%; object-fit: cover;" autoplay muted loop>
+          <source src="${dbEx.videoUrl}" type="video/mp4">
+          <img src="${exImage}" alt="${dbEx.name}">
+        </video>
+      ` : `
+        <img src="${exImage}" alt="${dbEx.name}" style="width: 100%; display: block; max-height: 300px; object-fit: contain; background: #1a1a2e;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'; this.style.objectFit='cover';">
+      `}
       <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 1rem; text-align: center;">
         <span class="badge badge-orange">${dbEx.muscle}</span>
-        ${dbEx.video ? `
-          <a href="https://www.youtube.com/watch?v=${dbEx.video}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-left: 0.75rem; padding: 0.5rem 1rem; background: rgba(255, 94, 0, 0.95); border-radius: 4px; text-decoration: none; color: white; font-size: 0.85rem; font-weight: 600;" title="Abrir vídeo completo no YouTube">
-            📺 Ver completo
-          </a>
-        ` : ''}
       </div>
     </div>
   `;
@@ -1270,13 +1281,15 @@ const openExerciseDetailsModal = (exId) => {
   const exImage = ex.gif || `https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80`;
 
   modalContent.innerHTML = `
-    <div style="border-radius: var(--border-radius-md); overflow: hidden; background: #1a1a2e; margin-bottom: 1.5rem; border: 1px solid var(--border-light); text-align: center; position: relative;">
-      <img src="${exImage}" alt="${ex.name}" style="max-width: 100%; max-height: 300px; object-fit: contain; display: block; margin: 0 auto; background: #1a1a2e;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80';">
-      ${ex.video ? `
-        <a href="https://www.youtube.com/watch?v=${ex.video}" target="_blank" rel="noopener" style="position: absolute; bottom: 0.75rem; right: 0.75rem; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.25rem; background: rgba(255, 94, 0, 0.95); border-radius: 6px; text-decoration: none; color: white; font-size: 0.95rem; font-weight: 600; z-index: 10;" title="Abrir vídeo completo no YouTube">
-          📺 Ver vídeo completo
-        </a>
-      ` : ''}
+    <div style="border-radius: var(--border-radius-md); overflow: hidden; background: #1a1a2e; margin-bottom: 1.5rem; border: 1px solid var(--border-light); text-align: center; position: relative; aspect-ratio: 16/9;">
+      ${ex.videoUrl ? `
+        <video style="width: 100%; height: 100%; object-fit: cover;" controls autoplay>
+          <source src="${ex.videoUrl}" type="video/mp4">
+          <img src="${exImage}" alt="${ex.name}">
+        </video>
+      ` : `
+        <img src="${exImage}" alt="${ex.name}" style="max-width: 100%; max-height: 300px; object-fit: contain; display: block; margin: 0 auto; background: #1a1a2e;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80';">
+      `}
     </div>
     
     <div style="margin-bottom: 1.25rem; display: flex; gap: 0.5rem;">
