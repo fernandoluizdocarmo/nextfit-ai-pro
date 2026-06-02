@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="style-enhancements.css">
+  <link rel="stylesheet" href="style-modern.css">
 </head>
 <body>
   <!-- AUTH OVERLAY -->
@@ -352,7 +353,7 @@
                 <span class="material-symbols-outlined" style="color: var(--primary); font-size: 1.3rem;">health_metrics</span>
                 <label class="form-label" style="margin: 0;">Dados Biométricos (Personalizarão sua Ficha)</label>
               </div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="biometric-grid">
                 <div class="form-group" style="margin-bottom: 0;">
                   <label class="form-label" for="form-age">Idade (anos)</label>
                   <input type="number" class="input-field" id="form-age" placeholder="Ex: 30" min="15" max="100" value="30" required>

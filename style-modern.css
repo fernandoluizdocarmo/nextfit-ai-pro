@@ -1,0 +1,300 @@
+/* ═════════════════════════════════════════════════════════════
+   TREINOX.AI - MODERN PREMIUM DESIGN (2026)
+   Dark theme with Neon Yellow/Lime accents
+   ═════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Ultra Modern Palette */
+  --bg-ultra-dark: #0a0a0e !important;
+  --bg-dark: #12121c !important;
+  --bg-darker: #0f0f17 !important;
+  --bg-card: rgba(20, 20, 30, 0.6) !important;
+  --bg-card-hover: rgba(25, 25, 40, 0.8) !important;
+  
+  /* Neon Accent Colors */
+  --neon-yellow: #E8FF00 !important;
+  --neon-lime: #00FF88 !important;
+  --neon-cyan: #00D9FF !important;
+  --neon-pink: #FF0080 !important;
+  --neon-orange: #FF6B00 !important;
+  
+  /* Primary Brand Color */
+  --primary: #E8FF00 !important;
+  --primary-dark: #D4E600 !important;
+  --primary-glow: 0 0 30px rgba(232, 255, 0, 0.4) !important;
+  
+  /* Secondary */
+  --secondary: #00FF88 !important;
+  --secondary-glow: 0 0 30px rgba(0, 255, 136, 0.3) !important;
+  
+  /* Accent */
+  --accent: #FF6B00 !important;
+  --accent-glow: 0 0 30px rgba(255, 107, 0, 0.3) !important;
+  
+  /* Text */
+  --text-primary: #FFFFFF !important;
+  --text-secondary: #A8B5C1 !important;
+  --text-muted: #707A88 !important;
+  
+  /* Borders */
+  --border-primary: rgba(232, 255, 0, 0.15) !important;
+  --border-secondary: rgba(20, 20, 30, 0.4) !important;
+  
+  /* Spacing & Radius */
+  --radius-lg: 20px !important;
+  --radius-md: 14px !important;
+  --radius-sm: 8px !important;
+  
+  /* Shadows */
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+  --shadow-sm: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--bg-ultra-dark) 0%, var(--bg-dark) 50%, var(--bg-darker) 100%) !important;
+}
+
+body {
+  color: var(--text-primary) !important;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 50%, rgba(232, 255, 0, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(0, 255, 136, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Override Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700 !important;
+  letter-spacing: -0.5px !important;
+}
+
+h1 {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+h2 {
+  color: var(--primary) !important;
+}
+
+/* Override Card Styles */
+.card {
+  background: linear-gradient(135deg, rgba(25, 25, 40, 0.7) 0%, rgba(20, 20, 30, 0.5) 100%) !important;
+  border: 1px solid var(--border-primary) !important;
+  border-radius: var(--radius-md) !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: var(--shadow-md) !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.card:hover {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 40px rgba(232, 255, 0, 0.2), var(--shadow-lg) !important;
+  transform: translateY(-5px) !important;
+}
+
+/* Override Buttons */
+.btn-primary, button.btn-primary, .btn-primary:not(:disabled) {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+  color: #000000 !important;
+  border: none !important;
+  box-shadow: 0 10px 30px rgba(232, 255, 0, 0.25) !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover, button.btn-primary:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 15px 40px rgba(232, 255, 0, 0.35) !important;
+}
+
+.btn-secondary, button.btn-secondary {
+  background: rgba(232, 255, 0, 0.1) !important;
+  color: var(--primary) !important;
+  border: 1.5px solid var(--primary) !important;
+  box-shadow: inset 0 0 20px rgba(232, 255, 0, 0.05) !important;
+}
+
+.btn-secondary:hover, button.btn-secondary:hover {
+  background: rgba(232, 255, 0, 0.15) !important;
+  box-shadow: inset 0 0 20px rgba(232, 255, 0, 0.1), 0 0 20px rgba(232, 255, 0, 0.2) !important;
+}
+
+/* Override Input Fields */
+.input-field, input[type="text"], input[type="email"], input[type="password"], input[type="number"], textarea, select {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--border-secondary) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--text-primary) !important;
+  padding: 0.9rem 1.2rem !important;
+  font-family: inherit !important;
+  font-size: 1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.input-field:focus, input:focus, textarea:focus, select:focus {
+  outline: none !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 20px rgba(232, 255, 0, 0.2), inset 0 0 10px rgba(232, 255, 0, 0.05) !important;
+  background: rgba(232, 255, 0, 0.02) !important;
+}
+
+/* Override Form Groups */
+.form-group {
+  margin-bottom: 1.5rem !important;
+}
+
+.form-label {
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  font-size: 0.9rem !important;
+}
+
+/* Override Option Cards */
+.biometric-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 1rem !important;
+}
+
+.form-options-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+  gap: 1rem !important;
+}
+
+.form-option-card {
+  background: linear-gradient(135deg, rgba(232, 255, 0, 0.08) 0%, rgba(0, 255, 136, 0.02) 100%) !important;
+  border: 1.5px solid rgba(232, 255, 0, 0.2) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 1.2rem !important;
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  text-align: center !important;
+}
+
+.form-option-card:hover {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 30px rgba(232, 255, 0, 0.15) !important;
+  background: linear-gradient(135deg, rgba(232, 255, 0, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%) !important;
+  transform: translateY(-3px) !important;
+}
+
+.form-option-card .icon {
+  color: var(--secondary) !important;
+  font-size: 2.2rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.form-option-card .title {
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+}
+
+.form-option-card .desc {
+  color: var(--text-muted) !important;
+  font-size: 0.75rem !important;
+}
+
+.form-option-card.selected {
+  background: linear-gradient(135deg, rgba(232, 255, 0, 0.15) 0%, rgba(0, 255, 136, 0.08) 100%) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 40px rgba(232, 255, 0, 0.25), inset 0 0 20px rgba(232, 255, 0, 0.05) !important;
+}
+
+.form-option-card.selected .icon {
+  color: var(--primary) !important;
+  transform: scale(1.15) !important;
+}
+
+.form-option-card.selected .title {
+  color: var(--primary) !important;
+}
+
+/* Override Exercise Cards */
+.exercise-card {
+  background: linear-gradient(135deg, rgba(232, 255, 0, 0.08) 0%, rgba(0, 255, 136, 0.03) 100%) !important;
+  border: 1.5px solid rgba(232, 255, 0, 0.2) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 1.3rem !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.exercise-card:hover {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 40px rgba(232, 255, 0, 0.2), var(--shadow-lg) !important;
+  transform: translateY(-5px) !important;
+  background: linear-gradient(135deg, rgba(232, 255, 0, 0.12) 0%, rgba(0, 255, 136, 0.06) 100%) !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .biometric-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .form-options-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .card {
+    padding: 1.2rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .biometric-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .form-options-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.8rem !important;
+  }
+
+  .form-option-card {
+    padding: 1rem !important;
+  }
+
+  .form-option-card .icon {
+    font-size: 1.8rem !important;
+  }
+
+  .form-option-card .title {
+    font-size: 0.9rem !important;
+  }
+
+  .card {
+    padding: 1rem !important;
+  }
+}
+

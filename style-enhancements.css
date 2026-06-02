@@ -379,3 +379,35 @@
     margin-top: 1rem;
   }
 }
+
+/* Ultra-mobile adjustments for screens < 480px */
+@media (max-width: 480px) {
+  .form-options-grid {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  
+  .form-option-card {
+    padding: 0.8rem;
+  }
+  
+  .form-option-card .icon {
+    font-size: 1.6rem;
+  }
+  
+  .form-option-card .title {
+    font-size: 0.8rem;
+  }
+  
+  .form-option-card .desc {
+    font-size: 0.6rem;
+  }
+  
+  .exercise-card {
+    padding: 1rem;
+  }
+  
+  .exercise-card-title {
+    font-size: 0.95rem;
+  }
+}
