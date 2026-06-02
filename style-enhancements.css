@@ -1,0 +1,381 @@
+/* ─────────────────────────────────────────────────────────────
+   EXERCISE CARD ENHANCEMENTS - Dashboard & Screens
+   ───────────────────────────────────────────────────────────── */
+
+.exercise-card {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.05) 0%, rgba(255, 107, 0, 0.02) 100%);
+  border: 1px solid rgba(255, 107, 0, 0.15);
+  border-radius: var(--border-radius-md);
+  padding: 1.25rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.exercise-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.3s ease;
+}
+
+.exercise-card:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.12) 0%, rgba(255, 107, 0, 0.05) 100%);
+  border-color: rgba(255, 107, 0, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 107, 0, 0.1);
+}
+
+.exercise-card:hover::before {
+  left: 100%;
+}
+
+.exercise-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.exercise-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.3rem;
+  max-width: 85%;
+}
+
+.exercise-card-muscle {
+  font-size: 0.75rem;
+  color: var(--primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: rgba(255, 107, 0, 0.15);
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.exercise-card-info {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.exercise-card-info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.exercise-card-info-item .material-symbols-outlined {
+  font-size: 1rem;
+  color: var(--primary);
+}
+
+.exercise-card-action {
+  align-self: flex-start;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.8rem;
+  background: rgba(255, 107, 0, 0.1);
+  border: 1px solid rgba(255, 107, 0, 0.2);
+  border-radius: 8px;
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exercise-card-action:hover {
+  background: rgba(255, 107, 0, 0.2);
+  border-color: var(--primary);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FORM OPTION CARDS - Criar Ficha Screen
+   ───────────────────────────────────────────────────────────── */
+
+.form-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-option-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.form-option-card .icon {
+  font-size: 2rem;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.form-option-card .title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+}
+
+.form-option-card .desc {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.form-option-card:hover {
+  background: rgba(255, 107, 0, 0.08);
+  border-color: rgba(255, 107, 0, 0.2);
+}
+
+.form-option-card.selected {
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(255, 107, 0, 0.1) 100%);
+  border-color: var(--primary);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+}
+
+.form-option-card.selected .icon {
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
+.form-option-card.selected .title {
+  color: var(--primary);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   STATS CARDS - Dashboard
+   ───────────────────────────────────────────────────────────── */
+
+.stats-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius-md);
+  transition: all 0.2s ease;
+}
+
+.stats-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-1px);
+}
+
+.stats-card-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+}
+
+.stats-card-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HISTORY TIMELINE - Histórico Screen
+   ───────────────────────────────────────────────────────────── */
+
+.history-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.history-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius-md);
+  transition: all 0.2s ease;
+}
+
+.history-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 107, 0, 0.2);
+}
+
+.history-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(255, 107, 0, 0.1) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.history-item-content {
+  flex: 1;
+}
+
+.history-item-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.history-item-date {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.history-item-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ACTIVE WORKOUT SCREEN ENHANCEMENTS
+   ───────────────────────────────────────────────────────────── */
+
+.workout-focus-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+@media (max-width: 1024px) {
+  .workout-focus-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sets-tracker-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.sets-tracker-card h4 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SPLIT TABS - Treino A, B, C
+   ───────────────────────────────────────────────────────────── */
+
+.split-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.split-tab-btn {
+  padding: 0.6rem 1.2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.split-tab-btn:hover {
+  background: rgba(255, 107, 0, 0.1);
+  border-color: rgba(255, 107, 0, 0.2);
+  color: white;
+}
+
+.split-tab-btn.active {
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(255, 107, 0, 0.1) 100%);
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ANIMATIONS
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page.active {
+  animation: slideIn 0.3s ease forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .form-options-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .workout-focus-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .sets-tracker-card {
+    position: static;
+    margin-top: 1rem;
+  }
+}

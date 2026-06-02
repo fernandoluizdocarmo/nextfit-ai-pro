@@ -1,0 +1,244 @@
+<!DOCTYPE html><html class="dark" lang="pt-br"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>TreinoX AI - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .glass-panel {
+            background: rgba(28, 28, 28, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .kinetic-gradient {
+            background: radial-gradient(circle at 50% 50%, #1c1c1c 0%, #131313 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary": "#1b343d",
+                    "tertiary-fixed-dim": "#b1cad7",
+                    "background": "#131313",
+                    "slate-800": "#1E293B",
+                    "tertiary": "#ffffff",
+                    "surface-variant": "#353534",
+                    "primary-container": "#caf300",
+                    "surface-elevation-1": "#1C1C1C",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-container-high": "#2a2a2a",
+                    "on-surface": "#e5e2e1",
+                    "tertiary-fixed": "#cde7f3",
+                    "surface-dim": "#131313",
+                    "on-primary-fixed-variant": "#3e4c00",
+                    "on-secondary-container": "#aeb9d0",
+                    "error-container": "#93000a",
+                    "surface-container-low": "#1c1b1b",
+                    "surface-container-highest": "#353534",
+                    "on-background": "#e5e2e1",
+                    "on-secondary-fixed": "#111c2d",
+                    "outline": "#8f9378",
+                    "on-tertiary-fixed-variant": "#324a54",
+                    "electric-lime": "#D4FF00",
+                    "surface-container": "#201f1f",
+                    "primary-fixed": "#caf300",
+                    "surface": "#131313",
+                    "surface-bright": "#393939",
+                    "secondary": "#bcc7de",
+                    "on-secondary-fixed-variant": "#3c475a",
+                    "slate-900": "#0F172A",
+                    "on-primary-container": "#596c00",
+                    "secondary-fixed": "#d8e3fb",
+                    "inverse-on-surface": "#313030",
+                    "secondary-container": "#3e495d",
+                    "on-primary-fixed": "#171e00",
+                    "slate-400": "#94A3B8",
+                    "outline-variant": "#444932",
+                    "on-tertiary-container": "#506873",
+                    "primary-fixed-dim": "#b0d500",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface-tint": "#b0d500",
+                    "on-error-container": "#ffdad6",
+                    "on-primary": "#2a3400",
+                    "secondary-fixed-dim": "#bcc7de",
+                    "on-surface-variant": "#c5c9ac",
+                    "error": "#ffb4ab",
+                    "on-secondary": "#263143",
+                    "on-error": "#690005",
+                    "tertiary-container": "#cde7f3",
+                    "inverse-primary": "#536600",
+                    "on-tertiary-fixed": "#041e28",
+                    "surface-elevation-2": "#252525",
+                    "primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "64px",
+                    "xs": "4px",
+                    "base": "8px",
+                    "sm": "12px",
+                    "gutter": "20px",
+                    "md": "24px",
+                    "lg": "40px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["Sora"],
+                    "label-sm": ["Sora"],
+                    "label-md": ["Sora"],
+                    "headline-md": ["Sora"],
+                    "display-lg": ["Sora"],
+                    "body-lg": ["Sora"],
+                    "body-md": ["Sora"],
+                    "headline-lg": ["Sora"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["36px", {"lineHeight": "42px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col kinetic-gradient selection:bg-electric-lime selection:text-slate-900">
+<!-- Background Decoration -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none">
+<div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-electric-lime/5 rounded-full blur-[120px]"></div>
+<div class="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-electric-lime/5 rounded-full blur-[120px]"></div>
+</div>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex items-center justify-center px-md py-xl">
+<div class="w-full max-w-[440px] z-10">
+<!-- Branding Header -->
+<div class="text-center mb-lg space-y-sm">
+<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-electric-lime italic uppercase tracking-tighter">
+                    TreinoX AI
+                </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[280px] mx-auto opacity-80">
+                    Sua evolução levada ao nível máximo pela inteligência artificial.
+                </p>
+</div>
+<!-- Login Form Glass Card -->
+<div class="glass-panel rounded-xl p-lg shadow-2xl space-y-lg border border-white/5">
+<div class="space-y-base">
+<h2 class="font-headline-md text-headline-md text-white">Bem-vindo</h2>
+<p class="font-label-md text-label-md text-on-surface-variant">Acesse seu painel de performance</p>
+</div>
+<form action="#" class="space-y-md" onsubmit="return false">
+<!-- Email Field -->
+<div class="space-y-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase ml-1" for="email">E-mail</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-electric-lime transition-colors">mail</span>
+<input class="w-full bg-surface-elevation-1 border border-slate-800 rounded-lg py-4 pl-12 pr-4 font-body-md text-body-md text-white focus:outline-none focus:border-electric-lime focus:ring-1 focus:ring-electric-lime/30 transition-all placeholder:text-surface-variant" id="email" placeholder="seu@email.com" type="email">
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-xs">
+<div class="flex justify-between items-center px-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase" for="password">Senha</label>
+<a class="font-label-sm text-label-sm text-electric-lime/70 hover:text-electric-lime transition-colors" href="#">Esqueceu?</a>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-electric-lime transition-colors">lock</span>
+<input class="w-full bg-surface-elevation-1 border border-slate-800 rounded-lg py-4 pl-12 pr-4 font-body-md text-body-md text-white focus:outline-none focus:border-electric-lime focus:ring-1 focus:ring-electric-lime/30 transition-all placeholder:text-surface-variant" id="password" placeholder="••••••••" type="password">
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-white transition-colors" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-electric-lime text-slate-900 font-label-md text-label-md py-4 rounded-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-electric-lime/20" type="submit">
+                        ENTRAR
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'wght' 600;">arrow_forward</span>
+</button>
+</form>
+<!-- Divider -->
+<div class="flex items-center gap-base">
+<div class="h-[1px] flex-grow bg-slate-800"></div>
+<span class="font-label-sm text-label-sm text-surface-variant uppercase">Ou acesse com</span>
+<div class="h-[1px] flex-grow bg-slate-800"></div>
+</div>
+<!-- Social Logins -->
+<div class="grid grid-cols-2 gap-sm">
+<button class="bg-surface-elevation-2 border border-slate-800 rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors">
+<img alt="Google" class="w-4 h-4 grayscale opacity-70 group-hover:grayscale-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC22JW2yotHH7fPiMk_Bl_R_IZQ_ZXakd_0KxdDtiWoqIBw61S245aR-LiwG_w-BivRsMxfqN8dNzNh1mYeSgwxra97LDJrZCMbt-CFO-vBOT2aajMcoZPCqLNUcLrhQpMgV1pPA8z5MTy_y-mPAvlHtUM3YzYZ97sR9ZT2By6F3O_pjz19iJcA3OLE-z1UZtuw7kb0D9IpkXMnEf-kIyck7A4QmrTu5l-ebQluaDdJ9Z9M7PToX9SvQU8Gcj4nyLl6uE8eve4MZzjR">
+<span class="font-label-sm text-label-sm text-on-surface">Google</span>
+</button>
+<button class="bg-surface-elevation-2 border border-slate-800 rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-on-surface text-[18px]">ios</span>
+<span class="font-label-sm text-label-sm text-on-surface">Apple</span>
+</button>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="text-center mt-lg">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Não tem uma conta? 
+                    <a class="text-electric-lime font-bold hover:underline underline-offset-4 decoration-2" href="#">Criar Nova Conta</a>
+</p>
+</div>
+</div>
+</main>
+<!-- Support Image Bento (Decorative Desktop Only) -->
+<div class="hidden lg:block fixed right-0 top-0 bottom-0 w-1/3 p-md">
+<div class="h-full w-full relative rounded-2xl overflow-hidden border border-white/5">
+<img alt="TreinoX AI Experience" class="absolute inset-0 w-full h-full object-cover" data-alt="A cinematic, high-contrast photograph of an athlete in a dimly lit, high-tech gym environment. The lighting is dramatic, with cool slate tones and sharp neon electric-lime accents reflecting off metallic weightlifting equipment. The atmosphere is intense and performance-driven, capturing the kinetic precision of a elite workout session in a futuristic sports facility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHDrumgoHvXp5mURAqE_aIOrxrJaueKnDskwJ6gWH7fQ-vMSXQw0I5MJ-x0d6eDLTeP3xyIrTRsZlZIDey03cdaj7Wwh0JyvoToAZDcZHvZVaGm0DP6DEDNk2pZNUNTey9t_1ZB-s0eya6hx80ir4vZgYELG7bj4g_XkNNOOjOMWNu6B4D_owte8kK0WCc84pXWpag8aGCsfrklY-2mdlsO4AzjmBbKxlvvuDOyh8dhxLWk8c3-QaE21mW6lrpdDSduZp06FlZ0JW4">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-lg left-lg right-lg space-y-base">
+<div class="inline-flex items-center gap-2 bg-electric-lime/20 backdrop-blur-md px-3 py-1 rounded-full border border-electric-lime/30">
+<span class="w-2 h-2 rounded-full bg-electric-lime animate-pulse"></span>
+<span class="text-electric-lime font-label-sm text-label-sm">LIVE AI COACHING</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-white leading-tight">Supere seus limites com precisão técnica.</h3>
+</div>
+</div>
+</div>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.parentElement.style.transform = 'translateY(-2px)';
+                input.parentElement.parentElement.style.transition = 'all 0.3s ease';
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.parentElement.style.transform = 'translateY(0px)';
+            });
+        });
+
+        // Basic password visibility toggle
+        const toggleBtn = document.querySelector('button span[content="visibility"]');
+        const passInput = document.getElementById('password');
+        if(toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                if(passInput.type === 'password') {
+                    passInput.type = 'text';
+                    toggleBtn.textContent = 'visibility_off';
+                } else {
+                    passInput.type = 'password';
+                    toggleBtn.textContent = 'visibility';
+                }
+            });
+        }
+    </script>
+</body></html>

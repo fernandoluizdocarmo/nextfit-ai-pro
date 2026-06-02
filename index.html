@@ -17,6 +17,7 @@
   <!-- Material Symbols and Typography -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-enhancements.css">
 </head>
 <body>
   <!-- AUTH OVERLAY -->
@@ -199,27 +200,57 @@
     <main class="main-content">
       
       <!-- ============================================== -->
-      <!-- 1. DASHBOARD PAGE (CURRENT WORKOUT PLAN SPLIT) -->
+      <!-- 1. DASHBOARD PAGE - FICHA ATUAL (CURRENT PLAN) -->
       <!-- ============================================== -->
       <section id="dashboard" class="page active">
+        <!-- Header with Ficha Info -->
         <div class="header-section">
           <div class="header-title" style="flex: 1;">
-            <h1 id="dashboard-ficha-title">Ficha de Hipertrofia Elite</h1>
-            <p id="dashboard-ficha-info">Foco: Hipertrofia | Nível: Intermediário</p>
+            <h1 id="dashboard-ficha-title">Ficha de Treino</h1>
+            <p id="dashboard-ficha-info">Carregando ficha...</p>
             <div id="dashboard-ficha-validity" style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;"></div>
           </div>
           <button class="btn-secondary" style="border-color: rgba(255, 59, 48, 0.4); color: #FF3B30; padding: 0.6rem 1rem; flex-shrink: 0;" onclick="deleteCurrentFicha()" id="btn-delete-ficha">
-            <span class="material-symbols-outlined">delete</span> Apagar Ficha
+            <span class="material-symbols-outlined">delete</span> Apagar
           </button>
         </div>
 
-        <!-- Treino A, B, C Toggle Selection Row -->
-        <div class="split-tabs" id="split-toggle-row">
-          <button class="split-tab-btn active" data-split="A" id="btn-split-a">Treino A</button>
-          <button class="split-tab-btn" data-split="B" id="btn-split-b">Treino B</button>
-          <button class="split-tab-btn" data-split="C" id="btn-split-c">Treino C</button>
+        <!-- Quick Stats Cards -->
+        <div class="grid-container" style="gap: 1rem; margin-bottom: 2rem;">
+          <div class="card" style="padding: 1.5rem; background: linear-gradient(135deg, rgba(212,255,0,0.1) 0%, rgba(212,255,0,0.05) 100%); border: 1px solid rgba(212,255,0,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <p class="text-secondary" style="font-size: 0.8rem;">Treinos Esta Semana</p>
+                <h3 style="font-size: 1.8rem; color: #D4FF00; margin-top: 0.25rem;" id="stats-workouts-week">0</h3>
+              </div>
+              <span class="material-symbols-outlined" style="font-size: 2.5rem; color: rgba(212,255,0,0.5);">calendar_today</span>
+            </div>
+          </div>
+          <div class="card" style="padding: 1.5rem; background: linear-gradient(135deg, rgba(100,200,255,0.1) 0%, rgba(100,200,255,0.05) 100%); border: 1px solid rgba(100,200,255,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <p class="text-secondary" style="font-size: 0.8rem;">Último Treino</p>
+                <h3 style="font-size: 1.8rem; color: #64C8FF; margin-top: 0.25rem;" id="stats-last-workout">Nunca</h3>
+              </div>
+              <span class="material-symbols-outlined" style="font-size: 2.5rem; color: rgba(100,200,255,0.5);">history</span>
+            </div>
+          </div>
         </div>
 
+        <!-- Treino A, B, C Selection Tabs -->
+        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); overflow-x: auto; padding-bottom: 1rem;">
+          <button class="split-tab-btn active" data-split="A" id="btn-split-a" style="padding: 0.6rem 1.2rem; border: none; border-bottom: 2px solid transparent; background: none; color: var(--text-secondary); cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-secondary)'">
+            <span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: middle;">fitness_center</span> Treino A
+          </button>
+          <button class="split-tab-btn" data-split="B" id="btn-split-b" style="padding: 0.6rem 1.2rem; border: none; border-bottom: 2px solid transparent; background: none; color: var(--text-secondary); cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-secondary)'">
+            <span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: middle;">fitness_center</span> Treino B
+          </button>
+          <button class="split-tab-btn" data-split="C" id="btn-split-c" style="padding: 0.6rem 1.2rem; border: none; border-bottom: 2px solid transparent; background: none; color: var(--text-secondary); cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-secondary)'">
+            <span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: middle;">fitness_center</span> Treino C
+          </button>
+        </div>
+
+        <!-- Workout Cards Grid -->
         <div class="grid-container" id="dashboard-workout-content">
           <!-- Populated dynamically via JS -->
         </div>
