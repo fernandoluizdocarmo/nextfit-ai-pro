@@ -19,27 +19,85 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- LOGIN OVERLAY -->
-  <div id="login-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #12121c; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem;">
-    <div class="card" style="max-width: 420px; width: 100%; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-      <div style="margin-bottom: 2rem;">
-        <span class="material-symbols-outlined text-primary" style="font-size: 4rem;">fitness_center</span>
-        <h1 class="font-headline-lg mt-2 mb-1" style="font-size: 2rem; color: white; margin-top: 1rem; margin-bottom: 0.5rem;">treinox.ai</h1>
-        <p class="text-secondary" style="font-size: 0.95rem; color: #94A3B8;">Faça login para acessar seu painel.</p>
+  <!-- AUTH OVERLAY -->
+  <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #12121c; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto;">
+    
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" style="max-width: 420px; width: 100%;">
+      <div class="card" style="padding: 2.5rem 2rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+        <div style="margin-bottom: 2rem;">
+          <span class="material-symbols-outlined text-primary" style="font-size: 4rem;">fitness_center</span>
+          <h1 class="font-headline-lg mt-2 mb-1" style="font-size: 2rem; color: white; margin-top: 1rem; margin-bottom: 0.5rem;">treinox.ai</h1>
+          <p class="text-secondary" style="font-size: 0.95rem; color: #94A3B8;">Bem-vindo ao seu Personal Trainer de Elite</p>
+        </div>
+        <form id="login-form" onsubmit="event.preventDefault(); performLogin();">
+          <div class="form-group" style="text-align: left;">
+            <label class="form-label" for="login-email" style="color: #94A3B8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">E-mail</label>
+            <input type="email" class="input-field" id="login-email" placeholder="seu@email.com" required style="min-height: 48px;" autocomplete="email">
+          </div>
+          <div class="form-group" style="text-align: left;">
+            <label class="form-label" for="login-password" style="color: #94A3B8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">Senha</label>
+            <input type="password" class="input-field" id="login-password" placeholder="Sua senha secreta" required style="min-height: 48px;" autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem; margin-top: 1.5rem; min-height: 48px;">
+            <span class="material-symbols-outlined">login</span> Entrar
+          </button>
+        </form>
+        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
+          <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 1rem;">Não tem conta?</p>
+          <button type="button" onclick="switchAuthScreen('register')" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.8rem;">
+            <span class="material-symbols-outlined">person_add</span> Criar Nova Conta
+          </button>
+        </div>
       </div>
-      <form id="login-form" onsubmit="event.preventDefault(); performLogin();">
-        <div class="form-group" style="text-align: left;">
-          <label class="form-label" for="login-email" style="color: #94A3B8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">E-mail</label>
-          <input type="email" class="input-field" id="login-email" placeholder="seu@email.com" required style="min-height: 48px;" autocomplete="email">
+    </div>
+
+    <!-- REGISTRATION SCREEN -->
+    <div id="register-screen" style="max-width: 420px; width: 100%; display: none;">
+      <div class="card" style="padding: 2.5rem 2rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto;">
+        <div style="margin-bottom: 2rem;">
+          <span class="material-symbols-outlined text-primary" style="font-size: 4rem;">fitness_center</span>
+          <h1 class="font-headline-lg mt-2 mb-1" style="font-size: 2rem; color: white; margin-top: 1rem; margin-bottom: 0.5rem;">treinox.ai</h1>
+          <p class="text-secondary" style="font-size: 0.95rem; color: #94A3B8;">Crie sua conta e comece a treinar</p>
         </div>
-        <div class="form-group" style="text-align: left;">
-          <label class="form-label" for="login-password" style="color: #94A3B8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">Senha</label>
-          <input type="password" class="input-field" id="login-password" placeholder="Sua senha secreta" required style="min-height: 48px;" autocomplete="current-password">
+        <form id="register-form" onsubmit="event.preventDefault(); performRegister();">
+          <div class="form-group" style="text-align: left;">
+            <label class="form-label" for="register-name">Nome Completo</label>
+            <input type="text" class="input-field" id="register-name" placeholder="Digite seu nome" required style="min-height: 48px;">
+          </div>
+          <div class="form-group" style="text-align: left;">
+            <label class="form-label" for="register-email">E-mail</label>
+            <input type="email" class="input-field" id="register-email" placeholder="seu@email.com" required style="min-height: 48px;" autocomplete="email">
+          </div>
+          <div class="form-group" style="text-align: left;">
+            <label class="form-label" for="register-password">Senha</label>
+            <input type="password" class="input-field" id="register-password" placeholder="Mínimo 6 caracteres" required style="min-height: 48px;" autocomplete="new-password">
+          </div>
+          <div class="form-group" style="text-align: left;">
+            <label class="form-label" for="register-age">Idade (anos)</label>
+            <input type="number" class="input-field" id="register-age" placeholder="Ex: 30" min="15" max="100" required style="min-height: 48px;">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group" style="text-align: left; margin-bottom: 0;">
+              <label class="form-label" for="register-weight">Peso (kg)</label>
+              <input type="number" class="input-field" id="register-weight" placeholder="Ex: 80" min="30" max="250" step="0.5" required style="min-height: 48px;">
+            </div>
+            <div class="form-group" style="text-align: left; margin-bottom: 0;">
+              <label class="form-label" for="register-height">Altura (cm)</label>
+              <input type="number" class="input-field" id="register-height" placeholder="Ex: 180" min="130" max="220" required style="min-height: 48px;">
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem; margin-top: 1.5rem; min-height: 48px;">
+            <span class="material-symbols-outlined">person_add</span> Criar Conta
+          </button>
+        </form>
+        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
+          <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 1rem;">Já tem conta?</p>
+          <button type="button" onclick="switchAuthScreen('login')" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.8rem;">
+            <span class="material-symbols-outlined">login</span> Fazer Login
+          </button>
         </div>
-        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem; margin-top: 1.5rem; min-height: 48px;">
-          <span class="material-symbols-outlined">login</span> Entrar no treinox.ai
-        </button>
-      </form>
+      </div>
     </div>
   </div>
 
@@ -92,14 +150,20 @@
             <span>Histórico</span>
           </a>
         </li>
+        <li class="nav-item" data-page="perfil" id="nav-perf-link">
+          <a onclick="navigateTo('perfil')">
+            <span class="material-symbols-outlined">person</span>
+            <span>Meu Perfil</span>
+          </a>
+        </li>
       </ul>
 
       <!-- User Card Info -->
       <div class="user-profile-card">
         <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjbMKKIWKGidqfNL9RsnBx5VfllMJPikkHZVRQfI-nLipH8u96G1RDnD1cmusGhOesuBCpokywMapihy2UpBcHsI2hvGCHTSCBg1O_p3WcT6u01f_9Z-1rhnIE8R58TFXmkVlwYggBa7aeaA4ZEZUz-QLdGuiEyRxr_yofr4wCtEmkEoDVtQuWMdwZphCTZ9toSHWkv6Ndl_nJoZdT2ClG5Kq1WXdYKpzBBrWW2jJ3l15PxeQNqMA4dBDyxCeyYeNxZNd3NkDGwls" class="user-avatar" alt="Foto Perfil">
         <div class="user-info">
-          <h4>Fernando Carmo</h4>
-          <p>Membro Pro</p>
+          <h4 id="sidebar-user-name">Usuário</h4>
+          <p id="sidebar-user-role">Membro</p>
         </div>
       </div>
       <button onclick="performLogout()" style="width: calc(100% - 2rem); margin: 0 1rem 1rem; display: flex; align-items: center; gap: 0.5rem; background: rgba(255,59,48,0.1); border: 1px solid rgba(255,59,48,0.3); color: #FF3B30; border-radius: 8px; padding: 0.6rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,59,48,0.2)'" onmouseout="this.style.background='rgba(255,59,48,0.1)'">
@@ -124,6 +188,10 @@
       <a class="mobile-nav-item" data-page="historico" onclick="navigateTo('historico')" id="mob-nav-hist">
         <span class="material-symbols-outlined">history</span>
         <span>Histórico</span>
+      </a>
+      <a class="mobile-nav-item" data-page="perfil" onclick="navigateTo('perfil')" id="mob-nav-perf">
+        <span class="material-symbols-outlined">person</span>
+        <span>Perfil</span>
       </a>
     </nav>
 
@@ -396,6 +464,109 @@
 
         <div class="history-timeline" id="history-timeline">
           <!-- Rendered dynamically from LocalStorage logs -->
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- 6. USER PROFILE & SETTINGS PAGE                 -->
+      <!-- ============================================== -->
+      <section id="perfil" class="page">
+        <div class="header-section">
+          <div class="header-title">
+            <h1>Meu Perfil</h1>
+            <p>Visualize e edite seus dados pessoais e biométricos</p>
+          </div>
+        </div>
+
+        <div class="grid-container" style="max-width: 800px;">
+          <!-- Profile Card -->
+          <div class="card col-span-12">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem;">
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjbMKKIWKGidqfNL9RsnBx5VfllMJPikkHZVRQfI-nLipH8u96G1RDnD1cmusGhOesuBCpokywMapihy2UpBcHsI2hvGCHTSCBg1O_p3WcT6u01f_9Z-1rhnIE8R58TFXmkVlwYggBa7aeaA4ZEZUz-QLdGuiEyRxr_yofr4wCtEmkEoDVtQuWMdwZphCTZ9toSHWkv6Ndl_nJoZdT2ClG5Kq1WXdYKpzBBrWW2jJ3l15PxeQNqMA4dBDyxCeyYeNxZNd3NkDGwls" alt="Avatar" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary);">
+                <div>
+                  <h2 id="profile-user-name" style="font-size: 1.4rem; margin-bottom: 0.25rem;">Carregando...</h2>
+                  <p id="profile-user-email" style="color: var(--text-secondary);">E-mail</p>
+                </div>
+              </div>
+              <button onclick="toggleEditMode()" class="btn-secondary" style="gap: 0.5rem;">
+                <span class="material-symbols-outlined">edit</span> <span id="edit-mode-btn-text">Editar Perfil</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Profile Info Section -->
+          <div class="card col-span-12">
+            <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem;">Informações Pessoais</h3>
+            
+            <div id="profile-view-mode">
+              <div class="profile-info-grid">
+                <div class="profile-info-item">
+                  <span class="label">Nome</span>
+                  <span id="profile-display-name" class="value">-</span>
+                </div>
+                <div class="profile-info-item">
+                  <span class="label">Idade</span>
+                  <span id="profile-display-age" class="value">-</span>
+                </div>
+                <div class="profile-info-item">
+                  <span class="label">Peso</span>
+                  <span id="profile-display-weight" class="value">-</span>
+                </div>
+                <div class="profile-info-item">
+                  <span class="label">Altura</span>
+                  <span id="profile-display-height" class="value">-</span>
+                </div>
+                <div class="profile-info-item">
+                  <span class="label">IMC</span>
+                  <span id="profile-display-bmi" class="value" style="color: var(--success);">-</span>
+                </div>
+                <div class="profile-info-item">
+                  <span class="label">Classificação IMC</span>
+                  <span id="profile-display-bmi-cat" class="value">-</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="profile-edit-mode" style="display: none;">
+              <form id="profile-edit-form" onsubmit="event.preventDefault(); saveProfileChanges();" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" for="edit-name">Nome Completo</label>
+                  <input type="text" class="input-field" id="edit-name" placeholder="Seu nome" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" for="edit-age">Idade (anos)</label>
+                  <input type="number" class="input-field" id="edit-age" placeholder="Ex: 30" min="15" max="100" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" for="edit-weight">Peso (kg)</label>
+                    <input type="number" class="input-field" id="edit-weight" placeholder="Ex: 80" min="30" max="250" step="0.5" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" for="edit-height">Altura (cm)</label>
+                    <input type="number" class="input-field" id="edit-height" placeholder="Ex: 180" min="130" max="220" required>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                  <button type="submit" class="btn-primary" style="flex: 1; justify-content: center;">
+                    <span class="material-symbols-outlined">check</span> Salvar Alterações
+                  </button>
+                  <button type="button" onclick="toggleEditMode()" class="btn-secondary" style="flex: 1; justify-content: center;">
+                    <span class="material-symbols-outlined">close</span> Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Security Section -->
+          <div class="card col-span-12">
+            <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem;">Segurança</h3>
+            <button onclick="changePassword()" class="btn-secondary" style="width: 100%; justify-content: flex-start; gap: 0.75rem;">
+              <span class="material-symbols-outlined">lock</span> Alterar Senha
+            </button>
+          </div>
         </div>
       </section>
 

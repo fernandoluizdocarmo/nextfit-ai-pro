@@ -1914,3 +1914,63 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0.4rem;
   }
 }
+
+/* ============================================================ */
+/* PROFILE PAGE STYLES                                          */
+/* ============================================================ */
+
+.profile-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-md);
+  transition: all 0.3s ease;
+}
+
+.profile-info-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 94, 0, 0.15);
+}
+
+.profile-info-item .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.profile-info-item .value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+#profile-display-bmi {
+  color: var(--success);
+}
+
+@media (max-width: 768px) {
+  .profile-info-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+  
+  .profile-info-item {
+    padding: 0.85rem;
+  }
+  
+  .profile-info-item .value {
+    font-size: 1.1rem;
+  }
+}

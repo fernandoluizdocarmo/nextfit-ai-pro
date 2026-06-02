@@ -413,24 +413,108 @@ const DEFAULT_FICHAS = [
 // 3. APPLICATION STATE
 let state = {
   isLoggedIn: false,
-  userName: "Fernando Carmo",
+  userEmail: "",
+  userName: "",
   userProfile: {
-    age: 30,
-    weight: 80,
-    height: 180,
-    bmi: null // Calculado automaticamente
+    age: null,
+    weight: null,
+    height: null,
+    bmi: null
   },
   currentFicha: null, // The active Ficha
   previousFicha: null, // Previous Ficha used as a non-repetition reference
   expirationAlertDismissed: false, // Flag to avoid repeatedly showing modal in a single session
   currentSplit: "A",  // "A", "B", or "C"
   history: [],        // Saved completed workouts or generated plans
-  activeWorkout: null // { split: "A", currentExerciseIndex: 0, startTime: Date.now(), logs: [] }
+  activeWorkout: null, // { split: "A", currentExerciseIndex: 0, startTime: Date.now(), logs: [] }
+  // User storage (simplified - for demo purposes)
+  users: {} // { email: { password, name, profile: { age, weight, height } } }
 };
 
 // ─── STATE LOCK: Prevent duplicate requests ────────────────────────────────────
 let isGeneratingWorkout = false;
 const MAX_HISTORY_ITEMS = 50; // Limitar histórico para não overflow localStorage
+
+// ─── AUTHENTICATION FUNCTIONS ──────────────────────────────────────────────────
+
+const switchAuthScreen = (screen) => {
+  const loginScreen = document.getElementById("login-screen");
+  const registerScreen = document.getElementById("register-screen");
+  
+  if (screen === "login") {
+    loginScreen.style.display = "block";
+    registerScreen.style.display = "none";
+  } else if (screen === "register") {
+    loginScreen.style.display = "none";
+    registerScreen.style.display = "block";
+  }
+};
+
+// Registration Logic
+const performRegister = () => {
+  const nameInput = document.getElementById("register-name");
+  const emailInput = document.getElementById("register-email");
+  const passwordInput = document.getElementById("register-password");
+  const ageInput = document.getElementById("register-age");
+  const weightInput = document.getElementById("register-weight");
+  const heightInput = document.getElementById("register-height");
+  
+  const name = (nameInput.value || "").trim();
+  const email = (emailInput.value || "").trim();
+  const password = (passwordInput.value || "").trim();
+  const age = parseInt(ageInput.value) || null;
+  const weight = parseFloat(weightInput.value) || null;
+  const height = parseInt(heightInput.value) || null;
+
+  // Validação
+  if (!name || !email || !password || !age || !weight || !height) {
+    alert("⚠️ Por favor, preencha todos os campos.");
+    return;
+  }
+
+  // Validar email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert("⚠️ E-mail inválido.");
+    return;
+  }
+
+  if (password.length < 6) {
+    alert("⚠️ Senha deve ter pelo menos 6 caracteres.");
+    return;
+  }
+
+  // Verificar se email já existe
+  if (state.users[email]) {
+    alert("⚠️ Este e-mail já está registrado.");
+    return;
+  }
+
+  // Registrar usuário
+  state.users[email] = {
+    password: password, // em produção, usar hash!
+    name: sanitizeInput(name),
+    profile: {
+      age: age,
+      weight: weight,
+      height: height,
+      bmi: calculateBMI(weight, height)
+    }
+  };
+
+  // Fazer login automaticamente
+  state.isLoggedIn = true;
+  state.userEmail = email;
+  state.userName = state.users[email].name;
+  state.userProfile = state.users[email].profile;
+  
+  saveStateToStorage();
+  document.getElementById("auth-overlay").style.display = "none";
+  
+  // Atualizar UI
+  updateUserUI();
+  console.log("✅ Conta criada com sucesso:", state.userName);
+};
 
 // Login Logic
 const performLogin = () => {
@@ -458,35 +542,174 @@ const performLogin = () => {
     return;
   }
 
-  // Login com segurança (sanitizar)
+  // Verificar credenciais
+  if (!state.users[email]) {
+    alert("⚠️ E-mail não encontrado. Crie uma conta primeiro.");
+    return;
+  }
+
+  if (state.users[email].password !== password) {
+    alert("⚠️ Senha incorreta.");
+    return;
+  }
+
+  // Login bem-sucedido
   state.isLoggedIn = true;
-  state.userName = sanitizeInput(email.split("@")[0]);
-  saveStateToStorage();
-  document.getElementById("login-overlay").style.display = "none";
+  state.userEmail = email;
+  state.userName = state.users[email].name;
+  state.userProfile = { ...state.users[email].profile };
   
-  // Update name in UI
-  document.querySelectorAll(".user-info h4").forEach(el => el.textContent = state.userName);
+  saveStateToStorage();
+  document.getElementById("auth-overlay").style.display = "none";
+  
+  // Atualizar UI
+  updateUserUI();
   
   console.log("✅ Login bem-sucedido:", state.userName);
 };
 
 const checkLoginStatus = () => {
   if (state.isLoggedIn) {
-    document.getElementById("login-overlay").style.display = "none";
-    document.querySelectorAll(".user-info h4").forEach(el => el.textContent = state.userName);
+    document.getElementById("auth-overlay").style.display = "none";
+    updateUserUI();
   } else {
-    document.getElementById("login-overlay").style.display = "flex";
+    document.getElementById("auth-overlay").style.display = "flex";
+    switchAuthScreen("login");
   }
+};
+
+const updateUserUI = () => {
+  document.getElementById("sidebar-user-name").textContent = state.userName;
+  document.getElementById("sidebar-user-role").textContent = "Membro";
+  document.querySelectorAll(".user-info h4").forEach(el => el.textContent = state.userName);
 };
 
 const performLogout = () => {
   if (confirm("Deseja sair da conta atual?")) {
     state.isLoggedIn = false;
+    state.userEmail = "";
     state.userName = "";
+    state.userProfile = { age: null, weight: null, height: null, bmi: null };
+    state.currentFicha = null;
+    state.history = [];
+    state.activeWorkout = null;
     saveStateToStorage();
     document.getElementById("login-email").value = "";
     document.getElementById("login-password").value = "";
-    document.getElementById("login-overlay").style.display = "flex";
+    document.getElementById("register-name").value = "";
+    document.getElementById("register-email").value = "";
+    document.getElementById("register-password").value = "";
+    document.getElementById("auth-overlay").style.display = "flex";
+    switchAuthScreen("login");
+  }
+};
+
+// ─── PROFILE MANAGEMENT FUNCTIONS ──────────────────────────────────────────────
+
+let isEditMode = false;
+
+const toggleEditMode = () => {
+  isEditMode = !isEditMode;
+  
+  const viewMode = document.getElementById("profile-view-mode");
+  const editMode = document.getElementById("profile-edit-mode");
+  const editBtn = document.getElementById("edit-mode-btn-text");
+  
+  if (isEditMode) {
+    viewMode.style.display = "none";
+    editMode.style.display = "block";
+    editBtn.textContent = "Cancelar";
+    
+    // Preencher formulário com dados atuais
+    document.getElementById("edit-name").value = state.userName;
+    document.getElementById("edit-age").value = state.userProfile.age || "";
+    document.getElementById("edit-weight").value = state.userProfile.weight || "";
+    document.getElementById("edit-height").value = state.userProfile.height || "";
+  } else {
+    viewMode.style.display = "block";
+    editMode.style.display = "none";
+    editBtn.textContent = "Editar Perfil";
+  }
+};
+
+const saveProfileChanges = () => {
+  const name = (document.getElementById("edit-name").value || "").trim();
+  const age = parseInt(document.getElementById("edit-age").value) || null;
+  const weight = parseFloat(document.getElementById("edit-weight").value) || null;
+  const height = parseInt(document.getElementById("edit-height").value) || null;
+  
+  if (!name || !age || !weight || !height) {
+    alert("⚠️ Por favor, preencha todos os campos.");
+    return;
+  }
+  
+  if (age < 15 || age > 100) {
+    alert("⚠️ Idade deve estar entre 15 e 100 anos.");
+    return;
+  }
+  
+  if (weight < 30 || weight > 250) {
+    alert("⚠️ Peso deve estar entre 30kg e 250kg.");
+    return;
+  }
+  
+  if (height < 130 || height > 220) {
+    alert("⚠️ Altura deve estar entre 130cm e 220cm.");
+    return;
+  }
+  
+  // Atualizar dados
+  state.userName = sanitizeInput(name);
+  state.userProfile.age = age;
+  state.userProfile.weight = weight;
+  state.userProfile.height = height;
+  state.userProfile.bmi = calculateBMI(weight, height);
+  
+  // Atualizar no users storage também
+  if (state.users[state.userEmail]) {
+    state.users[state.userEmail].name = state.userName;
+    state.users[state.userEmail].profile = { ...state.userProfile };
+  }
+  
+  saveStateToStorage();
+  updateUserUI();
+  renderProfile();
+  toggleEditMode();
+  
+  alert("✅ Perfil atualizado com sucesso!");
+};
+
+const renderProfile = () => {
+  document.getElementById("profile-user-name").textContent = state.userName;
+  document.getElementById("profile-user-email").textContent = state.userEmail;
+  
+  // View mode
+  document.getElementById("profile-display-name").textContent = state.userName || "-";
+  document.getElementById("profile-display-age").textContent = state.userProfile.age ? `${state.userProfile.age} anos` : "-";
+  document.getElementById("profile-display-weight").textContent = state.userProfile.weight ? `${state.userProfile.weight} kg` : "-";
+  document.getElementById("profile-display-height").textContent = state.userProfile.height ? `${state.userProfile.height} cm` : "-";
+  
+  const bmi = state.userProfile.bmi;
+  const bmiCat = getBMICategory(bmi);
+  document.getElementById("profile-display-bmi").textContent = bmi ? bmi.toFixed(1) : "-";
+  document.getElementById("profile-display-bmi-cat").textContent = bmiCat;
+};
+
+const changePassword = () => {
+  const newPassword = prompt("Digite sua nova senha (mínimo 6 caracteres):");
+  
+  if (newPassword === null) return; // Cancelado
+  
+  if (!newPassword || newPassword.trim().length < 6) {
+    alert("⚠️ Senha deve ter pelo menos 6 caracteres.");
+    return;
+  }
+  
+  // Atualizar senha
+  if (state.users[state.userEmail]) {
+    state.users[state.userEmail].password = newPassword.trim();
+    saveStateToStorage();
+    alert("✅ Senha alterada com sucesso!");
   }
 };
 
@@ -536,7 +759,10 @@ const loadStateFromStorage = () => {
       const parsed = JSON.parse(saved);
       // Explicitly restore each field to avoid Object.assign array-merge bugs
       state.isLoggedIn = parsed.isLoggedIn !== undefined ? parsed.isLoggedIn : false;
+      state.userEmail = parsed.userEmail || "";
       state.userName = parsed.userName || "";
+      state.userProfile = parsed.userProfile || { age: null, weight: null, height: null, bmi: null };
+      state.users = parsed.users || {};
       state.currentFicha = parsed.currentFicha || null;
       state.previousFicha = parsed.previousFicha || null;
       state.expirationAlertDismissed = parsed.expirationAlertDismissed !== undefined ? parsed.expirationAlertDismissed : false;
@@ -632,6 +858,8 @@ const navigateTo = (pageId) => {
       renderLibrary();
     } else if (pageId === "historico") {
       renderHistory();
+    } else if (pageId === "perfil") {
+      renderProfile();
     }
   }
 };
@@ -902,7 +1130,6 @@ const renderHistory = () => {
 
   container.innerHTML = html;
 };
-
 // 8. SESSION WORKOUT PLAYER ENGINE (FOCUS MODE)
 
 const startWorkoutSession = (split) => {
@@ -2164,6 +2391,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Initialize Login Status
   checkLoginStatus();
+
+  // Initialize Profile Page
+  if (state.isLoggedIn) {
+    updateUserUI();
+    renderProfile();
+  }
 
   // Navigate to Dashboard initially
   navigateTo("dashboard");
