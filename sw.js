@@ -1,7 +1,7 @@
 // sw.js - treinox.ai Service Worker
-// v5: Added Sex selector and updated validity periods + better error reporting
+// v6: Added better error reporting for Gemini API
 
-const CACHE_NAME = "treinox-ai-cache-v5";
+const CACHE_NAME = "treinox-ai-cache-v6";
 
 // All static assets that must be pre-cached on install
 const ASSETS_TO_CACHE = [
