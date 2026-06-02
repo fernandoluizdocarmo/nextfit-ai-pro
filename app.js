@@ -1,6 +1,40 @@
 // NEXTFIT PRO - APPLICATION ENGINE
 // Handles state, routing, database, timer, workout builder, and local storage persistence.
 
+// ─── UTILITY: INPUT SANITIZATION ─────────────────────────────────────────────
+const sanitizeInput = (str) => {
+  if (typeof str !== 'string') return '';
+  const div = document.createElement('div');
+  div.textContent = str; // textContent escapa HTML automaticamente
+  return div.innerHTML;
+};
+
+// ─── UTILITY: SAFE JSON STORAGE ────────────────────────────────────────────── 
+const safeStringify = (obj) => {
+  try {
+    return JSON.stringify(obj);
+  } catch (e) {
+    console.error('Erro ao serializar objeto para storage:', e);
+    return null;
+  }
+};
+
+// ─── UTILITY: CALCULATE BMI ────────────────────────────────────────────────────
+const calculateBMI = (weightKg, heightCm) => {
+  if (!weightKg || !heightCm || weightKg <= 0 || heightCm <= 0) return null;
+  const heightM = heightCm / 100;
+  return Math.round((weightKg / (heightM * heightM)) * 10) / 10;
+};
+
+// ─── UTILITY: GET BMI CATEGORY ────────────────────────────────────────────────
+const getBMICategory = (bmi) => {
+  if (!bmi) return "desconhecida";
+  if (bmi < 18.5) return "Abaixo do peso";
+  if (bmi < 25) return "Peso normal";
+  if (bmi < 30) return "Sobrepeso";
+  return "Obesidade";
+};
+
 // 1. EXERCISE DATABASE (WITH RELIABLE YOUTUBE IFRAMES AND STEP-BY-STEP INSTRUCTIONS)
 const EXERCISES_DB = {
   "supino_reto": {
@@ -380,6 +414,12 @@ const DEFAULT_FICHAS = [
 let state = {
   isLoggedIn: false,
   userName: "Fernando Carmo",
+  userProfile: {
+    age: 30,
+    weight: 80,
+    height: 180,
+    bmi: null // Calculado automaticamente
+  },
   currentFicha: null, // The active Ficha
   previousFicha: null, // Previous Ficha used as a non-repetition reference
   expirationAlertDismissed: false, // Flag to avoid repeatedly showing modal in a single session
@@ -388,18 +428,46 @@ let state = {
   activeWorkout: null // { split: "A", currentExerciseIndex: 0, startTime: Date.now(), logs: [] }
 };
 
+// ─── STATE LOCK: Prevent duplicate requests ────────────────────────────────────
+let isGeneratingWorkout = false;
+const MAX_HISTORY_ITEMS = 50; // Limitar histórico para não overflow localStorage
+
 // Login Logic
 const performLogin = () => {
-  const email = document.getElementById("login-email").value;
-  if(email) {
-    state.isLoggedIn = true;
-    state.userName = email.split("@")[0];
-    saveStateToStorage();
-    document.getElementById("login-overlay").style.display = "none";
-    
-    // Update name in UI
-    document.querySelectorAll(".user-info h4").forEach(el => el.textContent = state.userName);
+  const emailInput = document.getElementById("login-email");
+  const passwordInput = document.getElementById("login-password");
+  
+  const email = (emailInput.value || "").trim();
+  const password = (passwordInput.value || "").trim();
+
+  // Validação básica
+  if (!email || !password) {
+    alert("⚠️ Por favor, preencha e-mail e senha.");
+    return;
   }
+
+  // Validar formato de email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert("⚠️ E-mail inválido.");
+    return;
+  }
+
+  if (password.length < 3) {
+    alert("⚠️ Senha deve ter pelo menos 3 caracteres.");
+    return;
+  }
+
+  // Login com segurança (sanitizar)
+  state.isLoggedIn = true;
+  state.userName = sanitizeInput(email.split("@")[0]);
+  saveStateToStorage();
+  document.getElementById("login-overlay").style.display = "none";
+  
+  // Update name in UI
+  document.querySelectorAll(".user-info h4").forEach(el => el.textContent = state.userName);
+  
+  console.log("✅ Login bem-sucedido:", state.userName);
 };
 
 const checkLoginStatus = () => {
@@ -492,7 +560,38 @@ const loadStateFromStorage = () => {
 };
 
 const saveStateToStorage = () => {
-  localStorage.setItem("treinox_ai_state", JSON.stringify(state));
+  try {
+    // Limitar histórico aos últimos MAX_HISTORY_ITEMS para evitar overflow
+    const stateToBeSaved = {
+      ...state,
+      history: state.history.slice(-MAX_HISTORY_ITEMS)
+    };
+
+    const serialized = safeStringify(stateToBeSaved);
+    if (!serialized) {
+      console.error("Falha ao serializar state para storage");
+      return;
+    }
+
+    localStorage.setItem("treinox_ai_state", serialized);
+    console.log(`💾 State salvo (${state.history.length} treinos no histórico)`);
+  } catch (e) {
+    if (e.name === 'QuotaExceededError') {
+      console.warn("⚠️ localStorage cheio! Removendo histórico antigo...");
+      state.history = state.history.slice(-10); // Manter apenas últimos 10
+      try {
+        localStorage.setItem("treinox_ai_state", safeStringify({
+          ...state,
+          history: state.history
+        }));
+        console.log("✅ Storage compactado");
+      } catch (e2) {
+        console.error("Erro crítico ao salvar state:", e2);
+      }
+    } else {
+      console.error("Erro ao salvar state para localStorage:", e);
+    }
+  }
 };
 
 // 6. ROUTER (TABS NAVIGATION)
@@ -1408,7 +1507,7 @@ const AVAILABLE_EXERCISES = {
   bicicleta_ergometrica: "Cardio - Bicicleta Ergométrica (Cardio)"
 };
 
-const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis) => {
+const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis, age, weight, height, bmi) => {
   const exerciseList = Object.entries(AVAILABLE_EXERCISES)
     .map(([id, desc]) => `- ${id}: ${desc}`)
     .join("\n");
@@ -1418,6 +1517,61 @@ const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis) =>
     : "treinoA, treinoB e treinoC (3 treinos no esquema A/B/C)";
 
   const isFemale = sex && sex.toLowerCase().includes("feminino");
+  const bmiCategory = getBMICategory(bmi);
+  
+  // Age-specific guidance
+  let ageSpecificGuidance = "";
+  if (age < 25) {
+    ageSpecificGuidance = `\nADAptações para JOVENS (<25 anos):
+- Recuperação rápida: pode fazer volume maior
+- Foco em técnica e aprendizagem motora
+- Permite mais volume de treino
+- Atenção: articulações ainda em desenvolvimento, cuidado com pesos muito pesados sem técnica`;
+  } else if (age >= 25 && age < 40) {
+    ageSpecificGuidance = `\nADAPTAÇÕES para ADULTOS (25-40 anos):
+- Auge da performance atlética
+- Pode combinar força, volume e intensidade
+- Recuperação ainda ótima
+- Aproveitar para ganhos significativos`;
+  } else if (age >= 40) {
+    ageSpecificGuidance = `\nADAPTAÇÕES para ADULTOS 40+ ANOS:
+- Recuperação mais lenta: mais dias de descanso entre treinos
+- Mobilidade é essencial: adicionar alongamento pré/pós treino
+- Prevenção de lesão: técnica perfeita > peso pesado
+- Treinos mais curtos mas eficientes (~45-50 min ideal)
+- Evitar supino pesado todas as semanas
+- Focar em amplitude de movimento completa`;
+  }
+  
+  // Body composition guidance
+  let bodyCompositionGuidance = "";
+  if (bmiCategory === "Abaixo do peso") {
+    bodyCompositionGuidance = `\nDados Físicos: IMC ${bmi} (${bmiCategory})
+- Prioridade: GANHO DE PESO com foco em massa muscular
+- Aumento calórico + treino de força (hipertrofia)
+- Mais séries (4-5) por exercício
+- Mais dias de treino se recuperação permitir
+- Não priorize cardio intenso`;
+  } else if (bmiCategory === "Peso normal") {
+    bodyCompositionGuidance = `\nDados Físicos: IMC ${bmi} (${bmiCategory})
+- Peso saudável: pode focar totalmente no objetivo
+- Balancear força/hipertrofia com mobilidade
+- 3 séries por exercício é ideal`;
+  } else if (bmiCategory === "Sobrepeso") {
+    bodyCompositionGuidance = `\nDados Físicos: IMC ${bmi} (${bmiCategory})
+- Prioridade: Perda de gordura com preservação muscular
+- Incluir cardio leve entre treinos (não interferir na recuperação)
+- Manter força com pesos moderados
+- Séries um pouco menores (2-3) para maior volume total
+- Repouso mais curto entre séries (30-45s)`;
+  } else {
+    bodyCompositionGuidance = `\nDados Físicos: IMC ${bmi} (${bmiCategory})
+- Prioridade: Emagrecimento com cuidado articular
+- Treinos mais leves em intensidade, mais em volume
+- Cardio fundamental mas não excessivo
+- Começar com pesos menores para aprender técnica
+- Focar em movimento correto acima de tudo`;
+  }
   
   const sexSpecificGuidance = isFemale 
     ? `
@@ -1445,6 +1599,12 @@ ADAPTAÇÕES ESPECÍFICAS PARA HOMENS:
 
 Nome: ${name}
 Sexo: ${sex}
+DADOS BIOMÉTRICOS:
+- Idade: ${age} anos
+- Peso: ${weight} kg
+- Altura: ${height} cm
+- IMC: ${bmi} (${bmiCategory})
+
 Objetivo: ${objective}
 Nível: ${level}
 Dias de treino por semana: ${days}
@@ -1455,6 +1615,9 @@ IMPORTANTE: Use APENAS os IDs exatos da lista abaixo. Não invente exercícios n
 
 EXERCÍCIOS DISPONÍVEIS:
 ${exerciseList}
+
+${ageSpecificGuidance}
+${bodyCompositionGuidance}
 ${sexSpecificGuidance}
 
 RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum texto antes ou depois do JSON):
@@ -1466,7 +1629,7 @@ RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum 
   "time": ${time},
   "emphasis": "${emphasis || ""}",
   "aiGenerated": true,
-  "aiRationale": "Breve explicação (1-2 frases) de por que você montou essa ficha assim",
+  "aiRationale": "Breve explicação (1-2 frases) de por que você montou essa ficha assim considerando idade (${age}), peso (${weight}kg), altura (${height}cm) e objetivo",
   "treinoA": {
     "name": "Treino A - [grupos musculares]",
     "exercises": [
@@ -1490,11 +1653,13 @@ RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum 
 Regras:
 - Para cada treino, inclua entre 4 e 6 exercícios
 - Distribua os grupos musculares seguindo as prioridades acima para ${sex}
-- Sugira cargas iniciais (weight em kg) realistas para nível ${level}
+- Sugira cargas iniciais (weight em kg) REALISTAS para nível ${level}, idade ${age}, peso ${weight}kg e categoria de peso ${bmiCategory}
 - Para cardio (esteira, bicicleta), use setsCount: 1 e reps em formato texto como "20 minutos"
 - Para prancha/abdominal, use reps em texto como "40 segundos"
 - Se days <= 2, retorne apenas treinoA e treinoB (deixe treinoC igual ao treinoB)
-- Adapte a intensidade ao tempo disponível por sessão (${time} minutos)`;
+- Adapte a intensidade ao tempo disponível por sessão (${time} minutos)
+- MUITO IMPORTANTE: Considere a idade e recuperação (quanto mais velho, menos volume)
+- MUITO IMPORTANTE: Adapt cargas de acordo com IMC (sobrepeso = começar mais leve, abaixo do peso = pode focar em força)`;
 };
 
 const showAILoadingOverlay = () => {
@@ -1552,26 +1717,58 @@ const updateAILoadingStatus = (msg) => {
 };
 
 const generateIntelligentWorkout = async () => {
-  const name = document.getElementById("user-name-input").value.trim() || "Atleta treinox.ai";
+  // Prevenir requisições duplicadas
+  if (isGeneratingWorkout) {
+    alert("⏳ Já está gerando uma ficha. Aguarde...");
+    return;
+  }
+
+  const nameInput = document.getElementById("user-name-input").value.trim();
+  const name = sanitizeInput(nameInput) || "Atleta treinox.ai";
   const sex = document.getElementById("form-sex").value || "Masculino";
   const objective = document.getElementById("form-objective").value;
   const level = document.getElementById("form-level").value;
   const days = parseInt(document.getElementById("form-days").value) || 3;
   const time = parseInt(document.getElementById("form-time").value) || 60;
-  const emphasis = document.getElementById("form-emphasis").value.trim();
+  const emphasis = sanitizeInput(document.getElementById("form-emphasis").value.trim());
   const validityWeeks = parseInt(document.getElementById("form-validity").value) || 4;
+  
+  // Capture user biometric data
+  const age = parseInt(document.getElementById("form-age").value) || 30;
+  const weight = parseFloat(document.getElementById("form-weight").value) || 80;
+  const height = parseInt(document.getElementById("form-height").value) || 180;
+  
+  // Validate biometric data
+  if (age < 15 || age > 100 || weight < 30 || weight > 250 || height < 130 || height > 220) {
+    alert("⚠️ Verifique seus dados biométricos (idade, peso, altura).");
+    return;
+  }
+  
+  // Save to user profile in state
+  const bmi = calculateBMI(weight, height);
+  state.userProfile = { age, weight, height, bmi };
+  saveStateToStorage();
 
+  // Validar inputs obrigatórios
+  if (!objective || !level) {
+    alert("⚠️ Por favor, selecione Objetivo e Nível.");
+    return;
+  }
+
+  isGeneratingWorkout = true;
+  
   // Try AI generation first
   showAILoadingOverlay();
 
   try {
     updateAILoadingStatus("Conectando ao Gemini AI e analisando seu perfil...");
-    const prompt = buildGeminiPrompt(name, sex, objective, level, days, time, emphasis);
+    const prompt = buildGeminiPrompt(name, sex, objective, level, days, time, emphasis, age, weight, height, bmi);
 
     const response = await fetch("/api/generate-workout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt })
+      body: JSON.stringify({ prompt }),
+      timeout: 35000 // 35 segundos
     });
 
     if (!response.ok) {
@@ -1698,6 +1895,8 @@ const generateIntelligentWorkout = async () => {
       validityWeeks,
       fallbackReason: aiError.message
     });
+  } finally {
+    isGeneratingWorkout = false;
   }
 };
 
@@ -1978,4 +2177,24 @@ window.addEventListener("DOMContentLoaded", () => {
       .then((reg) => console.log("[PWA] Service Worker registered:", reg.scope))
       .catch((err) => console.error("[PWA] Service Worker registration failed:", err));
   }
+
+  // ─── OFFLINE/ONLINE MONITORING ────────────────────────────────────────────
+  const updateOnlineStatus = () => {
+    const isOnline = navigator.onLine;
+    const statusEl = document.body;
+    
+    if (!isOnline) {
+      console.warn("⚠️ Sem conexão com a internet - modo offline ativado");
+      statusEl.setAttribute("data-offline", "true");
+    } else {
+      console.log("✅ Conexão restaurada");
+      statusEl.removeAttribute("data-offline");
+    }
+  };
+
+  window.addEventListener("online", updateOnlineStatus);
+  window.addEventListener("offline", updateOnlineStatus);
+  
+  // Check initial status
+  updateOnlineStatus();
 });

@@ -14,6 +14,9 @@ const ASSETS_TO_CACHE = [
   "/icon-512.png"
 ];
 
+// Fallback responses for missing assets
+const FALLBACK_CACHE = "fallback-cache-v1";
+
 // ─── Install: pre-cache all static assets ─────────────────────────────────────
 self.addEventListener("install", (event) => {
   event.waitUntil(

@@ -13,6 +13,14 @@ const PORT = process.env.PORT || 3000;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const GROQ_MODEL = "llama-3.1-8b-instant";
 const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+const API_TIMEOUT = 30000; // 30 segundos
+
+// Validação de configuração
+if (!GROQ_API_KEY) {
+  console.warn("⚠️  AVISO: Variável de ambiente GROQ_API_KEY não configurada.");
+  console.warn("   A geração de fichas com IA não funcionará.");
+  console.warn("   Configure com: export GROQ_API_KEY=seu_valor_aqui");
+}
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(express.json({ limit: "2mb" }));
@@ -28,23 +36,24 @@ app.get("/ping", (req, res) => {
 // ─── API Endpoint: Generate Workout via Groq ────────────────────────────────
 app.post("/api/generate-workout", async (req, res) => {
   if (!GROQ_API_KEY) {
-    return res.status(500).json({ error: "API Key do Groq não está configurada no servidor (Variável de ambiente GROQ_API_KEY ausente)." });
+    console.error("[API] Tentativa de usar IA sem GROQ_API_KEY configurada");
+    return res.status(503).json({ 
+      error: "Serviço de IA temporariamente indisponível. Use o gerador local." 
+    });
   }
 
   const { prompt } = req.body;
 
-  const keyToLog = GROQ_API_KEY 
-    ? `${GROQ_API_KEY.slice(0, 6)}...${GROQ_API_KEY.slice(-4)}`
-    : "undefined";
-  console.log(`[API Request] Using Groq key: ${keyToLog}`);
-
-  if (!prompt) {
-    return res.status(400).json({ error: "Prompt é obrigatório." });
+  if (!prompt || typeof prompt !== 'string' || prompt.length === 0) {
+    return res.status(400).json({ error: "Prompt é obrigatório e deve ser texto válido." });
   }
 
-  if (!GROQ_API_KEY) {
-    return res.status(500).json({ error: "Chave da API Groq não configurada no servidor." });
+  if (prompt.length > 5000) {
+    return res.status(400).json({ error: "Prompt muito longo (máximo 5000 caracteres)." });
   }
+
+  const keyToLog = `${GROQ_API_KEY.slice(0, 6)}...${GROQ_API_KEY.slice(-4)}`;
+  console.log(`[API Request] Groq key ativo: ${keyToLog}`);
 
   try {
     const payload = JSON.stringify({
@@ -70,16 +79,32 @@ app.post("/api/generate-workout", async (req, res) => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${GROQ_API_KEY}`,
           "Content-Length": Buffer.byteLength(payload)
-        }
+        },
+        timeout: API_TIMEOUT
       };
 
       const apiReq = https.request(options, (apiRes) => {
         let data = "";
+        
+        // Verificar status code
+        if (apiRes.statusCode !== 200) {
+          reject(new Error(`Groq API retornou status ${apiRes.statusCode}`));
+          return;
+        }
+
         apiRes.on("data", (chunk) => { data += chunk; });
         apiRes.on("end", () => resolve(data));
       });
 
-      apiReq.on("error", reject);
+      apiReq.on("error", (err) => {
+        reject(new Error(`Erro na conexão com Groq: ${err.message}`));
+      });
+
+      apiReq.on("timeout", () => {
+        apiReq.destroy();
+        reject(new Error("Timeout ao conectar com Groq (30s)"));
+      });
+
       apiReq.write(payload);
       apiReq.end();
     });
@@ -98,6 +123,7 @@ app.post("/api/generate-workout", async (req, res) => {
 
   } catch (err) {
     console.error("Erro ao chamar a API Groq:", err.message);
+    res.status(503).json({ error: "Erro ao gerar ficha com IA. Tente o modo local." });
     res.status(500).json({ error: "Erro interno ao chamar a IA. " + err.message });
   }
 });
