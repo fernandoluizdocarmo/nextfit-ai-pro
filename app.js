@@ -1450,6 +1450,30 @@ const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis) =>
     ? "treinoA e treinoB (somente 2 treinos)"
     : "treinoA, treinoB e treinoC (3 treinos no esquema A/B/C)";
 
+  const isFemale = sex && sex.toLowerCase().includes("feminino");
+  
+  const sexSpecificGuidance = isFemale 
+    ? `
+ADAPTAÇÕES ESPECÍFICAS PARA MULHERES:
+- PRIORIDADE 1: Glúteos (agachamento, leg press, stiff, rosca búlgara)
+- PRIORIDADE 2: Pernas/Coxas (leg press, hack squat, extensora, flexora)
+- PRIORIDADE 3: Costas e Postura (remadas, lat pulldown, puxada)
+- PRIORIDADE 4: Abdomen e Core (prancha, abdominal máquina, cable crunch)
+- REDUZIR: Foco em bíceps/tríceps - usar apenas complementares
+- INTENSIDADE: Mais volume (3-4 séries) com reps moderadas (10-15) do que peso muito pesado
+- SEGURANÇA: Priorizar exercícios com controle de movimento e boa forma biomecânica
+- CARGA: Mais conservador que homens com mesmo nível (reduzir ~10-15% das cargas iniciais)
+    `
+    : `
+ADAPTAÇÕES ESPECÍFICAS PARA HOMENS:
+- PRIORIDADE 1: Peito, Costa e Ombros (supino, desenvolvimento, remadas, puxada)
+- PRIORIDADE 2: Braços (rosca direta, rosca martelo, tríceps, cable crunch)
+- PRIORIDADE 3: Pernas (agachamento, leg press, stiff)
+- INTENSIDADE: Combinar força (6-8 reps) com volume (8-12 reps)
+- OBJETIVO: Ganho de força e hipertrofia
+- CARGA: Trabalhar com cargas mais desafiadoras para estimular ganho muscular
+    `;
+
   return `Você é um personal trainer especialista em musculação. Crie uma ficha de treino personalizada completa em JSON para o seguinte aluno:
 
 Nome: ${name}
@@ -1464,6 +1488,7 @@ IMPORTANTE: Use APENAS os IDs exatos da lista abaixo. Não invente exercícios n
 
 EXERCÍCIOS DISPONÍVEIS:
 ${exerciseList}
+${sexSpecificGuidance}
 
 RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum texto antes ou depois do JSON):
 {
@@ -1497,7 +1522,7 @@ RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum 
 
 Regras:
 - Para cada treino, inclua entre 4 e 6 exercícios
-- Distribua os grupos musculares de forma inteligente para o objetivo de ${objective}
+- Distribua os grupos musculares seguindo as prioridades acima para ${sex}
 - Sugira cargas iniciais (weight em kg) realistas para nível ${level}
 - Para cardio (esteira, bicicleta), use setsCount: 1 e reps em formato texto como "20 minutos"
 - Para prancha/abdominal, use reps em texto como "40 segundos"
