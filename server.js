@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 // ─── Groq API Key (via env var or hardcoded fallback for local dev) ─────────
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
-const GROQ_MODEL = "llama-3.1-70b-versatile";
+const GROQ_MODEL = "mixtral-8x7b-32768";
 const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
