@@ -1,7 +1,7 @@
 // sw.js - treinox.ai Service Worker
-// v3: Robust offline support — PWA works even when Render server is sleeping.
+// v4: Added Sex selector and updated validity periods
 
-const CACHE_NAME = "treinox-ai-cache-v3";
+const CACHE_NAME = "treinox-ai-cache-v4";
 
 // All static assets that must be pre-cached on install
 const ASSETS_TO_CACHE = [
