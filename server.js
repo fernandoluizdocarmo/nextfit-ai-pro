@@ -38,11 +38,43 @@ app.post("/api/generate-workout", async (req, res) => {
   if (!GROQ_API_KEY) {
     console.error("[API] Tentativa de usar IA sem GROQ_API_KEY configurada");
     return res.status(503).json({ 
-      error: "Serviço de IA temporariamente indisponível. Use o gerador local." 
+      error: "Serviço de IA temporariamente indisponível. Use o gerador local.",
+      useLocal: true
     });
   }
 
-  const { prompt } = req.body;
+  // Accept either prompt or workout parameters
+  let prompt = req.body.prompt;
+  
+  if (!prompt && req.body.objective) {
+    // Build prompt from parameters
+    const { name, objective, level, days, age, weight, height, bmi } = req.body;
+    prompt = `Você é um personal trainer especializado. Crie uma ficha de treino para:
+
+Nome: ${name}
+Objetivo: ${objective}
+Nível: ${level}
+Frequência: ${days}x por semana
+Idade: ${age} anos
+Peso: ${weight}kg
+Altura: ${height}cm
+IMC: ${bmi}
+
+Formato esperado:
+Retorne APENAS um objeto JSON válido com a estrutura:
+{
+  "id": "ficha_${Date.now()}",
+  "name": "Nome da Ficha",
+  "treinoA": { "name": "...", "exercises": [{ "id": "...", "setsCount": 3, "reps": "10-12", "weight": 20 }] },
+  "treinoB": { "name": "...", "exercises": [...] },
+  "treinoC": { "name": "...", "exercises": [...] },
+  "objective": "${objective}",
+  "level": "${level}",
+  "days": ${days}
+}
+
+Use IDs reais de exercícios do nosso banco: supino_reto, agachamento_barra, leg_press, puxada_frente, etc.`;
+  }
 
   if (!prompt || typeof prompt !== 'string' || prompt.length === 0) {
     return res.status(400).json({ error: "Prompt é obrigatório e deve ser texto válido." });
@@ -65,8 +97,7 @@ app.post("/api/generate-workout", async (req, res) => {
         }
       ],
       temperature: 0.7,
-      max_tokens: 2048,
-      response_format: { type: "json_object" }
+      max_tokens: 2048
     });
 
     const responseText = await new Promise((resolve, reject) => {
@@ -119,12 +150,32 @@ app.post("/api/generate-workout", async (req, res) => {
       return res.status(502).json({ error: "Resposta inválida da API Groq.", raw: parsed });
     }
 
-    res.json({ text });
+    // Try to parse the text as JSON (it should contain the workout)
+    let workout;
+    try {
+      // Extract JSON from the response (it might be wrapped in markdown)
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        workout = JSON.parse(jsonMatch[0]);
+      } else {
+        workout = JSON.parse(text);
+      }
+    } catch (parseErr) {
+      console.error("Erro ao fazer parse da resposta:", text);
+      // Return the raw text if it's not valid JSON
+      workout = { rawContent: text };
+    }
+
+    console.log("[API Response] Ficha gerada com sucesso!");
+    res.json({ workout, rationale: "Ficha gerada por IA baseada em seus dados biométricos e objetivos." });
 
   } catch (err) {
     console.error("Erro ao chamar a API Groq:", err.message);
-    res.status(503).json({ error: "Erro ao gerar ficha com IA. Tente o modo local." });
-    res.status(500).json({ error: "Erro interno ao chamar a IA. " + err.message });
+    res.status(503).json({ 
+      error: "Erro ao gerar ficha com IA. Tente o modo local.",
+      useLocal: true,
+      details: err.message 
+    });
   }
 });
 

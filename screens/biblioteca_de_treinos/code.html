@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error": "#ffb4ab",
+                      "on-secondary-fixed-variant": "#004493",
+                      "surface-dim": "#131313",
+                      "on-primary-fixed": "#191e00",
+                      "on-primary": "#2c3400",
+                      "on-secondary": "#002e69",
+                      "on-secondary-fixed": "#001a41",
+                      "inverse-on-surface": "#313030",
+                      "tertiary-container": "#ffdad5",
+                      "inverse-surface": "#e5e2e1",
+                      "on-primary-fixed-variant": "#414c00",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-tertiary-fixed-variant": "#930005",
+                      "outline-variant": "#454932",
+                      "surface-bright": "#393939",
+                      "tertiary": "#ffffff",
+                      "inverse-primary": "#576500",
+                      "on-tertiary": "#690003",
+                      "on-background": "#e5e2e1",
+                      "on-surface-variant": "#c6c9ab",
+                      "on-surface": "#e5e2e1",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "on-error-container": "#ffdad6",
+                      "primary-fixed-dim": "#b8d300",
+                      "on-tertiary-container": "#ca0a0f",
+                      "error-container": "#93000a",
+                      "on-secondary-container": "#00285c",
+                      "surface-container-low": "#1c1b1b",
+                      "surface-container-high": "#2a2a2a",
+                      "secondary-fixed": "#d8e2ff",
+                      "primary-container": "#d2f000",
+                      "tertiary-fixed-dim": "#ffb4aa",
+                      "background": "#131313",
+                      "on-tertiary-fixed": "#410001",
+                      "surface-container-highest": "#353534",
+                      "secondary-container": "#4b8eff",
+                      "primary": "#ffffff",
+                      "surface-container": "#201f1f",
+                      "on-error": "#690005",
+                      "surface": "#131313",
+                      "secondary": "#adc6ff",
+                      "surface-tint": "#b8d300",
+                      "primary-fixed": "#d2f000",
+                      "on-primary-container": "#5d6b00",
+                      "outline": "#909378",
+                      "surface-variant": "#353534",
+                      "tertiary-fixed": "#ffdad5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "8px",
+                      "sm": "16px",
+                      "xl": "64px",
+                      "margin-desktop": "48px",
+                      "lg": "40px",
+                      "gutter": "16px",
+                      "margin-mobile": "20px",
+                      "md": "24px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Inter"],
+                      "label-caps": ["Space Mono"],
+                      "headline-lg-mobile": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "stats-xl": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "800"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "900"}],
+                      "stats-xl": ["64px", {"lineHeight": "1.0", "fontWeight": "900"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .neon-glow:focus-within {
+            box-shadow: 0 0 15px rgba(210, 240, 0, 0.3);
+        }
+        .card-gradient {
+            background: linear-gradient(180deg, rgba(18,18,18,0) 0%, rgba(18,18,18,0.9) 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top AppBar Shell -->
+<header class="bg-surface dark:bg-surface border-b border-outline-variant docked full-width top-0 z-50 fixed">
+<div class="flex justify-between items-center w-full px-margin-mobile py-xs">
+<div class="flex items-center gap-sm">
+<img alt="user profile image" class="w-10 h-10 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyLZ6SrIEbjXCtMJN8iP7aMHbNbAIFGcYiTO5ms-pTFSnCsUjnsOW6U-XaLn3CCL2OV8uUNhBbP1dD3MokOJkmamIOqSx6CzFvOU-T_Uj6d7qKGmYDJ-eGRzOtObhzLFrWMmFYFzlO76pa-BugS2Sn2NocE6ubfLqOkAQpVbCYR3mrOUwGoaXiFL7WPsZTdaXrKxOGLm8qow23IBgfmrDmfSOJIP5giOSamLR60hu-FEkbTscgG6EXUghcqL2XpDSaTNz4x2prTRbF"/>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile italic font-black text-primary dark:text-primary tracking-tighter">FORGE</h1>
+</div>
+<button class="text-primary dark:text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-[72px] pb-[90px] min-h-screen">
+<!-- Search & Filter Section -->
+<section class="px-margin-mobile pt-md space-y-md">
+<div class="relative neon-glow transition-all duration-300">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:border-primary-fixed rounded-lg pl-xl pr-sm py-sm text-on-surface font-label-caps placeholder:text-on-surface-variant/50 focus:ring-0 transition-all" placeholder="FIND YOUR FIRE..." type="text"/>
+</div>
+<div class="flex gap-xs overflow-x-auto scrollbar-hide -mx-margin-mobile px-margin-mobile">
+<button class="flex-shrink-0 px-md py-xs rounded-full bg-primary-fixed text-on-primary-fixed font-label-caps border border-primary-fixed active:scale-95 transition-transform">ALL</button>
+<button class="flex-shrink-0 px-md py-xs rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-caps hover:border-primary-fixed active:scale-95 transition-transform">STRENGTH</button>
+<button class="flex-shrink-0 px-md py-xs rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-caps hover:border-primary-fixed active:scale-95 transition-transform">CARDIO</button>
+<button class="flex-shrink-0 px-md py-xs rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-caps hover:border-primary-fixed active:scale-95 transition-transform">YOGA</button>
+<button class="flex-shrink-0 px-md py-xs rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-caps hover:border-primary-fixed active:scale-95 transition-transform">HIIT</button>
+</div>
+</section>
+<!-- Workout Library -->
+<section class="px-margin-mobile mt-lg space-y-md">
+<h2 class="font-headline-md text-headline-md text-primary tracking-tight">EXPLORE WORKOUTS</h2>
+<!-- Workout Card 1 -->
+<div class="group relative h-64 rounded-xl overflow-hidden bg-surface-container-high border border-outline-variant hover:border-primary-fixed transition-colors cursor-pointer">
+<img class="absolute inset-0 w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A focused athlete performing a heavy barbell squat in a gritty, high-contrast dark gym setting. The scene is illuminated by dramatic neon lime side-lighting that catches the muscle definition and steam in the air. The overall mood is intense, authoritative, and cinematic, reflecting a high-performance fitness brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo7WUo7hH2wJpDTvR4b9aZJ3Bzw4Aei1yZKzcMBq28XwZ3xBI4Jw-11hSi02Cb03MXvZ1RjiSB0S4QR32d4Iq_e1UW5BEcFKgRZJG7WkBX8sRWfxLR-i0-rrnQHWM4sJGvjUgY6wPXKEYtzMofuMDx90vguG5J5P6HJsgVltGT5237JpTcmziGYPCRgigqaeqeYl4P1OGUZQ74XNf5uhJ8XTjuoordN188nsu3C3mGkdsP4yX3GLnLLH7ayTF7MqE46VH2IJl73gOy"/>
+<div class="absolute inset-0 card-gradient"></div>
+<div class="absolute bottom-0 left-0 p-sm w-full flex flex-col gap-base">
+<div class="flex justify-between items-end">
+<div>
+<span class="inline-block px-xs py-base bg-secondary-container/20 text-secondary-fixed text-[10px] font-label-caps rounded mb-xs border border-secondary-fixed/30">ADVANCED</span>
+<h3 class="font-headline-md text-headline-md text-white leading-none">FULL BODY POWER</h3>
+</div>
+<div class="flex items-center gap-base text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span class="font-label-caps text-[10px]">30 MIN</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Workout Card 2 -->
+<div class="group relative h-64 rounded-xl overflow-hidden bg-surface-container-high border border-outline-variant hover:border-primary-fixed transition-colors cursor-pointer">
+<img class="absolute inset-0 w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An athlete in mid-motion during a high-intensity battle rope workout within a minimalist dark industrial gym. Bright neon lime light strips on the floor provide a high-contrast glow against the deep black surroundings. The image captures motion blur of the ropes to convey energy building and momentum in a modern fitness environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbI6VdqqZEh95jYQjbjYlYIA8X4nnmSluQABCSo6XqcnVcXBJpj2ywuXX0grD7gKMRITomF2aHJGOGcTSOlArJWQA8DgGhl-vgVPTPzFwCVZ34KysqvwqAsZbk03xji0BGxeCOgy5d5vutFYFQS8qmDJxBIQHuJ7kQdwlei270sKxCZJHQGlFDPmoJcKgpW6T7CwugmIqPfjCBN0JJeGs9UMCuUZK2W-bJmW3R7YprirzkksVL3fFQORJHCT-Ur16KdwFpSdbkU2R6"/>
+<div class="absolute inset-0 card-gradient"></div>
+<div class="absolute bottom-0 left-0 p-sm w-full flex flex-col gap-base">
+<div class="flex justify-between items-end">
+<div>
+<span class="inline-block px-xs py-base bg-secondary-container/20 text-secondary-fixed text-[10px] font-label-caps rounded mb-xs border border-secondary-fixed/30">INTERMEDIATE</span>
+<h3 class="font-headline-md text-headline-md text-white leading-none">CORE IGNITE</h3>
+</div>
+<div class="flex items-center gap-base text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span class="font-label-caps text-[10px]">20 MIN</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Workout Card 3 -->
+<div class="group relative h-64 rounded-xl overflow-hidden bg-surface-container-high border border-outline-variant hover:border-primary-fixed transition-colors cursor-pointer">
+<img class="absolute inset-0 w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A tranquil but powerful yoga scene where a practitioner holds a warrior pose on a dark matte mat. The setting is a void-like black space with a single focused beam of electric blue and neon lime light highlighting the silhouette. The aesthetic is modern minimalism with a sharp, high-contrast finish that emphasizes clarity and focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTFBJaAlprzjcJv_YlIpM3FycQZIlBkmXi76X7xBpUdTx5yIbhZoJjy5tJuCHNbySpdovl2HKThUojBk0qmgW0S31hE9iZuMLbBgxFt4O0GVSW-elbVEa2_qcVwA6PUde10cF-iOtOAaPe2_lQ6-w4wZ5MK4msko9EHedKlO3ncNBootFRCCvk86nidLjWddFfxXHuHFuhuenQc2rS5SDAan-YyXlnyAcwratEmrXn8AT8x3ApBtm8gxTZ_s-Q5LqHcBSZyVO8M_hn"/>
+<div class="absolute inset-0 card-gradient"></div>
+<div class="absolute bottom-0 left-0 p-sm w-full flex flex-col gap-base">
+<div class="flex justify-between items-end">
+<div>
+<span class="inline-block px-xs py-base bg-secondary-container/20 text-secondary-fixed text-[10px] font-label-caps rounded mb-xs border border-secondary-fixed/30">BEGINNER</span>
+<h3 class="font-headline-md text-headline-md text-white leading-none">FLOW MOBILITY</h3>
+</div>
+<div class="flex items-center gap-base text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span class="font-label-caps text-[10px]">45 MIN</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Workout Card 4 -->
+<div class="group relative h-64 rounded-xl overflow-hidden bg-surface-container-high border border-outline-variant hover:border-primary-fixed transition-colors cursor-pointer">
+<img class="absolute inset-0 w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close up of an athlete sprinting on a curved treadmill in a dimly lit, high-tech gym. Intense lime green LED accents from the machines illuminate the motion. The scene uses tonal layering of deep grays and blacks with vibrant luminous pops to showcase a high-intensity cardio environment. Efficient and motivating atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOxeJPjMfA_wVhgk58gnZNxYKGqbCbKmY3J0zNMFlRz4KRAvJTMsMzwEwNWfTNI1bFJ-VJfkP0zFdp7YmtMe0kj7EZlb0c_w1Tf-ul_aClUh3Sq5Z3TnUZG7WonpSQKlk7wX-ctzjvbsQ5P2RhPv1XbFuaGh5S_c6xd5fDYNg2OKh-Tt2nZkXLWNW4Bk8J7FsHRQPrNmmvokyPijKnEUwm2y21cSGFO_-a2noLvVs9rlV3GI5R-zKAAn0m8xzwLgSaxvjcz-cg0ykc"/>
+<div class="absolute inset-0 card-gradient"></div>
+<div class="absolute bottom-0 left-0 p-sm w-full flex flex-col gap-base">
+<div class="flex justify-between items-end">
+<div>
+<span class="inline-block px-xs py-base bg-secondary-container/20 text-secondary-fixed text-[10px] font-label-caps rounded mb-xs border border-secondary-fixed/30">ADVANCED</span>
+<h3 class="font-headline-md text-headline-md text-white leading-none">SENSORY SPRINTS</h3>
+</div>
+<div class="flex items-center gap-base text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span class="font-label-caps text-[10px]">15 MIN</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pb-sm pt-xs bg-surface-container dark:bg-surface-container border-t-2 border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-caps text-label-caps mt-1">HOME</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary-fixed dark:text-primary-fixed bg-secondary-container rounded-lg px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+<span class="font-label-caps text-label-caps mt-1">WORKOUTS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-label-caps mt-1">PROGRESS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-label-caps mt-1">PROFILE</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for category chips
+        const chips = document.querySelectorAll('.flex-shrink-0');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                chips.forEach(c => {
+                    c.classList.remove('bg-primary-fixed', 'text-on-primary-fixed');
+                    c.classList.add('bg-surface-container', 'text-on-surface-variant');
+                });
+                chip.classList.add('bg-primary-fixed', 'text-on-primary-fixed');
+                chip.classList.remove('bg-surface-container', 'text-on-surface-variant');
+            });
+        });
+
+        // Simple search filter simulation
+        const searchInput = document.querySelector('input');
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('main section:last-of-type > div');
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(term)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body></html>

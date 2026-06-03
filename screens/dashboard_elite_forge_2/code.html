@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800;900&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --lima-neon: #d2f000;
+            --electric-blue: #4b8eff;
+            --pitch-black: #050505;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.05);
+        }
+        .mesh-gradient {
+            background-color: var(--pitch-black);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(210, 240, 0, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(75, 142, 255, 0.08) 0px, transparent 50%);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d2f000",
+                        "secondary-container": "#4b8eff",
+                        "background": "#050505",
+                        "surface": "#0a0a0a",
+                        "on-surface": "#e5e2e1",
+                        "on-surface-variant": "#9ca3af",
+                        "outline-variant": "rgba(255,255,255,0.1)"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "label-caps": ["Space Mono"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background mesh-gradient text-on-surface font-body-md min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 bg-black/40 backdrop-blur-md border-b border-outline-variant flex justify-between items-center w-full px-margin-mobile py-sm">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary-fixed/30 p-[2px]">
+<img alt="User Profile" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2eHi8Hcz-m-llFC7Xhh2H1b_jdifP93PrnwgVIii9Od94qTmXG3eLsOelx6MYFk5Q9D9Ex3fNiOC-cQXU4Do6CbGxE65EJxVmRNcWYhKemZ5-7H3jCOgTyeFMD9ksw17v3K4FLIDRII9-scROiO_pFep8W95gcNRJfnIH5F90OFH2aVImC-9042txKhu42dnmm08TSOcA9OOkIEe5gtn7Y6xrYaT8ulPY2kJp46oyfyp7md__DJ_w3EkpxL7u8RR__Kh6ySZJOHVr"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] tracking-[0.2em] text-on-surface-variant">ELITE STATUS</span>
+<span class="font-bold text-lg tracking-tight text-white uppercase">ALEX</span>
+</div>
+</div>
+<div class="flex items-center">
+<button class="material-symbols-outlined text-white/70 hover:text-primary-fixed transition-colors" data-icon="notifications">notifications</button>
+</div>
+</header>
+<main class="px-margin-mobile mt-md space-y-md">
+<!-- Daily Goal Focal Section -->
+<section class="glass-card rounded-2xl p-6 relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="font-label-caps text-[11px] tracking-widest text-on-surface-variant mb-2">CURRENT VELOCITY</h2>
+<div class="flex items-baseline gap-2">
+<p class="font-black text-6xl tracking-tighter text-white">75<span class="text-3xl text-primary-fixed">%</span></p>
+<p class="font-label-caps text-xs text-primary-fixed/80">DONE</p>
+</div>
+<p class="text-on-surface-variant font-medium mt-4 text-sm tracking-wide">1,250 <span class="opacity-40">/</span> 1,600 KCAL</p>
+</div>
+<!-- Dynamic Thin Arc Gauge -->
+<div class="absolute -right-8 -bottom-8 w-48 h-48 opacity-40">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<circle class="text-white/5" cx="50" cy="50" fill="transparent" r="45" stroke="currentColor" stroke-width="1.5"></circle>
+<circle class="text-primary-fixed progress-ring-circle" cx="50" cy="50" fill="transparent" r="45" stroke="currentColor" stroke-dasharray="282.7" stroke-dashoffset="70.6" stroke-linecap="round" stroke-width="2"></circle>
+<circle class="text-secondary-container progress-ring-circle opacity-50" cx="50" cy="50" fill="transparent" r="38" stroke="currentColor" stroke-dasharray="238.7" stroke-dashoffset="100" stroke-linecap="round" stroke-width="1"></circle>
+</svg>
+</div>
+<div class="absolute top-4 right-4">
+<span class="material-symbols-outlined text-primary-fixed animate-pulse" data-icon="bolt">bolt</span>
+</div>
+</section>
+<!-- Activity Section -->
+<section class="glass-card rounded-2xl p-5">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h2 class="font-label-caps text-[10px] tracking-widest text-on-surface-variant mb-1">WEEKLY ACTIVITY</h2>
+<p class="font-bold text-2xl text-white">8.4k <span class="text-xs font-normal text-on-surface-variant tracking-normal uppercase">Total Kcal</span></p>
+</div>
+<span class="material-symbols-outlined text-secondary-container text-sm" data-icon="insights">insights</span>
+</div>
+<div class="flex items-end justify-between h-20 gap-2">
+<div class="flex-1 bg-white/5 rounded-full h-[40%] transition-all hover:bg-white/10"></div>
+<div class="flex-1 bg-white/5 rounded-full h-[70%] transition-all hover:bg-white/10"></div>
+<div class="flex-1 bg-primary-fixed rounded-full h-[90%] shadow-[0_0_15px_rgba(210,240,0,0.3)]"></div>
+<div class="flex-1 bg-white/5 rounded-full h-[55%] transition-all hover:bg-white/10"></div>
+<div class="flex-1 bg-white/5 rounded-full h-[80%] transition-all hover:bg-white/10"></div>
+<div class="flex-1 bg-white/5 rounded-full h-[30%] transition-all hover:bg-white/10"></div>
+<div class="flex-1 bg-white/5 rounded-full h-[15%] transition-all hover:bg-white/10"></div>
+</div>
+</section>
+<!-- Today's Workout Section -->
+<section>
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-label-caps text-[10px] tracking-[0.2em] text-on-surface-variant">NEXT SESSION</h2>
+<button class="text-primary-fixed font-label-caps text-[10px] hover:brightness-125 transition-all">EXPLORE ALL</button>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-2xl border border-outline-variant aspect-video flex flex-col justify-end p-5">
+<div class="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
+<img alt="HIIT Workout" class="w-full h-full object-cover opacity-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLttxYceNWTmjlw-Qlmthkkd3_bgfZaz8S8tlKe39fnMqyuT9Qf9TUfbM1WspxufrwQGJZUy4bJtZwYbIZdPUwKozXe5NG0eWWV22G8H-Lf_5K9I2NY_EnprAMXaCP-ts5FA2t9hHgDVAWPCGBavMECBv01qzJpQbDSSHdhKd6EBXhiuqzLBIOxd86ebI2mTpWoDDSs8eqgGHxpvnU5q1DvNHUoFeL0adpNT_PtHyZUF5cYBFvvwoabRMmdk3kbzYMNm9zGgUgdEFI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+</div>
+<div class="relative z-10 flex flex-col">
+<div class="flex gap-2 mb-3">
+<span class="bg-primary-fixed/10 text-primary-fixed border border-primary-fixed/20 px-2 py-[2px] rounded-md text-[9px] font-label-caps">ADVANCED</span>
+<span class="bg-white/5 backdrop-blur-md text-white/70 border border-white/10 px-2 py-[2px] rounded-md text-[9px] font-label-caps uppercase">45 MINS</span>
+</div>
+<h3 class="font-black text-3xl text-white tracking-tighter italic uppercase leading-none">HIGH INTENSITY HIIT</h3>
+</div>
+<button class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-white text-black rounded-full flex items-center justify-center transition-all group-hover:scale-110 shadow-xl">
+<span class="material-symbols-outlined !text-3xl" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+</section>
+<!-- Stats Grid -->
+<section class="grid grid-cols-2 gap-4">
+<div class="glass-card rounded-2xl p-5 border-l-2 border-l-secondary-container">
+<span class="material-symbols-outlined text-secondary-container mb-3" data-icon="timer">timer</span>
+<p class="font-label-caps text-[9px] tracking-widest text-on-surface-variant mb-1 uppercase">TOTAL TIME</p>
+<p class="font-bold text-xl text-white leading-none">12<span class="text-sm opacity-50 font-normal ml-1 uppercase">h</span> 45<span class="text-sm opacity-50 font-normal ml-1 uppercase">m</span></p>
+</div>
+<div class="glass-card rounded-2xl p-5 border-l-2 border-l-red-500/50">
+<span class="material-symbols-outlined text-red-400 mb-3" data-icon="favorite">favorite</span>
+<p class="font-label-caps text-[9px] tracking-widest text-on-surface-variant mb-1 uppercase">AVG HEART RATE</p>
+<p class="font-bold text-xl text-white leading-none">142 <span class="text-xs opacity-50 font-normal uppercase">Bpm</span></p>
+</div>
+</section>
+<!-- Achievements -->
+<section>
+<h2 class="font-label-caps text-[10px] tracking-[0.2em] text-on-surface-variant mb-5">BADGES &amp; TROPHIES</h2>
+<div class="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
+<div class="flex-shrink-0 relative group">
+<div class="w-16 h-16 rounded-full bg-primary-fixed/10 border border-primary-fixed/40 flex items-center justify-center relative">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="workspace_premium">workspace_premium</span>
+<div class="absolute -inset-1 border border-primary-fixed/20 rounded-full animate-ping opacity-20"></div>
+</div>
+<p class="text-[8px] font-label-caps mt-3 text-center text-primary-fixed opacity-80 uppercase tracking-tighter">7D STREAK</p>
+</div>
+<div class="flex-shrink-0">
+<div class="w-16 h-16 rounded-full glass-card flex items-center justify-center opacity-40">
+<span class="material-symbols-outlined text-white" data-icon="military_tech">military_tech</span>
+</div>
+<p class="text-[8px] font-label-caps mt-3 text-center text-on-surface-variant uppercase tracking-tighter">50KM RUN</p>
+</div>
+<div class="flex-shrink-0">
+<div class="w-16 h-16 rounded-full glass-card flex items-center justify-center opacity-40">
+<span class="material-symbols-outlined text-white" data-icon="fitness_center">fitness_center</span>
+</div>
+<p class="text-[8px] font-label-caps mt-3 text-center text-on-surface-variant uppercase tracking-tighter">100 SQUATS</p>
+</div>
+<div class="flex-shrink-0">
+<div class="w-16 h-16 rounded-full glass-card flex items-center justify-center opacity-40">
+<span class="material-symbols-outlined text-white" data-icon="trophy">trophy</span>
+</div>
+<p class="text-[8px] font-label-caps mt-3 text-center text-on-surface-variant uppercase tracking-tighter">ELITE TIER</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-8 pt-4 bg-black/80 backdrop-blur-xl border-t border-white/5">
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-caps text-[8px] text-primary-fixed tracking-widest">DASH</span>
+</a>
+<a class="flex flex-col items-center gap-1 opacity-40 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="fitness_center">fitness_center</span>
+<span class="font-label-caps text-[8px] tracking-widest">GYM</span>
+</a>
+<a class="flex flex-col items-center gap-1 opacity-40 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-caps text-[8px] tracking-widest">STATS</span>
+</a>
+<a class="flex flex-col items-center gap-1 opacity-40 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-caps text-[8px] tracking-widest">ME</span>
+</a>
+</nav>
+<!-- FAB -->
+<button class="fixed right-6 bottom-32 w-14 h-14 bg-primary-fixed text-black rounded-full flex items-center justify-center shadow-[0_0_25px_rgba(210,240,0,0.4)] active:scale-90 transition-transform">
+<span class="material-symbols-outlined !text-3xl" data-icon="add" style="font-variation-settings: 'wght' 400;">add</span>
+</button>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const rings = document.querySelectorAll('.progress-ring-circle');
+        
+        rings.forEach(ring => {
+            const radius = ring.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+            const offsetAttr = ring.getAttribute('stroke-dashoffset');
+            
+            ring.style.strokeDasharray = `${circumference} ${circumference}`;
+            ring.style.strokeDashoffset = circumference;
+            
+            setTimeout(() => {
+                ring.style.strokeDashoffset = offsetAttr;
+            }, 300);
+        });
+    });
+</script>
+</body></html>

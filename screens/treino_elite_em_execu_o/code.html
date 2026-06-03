@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+        .timer-ring-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+        }
+        .timer-svg {
+            transform: rotate(-90deg);
+            filter: drop-shadow(0 0 12px rgba(210, 240, 0, 0.3));
+        }
+        .timer-circle-bg {
+            stroke: #1A1A1A;
+            stroke-width: 4;
+            fill: transparent;
+        }
+        .timer-circle-progress {
+            stroke: #d2f000;
+            stroke-width: 12;
+            stroke-linecap: round;
+            fill: transparent;
+            stroke-dasharray: 816.8; /* 2 * PI * 130 */
+            stroke-dashoffset: 200;
+            transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Liquid effect simulation */
+        .liquid-fill {
+            filter: url(#gooey);
+        }
+        .bg-noise {
+            background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+            opacity: 0.03;
+        }
+        .frosted-glass {
+            background: rgba(19, 19, 19, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .control-blur {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#d2f000",
+                        "surface": "#080808",
+                        "background": "#050505",
+                        "primary-fixed": "#d2f000",
+                        "on-background": "#ffffff",
+                        "on-surface": "#ffffff",
+                        "outline-variant": "#1A1A1A",
+                        "primary": "#ffffff"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "stats-xl": ["Inter"],
+                        "label-caps": ["Space Mono"],
+                        "body-md": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-black">
+<div class="fixed inset-0 bg-noise pointer-events-none"></div>
+<!-- Header -->
+<header class="flex justify-between items-center w-full px-6 py-4 bg-transparent absolute top-0 z-50">
+<button aria-label="Cancel Workout" class="active:scale-95 transition-transform flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">close</span>
+<span class="font-label-caps text-[10px] text-white/60 tracking-widest">EXIT</span>
+</button>
+<h1 class="font-black italic text-2xl tracking-tighter text-white">FORGE</h1>
+<button class="w-10 h-10 flex items-center justify-end">
+<span class="material-symbols-outlined text-primary">more_vert</span>
+</button>
+</header>
+<main class="min-h-screen flex flex-col items-center relative overflow-hidden">
+<!-- Hero Video Section: Edge to Edge -->
+<section class="w-full h-[45vh] relative group">
+<img class="w-full h-full object-cover grayscale brightness-50" data-alt="A professional fitness demonstration of a person performing a barbell back squat in a high-intensity dark gym environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMK8hCAOzs4nxeg30JXwwaf5M5J3KTcBzkG5-Rh98u3twblBaroEhivR0lu_4VMk-t8xaykcQdiuJc4_1kZdx3p_pC7P4kMcA609YKa4I-5o8gUlClBjHc2Oo92GuFVmRM_nWnXWyxF0n7qpYBeP79V4B0vCjhsB08pFLoMA7S241ZJTrtMnCwofysxSf0MFwAn8k5iYKdStns_DaFS9I5q_e8HO0gqGA8KD3gZZ5vgG4oKHJE60Db9ZebzK2aATPazTD5-4hTxE9M"/>
+<!-- Frosted Glass Title Overlay -->
+<div class="absolute bottom-0 left-0 right-0 frosted-glass p-6 border-t border-white/10">
+<p class="font-label-caps text-[10px] text-primary-fixed tracking-[0.3em] mb-1">LEGS • POWER</p>
+<h2 class="font-black italic text-3xl uppercase tracking-tight text-white">Barbell Squats</h2>
+</div>
+<!-- Central Play Button -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center pointer-events-auto cursor-pointer hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+</section>
+<!-- Dynamic Execution Content -->
+<div class="flex-1 w-full flex flex-col items-center justify-around px-6 py-8 relative -mt-4 bg-background rounded-t-[32px] border-t border-white/5 shadow-[0_-20px_40px_rgba(0,0,0,0.8)]">
+<!-- SVG Filter for Gooey/Liquid effect if needed -->
+<svg class="hidden">
+<defs>
+<filter id="gooey">
+<fegaussianblur in="SourceGraphic" result="blur" stddeviation="10"></fegaussianblur>
+<fecolormatrix in="blur" mode="matrix" result="gooey" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"></fecolormatrix>
+</filter>
+</defs>
+</svg>
+<!-- Massive Timer & Reps -->
+<section class="flex flex-col items-center">
+<div class="timer-ring-container flex items-center justify-center">
+<svg class="timer-svg w-[300px] h-[300px]" viewbox="0 0 300 300">
+<circle class="timer-circle-bg" cx="150" cy="150" r="130"></circle>
+<circle class="timer-circle-progress" cx="150" cy="150" id="progressCircle" r="130"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-label-caps text-[10px] text-white/40 tracking-widest mb-1">REPS</span>
+<span class="font-black text-8xl leading-none text-white tracking-tighter">12</span>
+<div class="flex items-center gap-2 mt-4">
+<span class="text-xs font-bold text-primary-fixed uppercase tracking-widest">Set 1</span>
+<span class="text-[10px] text-white/30 font-medium">OF 4</span>
+</div>
+</div>
+</div>
+<!-- Floating Controls -->
+<div class="flex items-center gap-8 -mt-6 relative z-20">
+<button class="w-12 h-12 rounded-full control-blur flex items-center justify-center text-white/70 active:scale-90 transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-20 h-20 rounded-full bg-primary-fixed flex items-center justify-center text-black active:scale-90 transition-all shadow-[0_0_30px_rgba(210,240,0,0.4)]" id="toggleTimer">
+<span class="material-symbols-outlined text-4xl">pause</span>
+</button>
+<button class="w-12 h-12 rounded-full control-blur flex items-center justify-center text-white/70 active:scale-90 transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Footer Stats & Primary CTA -->
+<section class="w-full space-y-6">
+<div class="flex justify-between px-2">
+<div class="flex flex-col">
+<span class="font-label-caps text-[9px] text-white/40 tracking-widest mb-1 uppercase">Last Weight</span>
+<span class="text-xl font-bold text-white">225 <span class="text-sm font-normal text-white/40 uppercase">lbs</span></span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-[9px] text-white/40 tracking-widest mb-1 uppercase">Est. Rest</span>
+<span class="text-xl font-bold text-white">90 <span class="text-sm font-normal text-white/40 uppercase">sec</span></span>
+</div>
+</div>
+<button class="w-full bg-white text-black font-black text-lg py-5 rounded-2xl active:scale-[0.97] transition-all flex items-center justify-center gap-3">
+                    COMPLETE SET
+                    <span class="material-symbols-outlined text-2xl">check_circle</span>
+</button>
+</section>
+</div>
+</main>
+<script>
+        // Timer Logic
+        let progress = 200;
+        const circle = document.getElementById('progressCircle');
+        const toggleBtn = document.getElementById('toggleTimer');
+        let isPaused = false;
+
+        setInterval(() => {
+            if (!isPaused) {
+                progress = (progress + 0.8) % 816.8;
+                circle.style.strokeDashoffset = progress;
+            }
+        }, 100);
+
+        toggleBtn.addEventListener('click', () => {
+            isPaused = !isPaused;
+            const icon = toggleBtn.querySelector('.material-symbols-outlined');
+            icon.textContent = isPaused ? 'play_arrow' : 'pause';
+            if (isPaused) {
+                toggleBtn.classList.remove('bg-primary-fixed');
+                toggleBtn.classList.add('bg-white');
+            } else {
+                toggleBtn.classList.add('bg-primary-fixed');
+                toggleBtn.classList.remove('bg-white');
+            }
+        });
+
+        // Micro-interactions
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('touchstart', () => btn.classList.add('scale-95'));
+            btn.addEventListener('touchend', () => btn.classList.remove('scale-95'));
+        });
+    </script>
+</body></html>

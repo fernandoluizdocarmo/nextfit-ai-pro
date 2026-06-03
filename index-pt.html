@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TREINOX.AI - Seu Personal Trainer de Elite 🏋️</title>
+  <meta name="description" content="TREINOX.AI é seu aplicativo fitness definitivo. Geração de fichas inteligentes com IA, acompanhamento série por série com cargas personalizadas, cronômetro de descanso integrado.">
+  
+  <!-- PWA Support & Mobile Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#12121c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TREINOX.AI">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <!-- Material Symbols and Typography -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Inter:wght@400;700;800;900&family=Space+Mono:wght@400;700" />
+  
+  <!-- Tailwind CSS with Plugins -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-enhancements.css">
+  <link rel="stylesheet" href="style-modern.css">
+
+  <!-- Tailwind Config -->
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error": "#ffb4ab",
+            "on-secondary-fixed-variant": "#004493",
+            "surface-dim": "#131313",
+            "on-primary-fixed": "#191e00",
+            "on-primary": "#2c3400",
+            "on-secondary": "#002e69",
+            "on-secondary-fixed": "#001a41",
+            "inverse-on-surface": "#313030",
+            "tertiary-container": "#ffdad5",
+            "inverse-surface": "#e5e2e1",
+            "on-primary-fixed-variant": "#414c00",
+            "surface-container-lowest": "#0e0e0e",
+            "on-tertiary-fixed-variant": "#930005",
+            "outline-variant": "#454932",
+            "surface-bright": "#393939",
+            "tertiary": "#ffffff",
+            "inverse-primary": "#576500",
+            "on-tertiary": "#690003",
+            "on-background": "#e5e2e1",
+            "on-surface-variant": "#c6c9ab",
+            "on-surface": "#e5e2e1",
+            "secondary-fixed-dim": "#adc6ff",
+            "on-error-container": "#ffdad6",
+            "primary-fixed-dim": "#b8d300",
+            "on-tertiary-container": "#ca0a0f",
+            "error-container": "#93000a",
+            "on-secondary-container": "#00285c",
+            "surface-container-low": "#1c1b1b",
+            "surface-container-high": "#2a2a2a",
+            "secondary-fixed": "#d8e2ff",
+            "primary-container": "#d2f000",
+            "tertiary-fixed-dim": "#ffb4aa",
+            "background": "#131313",
+            "on-tertiary-fixed": "#410001",
+            "surface-container-highest": "#353534",
+            "secondary-container": "#4b8eff",
+            "primary": "#ffffff",
+            "surface-container": "#201f1f",
+            "on-error": "#690005",
+            "surface": "#131313",
+            "secondary": "#adc6ff",
+            "surface-tint": "#b8d300",
+            "primary-fixed": "#d2f000",
+            "on-primary-container": "#5d6b00",
+            "outline": "#909378",
+            "surface-variant": "#353534",
+            "tertiary-fixed": "#ffdad5"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "xs": "8px",
+            "sm": "16px",
+            "xl": "64px",
+            "margin-desktop": "48px",
+            "lg": "40px",
+            "gutter": "16px",
+            "margin-mobile": "20px",
+            "md": "24px",
+            "base": "4px"
+          },
+          "fontFamily": {
+            "headline-md": ["Inter"],
+            "label-caps": ["Space Mono"],
+            "headline-lg-mobile": ["Inter"],
+            "display-lg": ["Inter"],
+            "stats-xl": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+            "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+            "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "800"}],
+            "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "900"}],
+            "stats-xl": ["64px", {"lineHeight": "1.0", "fontWeight": "900"}],
+            "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+            "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    .neon-glow:focus-within {
+      box-shadow: 0 0 15px rgba(210, 240, 0, 0.3);
+    }
+    .card-gradient {
+      background: linear-gradient(180deg, rgba(18,18,18,0) 0%, rgba(18,18,18,0.9) 100%);
+    }
+    .progress-ring-circle {
+      transition: stroke-dashoffset 0.35s;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+    .bg-noise {
+      background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+      opacity: 0.05;
+    }
+    .timer-ring-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+    }
+    .timer-svg {
+      transform: rotate(-90deg);
+    }
+    .timer-circle-bg {
+      stroke: #2C2C2C;
+      stroke-width: 8;
+      fill: transparent;
+    }
+    .timer-circle-progress {
+      stroke: #d2f000;
+      stroke-width: 8;
+      stroke-linecap: round;
+      fill: transparent;
+      stroke-dasharray: 816.8;
+      stroke-dashoffset: 200;
+      transition: stroke-dashoffset 1s linear;
+    }
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: block;
+    }
+    body {
+      min-height: max(884px, 100dvh);
+    }
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(210,240,0,.3);
+      border-radius: 50%;
+      border-top-color: #d2f000;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md">
+
+  <!-- AUTH OVERLAY -->
+  <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #12121c; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto;">
+    
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" style="max-width: 420px; width: 100%;">
+      <div class="card" style="padding: 2.5rem 2rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+        <div style="margin-bottom: 2rem;">
+          <span class="material-symbols-outlined text-primary" style="font-size: 4rem;">fitness_center</span>
+          <h1 class="font-headline-lg mt-2 mb-1" style="font-size: 2rem; color: white; margin-top: 1rem; margin-bottom: 0.5rem;">TREINOX.AI</h1>
+          <p class="text-secondary" style="font-size: 0.95rem; color: #94A3B8;">Seu Personal Trainer de Elite 💪</p>
+        </div>
+        <form id="login-form" onsubmit="event.preventDefault(); performLogin();">
+          <div class="form-group" style="text-align: left;">
+            <label class="form-label" for="login-email" style="color: #94A3B8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">📧 E-mail</label>
+            <input type="email" class="input-field" id="login-email" placeholder="seu@email.com" required style="min-height: 48px;" autocomplete="email">
+          </div>
+          <div class="form-group" style="text-align: left;">
+            <label class="form-label" for="login-password" style="color: #94A3B8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">🔐 Senha</label>
+            <input type="password" class="input-field" id="login-password" placeholder="Sua senha secreta" required style="min-height: 48px;" autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem; margin-top: 1.5rem; min-height: 48px;">
+            <span class="material-symbols-outlined">login</span> Entrar
+          </button>
+        </form>
+        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
+          <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 1rem;">Não tem conta?</p>
+          <button type="button" onclick="switchAuthScreen('register')" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.8rem;">
+            <span class="material-symbols-outlined">person_add</span> Criar Nova Conta
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGISTRATION SCREEN -->
+    <div id="register-screen" style="max-width: 420px; width: 100%; display: none;">
+      <div class="card" style="padding: 2.5rem 2rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto;">
+        <h1 style="color: white; margin-bottom: 1rem;">📋 Crie sua Conta</h1>
+        <form id="register-form" onsubmit="event.preventDefault(); performRegister();">
+          <input type="text" class="input-field" id="register-name" placeholder="Nome Completo" required style="margin-bottom: 0.8rem;">
+          <input type="email" class="input-field" id="register-email" placeholder="seu@email.com" required style="margin-bottom: 0.8rem;">
+          <input type="password" class="input-field" id="register-password" placeholder="Senha (mín. 6 caracteres)" required style="margin-bottom: 0.8rem;">
+          <input type="number" class="input-field" id="register-age" placeholder="Idade (anos)" min="15" required style="margin-bottom: 0.8rem;">
+          <input type="number" class="input-field" id="register-weight" placeholder="Peso (kg)" min="30" step="0.1" required style="margin-bottom: 0.8rem;">
+          <input type="number" class="input-field" id="register-height" placeholder="Altura (cm)" min="100" required style="margin-bottom: 0.8rem;">
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 0.8rem; margin-top: 1rem;">✅ Criar Conta</button>
+        </form>
+        <button type="button" onclick="switchAuthScreen('login')" class="btn-secondary" style="width: 100%; padding: 0.6rem; margin-top: 1rem;">← Voltar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREENS CONTAINER -->
+  <div id="app-container" style="display: none;">
+
+    <!-- SCREEN 1: CRIAR FICHA COM IA 🤖 -->
+    <div id="screen-criar" class="screen">
+      <header class="fixed top-0 z-50 w-full bg-surface border-b border-outline-variant px-margin-mobile py-xs flex justify-between items-center">
+        <button onclick="showScreen('dashboard')" class="flex items-center gap-xs text-primary hover:opacity-80">
+          <span class="material-symbols-outlined">arrow_back</span>
+          <span class="font-label-caps">VOLTAR</span>
+        </button>
+        <h1 class="font-headline-lg-mobile text-primary italic tracking-tighter">GERAR FICHA</h1>
+        <div class="w-10"></div>
+      </header>
+      
+      <main class="pt-20 pb-24 px-margin-mobile">
+        <section class="space-y-md">
+          <div style="text-align: center; margin-bottom: 2rem;">
+            <span class="material-symbols-outlined" style="font-size: 3rem; color: #d2f000;">auto_awesome</span>
+            <h2 class="font-headline-md text-primary mt-2">Criar Ficha com IA</h2>
+            <p class="text-on-surface-variant text-sm mt-1">Preencha seus dados e deixe a IA gerar sua ficha personalizada</p>
+          </div>
+
+          <form id="workout-form" onsubmit="event.preventDefault(); generateWorkoutWithAI();">
+            
+            <!-- OBJETIVO -->
+            <div class="bg-surface-container border border-outline-variant rounded-xl p-md space-y-md mb-md">
+              <h3 class="font-label-caps text-primary-fixed">🎯 OBJETIVO DO TREINO</h3>
+              <div class="space-y-xs">
+                <label class="flex items-center gap-sm p-sm cursor-pointer hover:bg-surface-container-high rounded">
+                  <input type="radio" name="objetivo" value="ganho_muscular" required> <span class="text-on-surface">Ganho Muscular 💪</span>
+                </label>
+                <label class="flex items-center gap-sm p-sm cursor-pointer hover:bg-surface-container-high rounded">
+                  <input type="radio" name="objetivo" value="perda_gordura"> <span class="text-on-surface">Perda de Gordura 🔥</span>
+                </label>
+                <label class="flex items-center gap-sm p-sm cursor-pointer hover:bg-surface-container-high rounded">
+                  <input type="radio" name="objetivo" value="forca"> <span class="text-on-surface">Força 🏋️</span>
+                </label>
+                <label class="flex items-center gap-sm p-sm cursor-pointer hover:bg-surface-container-high rounded">
+                  <input type="radio" name="objetivo" value="resistencia"> <span class="text-on-surface">Resistência 🏃</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- FREQUÊNCIA -->
+            <div class="bg-surface-container border border-outline-variant rounded-xl p-md space-y-md mb-md">
+              <h3 class="font-label-caps text-primary-fixed">📅 FREQUÊNCIA SEMANAL</h3>
+              <select name="frequencia" required class="input-field" style="background: #201f1f; border: 1px solid #454932;">
+                <option value="">Selecione...</option>
+                <option value="3">3 dias por semana</option>
+                <option value="4">4 dias por semana</option>
+                <option value="5">5 dias por semana</option>
+                <option value="6">6 dias por semana</option>
+              </select>
+            </div>
+
+            <!-- NÍVEL -->
+            <div class="bg-surface-container border border-outline-variant rounded-xl p-md space-y-md mb-md">
+              <h3 class="font-label-caps text-primary-fixed">⭐ NÍVEL DE EXPERIÊNCIA</h3>
+              <div class="space-y-xs">
+                <label class="flex items-center gap-sm p-sm cursor-pointer hover:bg-surface-container-high rounded">
+                  <input type="radio" name="nivel" value="iniciante" required> <span class="text-on-surface">Iniciante</span>
+                </label>
+                <label class="flex items-center gap-sm p-sm cursor-pointer hover:bg-surface-container-high rounded">
+                  <input type="radio" name="nivel" value="intermediario"> <span class="text-on-surface">Intermediário</span>
+                </label>
+                <label class="flex items-center gap-sm p-sm cursor-pointer hover:bg-surface-container-high rounded">
+                  <input type="radio" name="nivel" value="avancado"> <span class="text-on-surface">Avançado</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- EQUIPAMENTOS -->
+            <div class="bg-surface-container border border-outline-variant rounded-xl p-md space-y-md mb-md">
+              <h3 class="font-label-caps text-primary-fixed">🏋️ EQUIPAMENTOS DISPONÍVEIS</h3>
+              <div class="space-y-xs">
+                <label class="flex items-center gap-sm p-sm">
+                  <input type="checkbox" name="equipamentos" value="musculacao" checked> <span class="text-on-surface">Academia Completa</span>
+                </label>
+                <label class="flex items-center gap-sm p-sm">
+                  <input type="checkbox" name="equipamentos" value="calistenica"> <span class="text-on-surface">Calistenia/Peso Corporal</span>
+                </label>
+                <label class="flex items-center gap-sm p-sm">
+                  <input type="checkbox" name="equipamentos" value="funcional"> <span class="text-on-surface">Treino Funcional</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- BOTÃO GERAR -->
+            <button type="submit" class="w-full bg-primary-fixed text-on-primary-fixed font-headline-md py-md rounded-xl shadow-lg hover:scale-105 transition-transform flex items-center justify-center gap-sm" id="btn-gerar">
+              <span class="material-symbols-outlined">auto_awesome</span>
+              🤖 GERAR FICHA COM IA
+            </button>
+
+            <div id="loading-message" style="display: none; text-align: center; margin-top: 1rem; color: #d2f000;">
+              <div class="loading-spinner" style="display: inline-block; margin-right: 0.5rem;"></div>
+              <span>Gerando sua ficha personalizada...</span>
+            </div>
+
+          </form>
+
+          <!-- RESULTADO IA -->
+          <div id="ai-result" style="display: none; margin-top: 2rem; background: #1a1a2e; border: 2px solid #d2f000; border-radius: 12px; padding: 1.5rem;">
+            <div class="flex items-center justify-between mb-md">
+              <h3 class="font-headline-md text-primary-fixed flex items-center gap-sm">
+                <span class="material-symbols-outlined">verified</span> Sua Ficha Gerada
+              </h3>
+              <button onclick="saveWorkoutFromAI()" class="bg-primary-fixed text-on-primary-fixed px-md py-xs rounded-lg text-sm font-bold">
+                💾 Salvar Ficha
+              </button>
+            </div>
+            <pre id="ai-text" style="background: #131313; padding: 1rem; border-radius: 8px; color: #e5e2e1; overflow-x: auto; white-space: pre-wrap; word-break: break-word; font-size: 0.9rem;"></pre>
+          </div>
+        </section>
+      </main>
+
+      <!-- Bottom Nav -->
+      <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pb-sm pt-xs bg-surface-container border-t-2 border-outline-variant">
+        <button onclick="showScreen('dashboard')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">home</span>
+          <span class="font-label-caps text-[10px] mt-1">INÍCIO</span>
+        </button>
+        <button onclick="showScreen('biblioteca')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">fitness_center</span>
+          <span class="font-label-caps text-[10px] mt-1">TREINOS</span>
+        </button>
+        <button onclick="showScreen('historico')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">history</span>
+          <span class="font-label-caps text-[10px] mt-1">HISTÓRICO</span>
+        </button>
+        <button onclick="showScreen('perfil')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">person</span>
+          <span class="font-label-caps text-[10px] mt-1">PERFIL</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- SCREEN 2: DASHBOARD (INÍCIO) -->
+    <div id="screen-dashboard" class="screen">
+      <header class="docked full-width top-0 z-50 bg-surface border-b border-outline-variant flex justify-between items-center w-full px-margin-mobile py-xs fixed">
+        <div class="flex items-center gap-sm">
+          <div class="w-10 h-10 rounded-full overflow-hidden border border-primary-fixed">
+            <img alt="Perfil" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2eHi8Hcz-m-llFC7Xhh2H1b_jdifP93PrnwgVIii9Od94qTmXG3eLsOelx6MYFk5Q9D9Ex3fNiOC-cQXU4Do6CbGxE65EJxVmRNcWYhKemZ5-7H3jCOgTyeFMD9ksw17v3K4FLIDRII9-scROiO_pFep8W95gcNRJfnIH5F90OFH2aVImC-9042txKhu42dnmm08TSOcA9OOkIEe5gtn7Y6xrYaT8ulPY2kJp46oyfyp7md__DJ_w3EkpxL7u8RR__Kh6ySZJOHVr">
+          </div>
+          <div class="flex flex-col">
+            <span class="font-label-caps text-label-caps text-on-surface-variant">BEM-VINDO,</span>
+            <span class="font-headline-md text-headline-md text-primary" id="user-welcome">USUÁRIO</span>
+          </div>
+        </div>
+        <button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity active:scale-95">notifications</button>
+      </header>
+      <main class="px-margin-mobile mt-sm space-y-md pt-16 pb-24">
+        <!-- Meta Diária -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+          <div class="bg-surface-container border border-outline-variant rounded-xl p-sm flex items-center justify-between overflow-hidden relative">
+            <div class="z-10">
+              <h2 class="font-label-caps text-label-caps text-on-surface-variant mb-base">META DIÁRIA</h2>
+              <p class="font-headline-lg-mobile text-headline-lg-mobile text-primary">75% CONCLUÍDO</p>
+              <p class="text-on-surface-variant font-body-md mt-base">1.250 / 1.600 KCAL</p>
+            </div>
+            <div class="relative w-24 h-24 flex items-center justify-center z-10">
+              <svg class="w-full h-full"><circle class="text-surface-container-highest" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+              <circle class="text-primary-fixed progress-ring-circle" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-width="8"></circle></svg>
+              <span class="absolute material-symbols-outlined text-primary-fixed">bolt</span>
+            </div>
+          </div>
+          <div class="bg-surface-container border border-outline-variant rounded-xl p-sm flex flex-col justify-between">
+            <div><h2 class="font-label-caps text-label-caps text-on-surface-variant mb-base">ATIVIDADE SEMANAL</h2>
+            <p class="font-headline-md text-headline-md text-primary">8.4k <span class="text-body-md font-normal text-on-surface-variant">KCAL</span></p></div>
+            <div class="flex items-end justify-between h-16 mt-sm gap-1">
+              <div class="w-full bg-surface-container-highest rounded-t-sm h-[40%]"></div>
+              <div class="w-full bg-surface-container-highest rounded-t-sm h-[70%]"></div>
+              <div class="w-full bg-primary-fixed rounded-t-sm h-[90%]"></div>
+              <div class="w-full bg-surface-container-highest rounded-t-sm h-[55%]"></div>
+              <div class="w-full bg-surface-container-highest rounded-t-sm h-[80%]"></div>
+              <div class="w-full bg-surface-container-highest rounded-t-sm h-[30%]"></div>
+              <div class="w-full bg-surface-container-highest rounded-t-sm h-[10%]"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Treino de Hoje -->
+        <section>
+          <button class="w-full relative group cursor-pointer overflow-hidden rounded-xl border border-outline-variant bg-surface-container h-64 flex flex-col justify-end p-sm" onclick="showScreen('treino')">
+            <img alt="Treino HIIT" class="absolute inset-0 w-full h-full object-cover opacity-60 transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLttxYceNWTmjlw-Qlmthkkd3_bgfZaz8S8tlKe39fnMqyuT9Qf9TUfbM1WspxufrwQGJZUy4bJtZwYbIZdPUwKozXe5NG0eWWV22G8H-Lf_5K9I2NY_EnprAMXaCP-ts5FA2t9hHgDVAWPCGBavMECBv01qzJpQbDSSHdhKd6EBXhiuqzLBIOxd86ebI2mTpWoDDSs8eqgGHxpvnU5q1DvNHUoFeL0adpNT_PtHyZUF5cYBFvvwoabRMmdk3kbzYMNm9zGgUgdEFI">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+            <div class="relative z-10 flex flex-col">
+              <div class="flex gap-xs mb-xs">
+                <span class="bg-secondary-container text-on-secondary-container px-xs py-[2px] rounded-full text-[10px] font-label-caps">AVANÇADO</span>
+                <span class="bg-surface-bright/50 backdrop-blur-md text-white px-xs py-[2px] rounded-full text-[10px] font-label-caps">45 MIN</span>
+              </div>
+              <h3 class="font-display-lg text-headline-lg text-primary tracking-tighter italic">HIIT - ALTA INTENSIDADE</h3>
+            </div>
+            <button class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-primary-fixed text-on-primary-fixed rounded-full flex items-center justify-center transition-transform hover:scale-110 active:scale-95 shadow-[0_0_20px_rgba(210,240,0,0.5)]">
+              <span class="material-symbols-outlined !text-[40px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </button>
+          </button>
+        </section>
+
+        <!-- Stats -->
+        <section class="grid grid-cols-2 gap-sm">
+          <div class="bg-surface-container-low border border-outline-variant rounded-xl p-sm">
+            <span class="material-symbols-outlined text-secondary mb-xs">timer</span>
+            <p class="font-label-caps text-[10px] text-on-surface-variant">TEMPO TOTAL</p>
+            <p class="font-headline-md text-headline-md text-primary">12h 45m</p>
+          </div>
+          <div class="bg-surface-container-low border border-outline-variant rounded-xl p-sm">
+            <span class="material-symbols-outlined text-error mb-xs">favorite</span>
+            <p class="font-label-caps text-[10px] text-on-surface-variant">FC MÉDIA</p>
+            <p class="font-headline-md text-headline-md text-primary">142 BPM</p>
+          </div>
+        </section>
+
+        <!-- Conquistas -->
+        <section class="overflow-hidden">
+          <h2 class="font-label-caps text-label-caps text-on-surface-variant mb-sm">CONQUISTAS</h2>
+          <div class="flex gap-sm overflow-x-auto pb-xs scrollbar-hide">
+            <div class="flex-shrink-0 w-24 h-24 rounded-full bg-surface-container border-2 border-primary-fixed flex flex-col items-center justify-center p-xs text-center">
+              <span class="material-symbols-outlined text-primary-fixed">workspace_premium</span>
+              <span class="text-[8px] font-label-caps mt-1">7 DIAS</span>
+            </div>
+            <div class="flex-shrink-0 w-24 h-24 rounded-full bg-surface-container border border-outline-variant flex flex-col items-center justify-center p-xs text-center opacity-60">
+              <span class="material-symbols-outlined text-on-surface-variant">military_tech</span>
+              <span class="text-[8px] font-label-caps mt-1">50 KM</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Bottom Nav -->
+      <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pb-sm pt-xs bg-surface-container border-t-2 border-outline-variant">
+        <button onclick="showScreen('dashboard')" class="flex flex-col items-center justify-center text-primary-fixed bg-secondary-container rounded-lg px-sm py-xs transition-all duration-150 active:scale-90">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+          <span class="font-label-caps text-[10px] mt-1">INÍCIO</span>
+        </button>
+        <button onclick="showScreen('biblioteca')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors transition-all duration-150 active:scale-90">
+          <span class="material-symbols-outlined">fitness_center</span>
+          <span class="font-label-caps text-[10px] mt-1">TREINOS</span>
+        </button>
+        <button onclick="showScreen('historico')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors transition-all duration-150 active:scale-90">
+          <span class="material-symbols-outlined">history</span>
+          <span class="font-label-caps text-[10px] mt-1">HISTÓRICO</span>
+        </button>
+        <button onclick="showScreen('perfil')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors transition-all duration-150 active:scale-90">
+          <span class="material-symbols-outlined">person</span>
+          <span class="font-label-caps text-[10px] mt-1">PERFIL</span>
+        </button>
+      </nav>
+
+      <!-- FAB - Botão Flutuante para Criar Ficha -->
+      <button class="fixed right-sm bottom-32 w-14 h-14 bg-primary-fixed text-on-primary-fixed rounded-xl flex items-center justify-center shadow-lg active:scale-95 transition-transform" onclick="showScreen('criar')" title="Gerar Nova Ficha com IA">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+      </button>
+    </div>
+
+    <!-- SCREEN 3: BIBLIOTECA DE TREINOS -->
+    <div id="screen-biblioteca" class="screen">
+      <header class="bg-surface border-b border-outline-variant fixed top-0 z-50 full-width w-full px-margin-mobile py-xs">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-sm">
+            <img alt="usuário" class="w-10 h-10 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyLZ6SrIEbjXCtMJN8iP7aMHbNbAIFGcYiTO5ms-pTFSnCsUjnsOW6U-XaLn3CCL2OV8uUNhBbP1dD3MokOJkmamIOqSx6CzFvOU-T_Uj6d7qKGmYDJ-eGRzOtObhzLFrWMmFYFzlO76pa-BugS2Sn2NocE6ubfLqOkAQpVbCYR3mrOUwGoaXiFL7WPsZTdaXrKxOGLm8qow23IBgfmrDmfSOJIP5giOSamLR60hu-FEkbTscgG6EXUghcqL2XpDSaTNz4x2prTRbF">
+            <h1 class="font-headline-lg-mobile text-headline-lg-mobile italic font-black text-primary tracking-tighter">FORGE</h1>
+          </div>
+          <button class="text-primary hover:opacity-80 transition-opacity active:scale-95">
+            <span class="material-symbols-outlined">notifications</span>
+          </button>
+        </div>
+      </header>
+      <main class="pt-[72px] pb-[90px]">
+        <section class="px-margin-mobile pt-md space-y-md">
+          <div class="relative neon-glow transition-all duration-300">
+            <span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+            <input class="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:border-primary-fixed rounded-lg pl-xl pr-sm py-sm text-on-surface font-label-caps placeholder:text-on-surface-variant/50 focus:ring-0 transition-all" placeholder="PROCURE SEU TREINO..." type="text">
+          </div>
+          <div class="flex gap-xs overflow-x-auto scrollbar-hide -mx-margin-mobile px-margin-mobile">
+            <button class="flex-shrink-0 px-md py-xs rounded-full bg-primary-fixed text-on-primary-fixed font-label-caps border border-primary-fixed active:scale-95 transition-transform">TUDO</button>
+            <button class="flex-shrink-0 px-md py-xs rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-caps hover:border-primary-fixed active:scale-95 transition-transform">FORÇA</button>
+            <button class="flex-shrink-0 px-md py-xs rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-caps hover:border-primary-fixed active:scale-95 transition-transform">CARDIO</button>
+            <button class="flex-shrink-0 px-md py-xs rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-caps hover:border-primary-fixed active:scale-95 transition-transform">FLEXIBILIDADE</button>
+            <button class="flex-shrink-0 px-md py-xs rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-caps hover:border-primary-fixed active:scale-95 transition-transform">HIIT</button>
+          </div>
+        </section>
+        <section class="px-margin-mobile mt-lg space-y-md">
+          <h2 class="font-headline-md text-headline-md text-primary tracking-tight">EXPLORE TREINOS</h2>
+          <div class="group relative h-64 rounded-xl overflow-hidden bg-surface-container-high border border-outline-variant hover:border-primary-fixed transition-colors cursor-pointer" onclick="showScreen('treino')">
+            <img class="absolute inset-0 w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo7WUo7hH2wJpDTvR4b9aZJ3Bzw4Aei1yZKzcMBq28XwZ3xBI4Jw-11hSi02Cb03MXvZ1RjiSB0S4QR32d4Iq_e1UW5BEcFKgRZJG7WkBX8sRWfxLR-i0-rrnQHWM4sJGvjUgY6wPXKEYtzMofuMDx90vguG5J5P6HJsgVltGT5237JpTcmziGYPCRgigqaeqeYl4P1OGUZQ74XNf5uhJ8XTjuoordN188nsu3C3mGkdsP4yX3GLnLLH7ayTF7MqE46VH2IJl73gOy">
+            <div class="absolute inset-0 card-gradient"></div>
+            <div class="absolute bottom-0 left-0 p-sm w-full flex flex-col gap-base">
+              <div class="flex justify-between items-end">
+                <div>
+                  <span class="inline-block px-xs py-base bg-secondary-container/20 text-secondary-fixed text-[10px] font-label-caps rounded mb-xs border border-secondary-fixed/30">AVANÇADO</span>
+                  <h3 class="font-headline-md text-headline-md text-white leading-none">TREINO COMPLETO</h3>
+                </div>
+                <div class="flex items-center gap-base text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[18px]">schedule</span>
+                  <span class="font-label-caps text-[10px]">30 MIN</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="group relative h-64 rounded-xl overflow-hidden bg-surface-container-high border border-outline-variant hover:border-primary-fixed transition-colors cursor-pointer" onclick="showScreen('treino')">
+            <img class="absolute inset-0 w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbI6VdqqZEh95jYQjbjYlYIA8X4nnmSluQABCSo6XqcnVcXBJpj2ywuXX0grD7gKMRITomF2aHJGOGcTSOlArJWQA8DgGhl-vgVPTPzFwCVZ34KysqvwqAsZbk03xji0BGxeCOgy5d5vutFYFQS8qmDJxBIQHuJ7kQdwlei270sKxCZJHQGlFDPmoJcKgpW6T7CwugmIqPfjCBN0JJeGs9UMCuUZK2W-bJmW3R7YprirzkksVL3fFQORJHCT-Ur16KdwFpSdbkU2R6">
+            <div class="absolute inset-0 card-gradient"></div>
+            <div class="absolute bottom-0 left-0 p-sm w-full flex flex-col gap-base">
+              <div class="flex justify-between items-end">
+                <div>
+                  <span class="inline-block px-xs py-base bg-secondary-container/20 text-secondary-fixed text-[10px] font-label-caps rounded mb-xs border border-secondary-fixed/30">INTERMEDIÁRIO</span>
+                  <h3 class="font-headline-md text-headline-md text-white leading-none">NÚCLEO FORTE</h3>
+                </div>
+                <div class="flex items-center gap-base text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[18px]">schedule</span>
+                  <span class="font-label-caps text-[10px]">20 MIN</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Bottom Nav -->
+      <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pb-sm pt-xs bg-surface-container border-t-2 border-outline-variant">
+        <button onclick="showScreen('dashboard')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">home</span>
+          <span class="font-label-caps text-[10px] mt-1">INÍCIO</span>
+        </button>
+        <button onclick="showScreen('biblioteca')" class="flex flex-col items-center justify-center text-primary-fixed bg-secondary-container rounded-lg px-sm py-xs transition-all duration-150 active:scale-90">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+          <span class="font-label-caps text-[10px] mt-1">TREINOS</span>
+        </button>
+        <button onclick="showScreen('historico')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">history</span>
+          <span class="font-label-caps text-[10px] mt-1">HISTÓRICO</span>
+        </button>
+        <button onclick="showScreen('perfil')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">person</span>
+          <span class="font-label-caps text-[10px] mt-1">PERFIL</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- SCREEN 4: HISTÓRICO -->
+    <div id="screen-historico" class="screen">
+      <header class="docked full-width top-0 z-50 bg-surface border-b border-outline-variant flex justify-between items-center w-full px-margin-mobile py-xs fixed">
+        <div class="flex items-center gap-sm">
+          <img alt="usuário" class="w-10 h-10 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyLZ6SrIEbjXCtMJN8iP7aMHbNbAIFGcYiTO5ms-pTFSnCsUjnsOW6U-XaLn3CCL2OV8uUNhBbP1dD3MokOJkmamIOqSx6CzFvOU-T_Uj6d7qKGmYDJ-eGRzOtObhzLFrWMmFYFzlO76pa-BugS2Sn2NocE6ubfLqOkAQpVbCYR3mrOUwGoaXiFL7WPsZTdaXrKxOGLm8qow23IBgfmrDmfSOJIP5giOSamLR60hu-FEkbTscgG6EXUghcqL2XpDSaTNz4x2prTRbF">
+          <h1 class="font-headline-lg-mobile text-headline-lg-mobile italic font-black text-primary tracking-tighter">MEU HISTÓRICO</h1>
+        </div>
+      </header>
+      <main class="pt-24 pb-32 px-margin-mobile space-y-md">
+        <h2 class="font-headline-md text-headline-md text-primary-fixed">Sessões Recentes</h2>
+        <div class="space-y-md">
+          <div class="flex items-center justify-between p-sm bg-surface-container border border-outline-variant rounded-lg group hover:border-primary-fixed transition-colors">
+            <div class="flex items-center gap-md">
+              <div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">directions_run</span>
+              </div>
+              <div>
+                <p class="font-body-lg font-bold">Cardio HIIT Noturno</p>
+                <p class="font-label-caps text-[10px] text-on-surface-variant">24 OUT • 45 MIN • 520 CAL</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between p-sm bg-surface-container border border-outline-variant rounded-lg group hover:border-primary-fixed transition-colors">
+            <div class="flex items-center gap-md">
+              <div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary-fixed">weight</span>
+              </div>
+              <div>
+                <p class="font-body-lg font-bold">Força - Parte Superior</p>
+                <p class="font-label-caps text-[10px] text-on-surface-variant">22 OUT • 60 MIN • 380 CAL</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Bottom Nav -->
+      <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pb-sm pt-xs bg-surface-container border-t-2 border-outline-variant">
+        <button onclick="showScreen('dashboard')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">home</span>
+          <span class="font-label-caps text-[10px] mt-1">INÍCIO</span>
+        </button>
+        <button onclick="showScreen('biblioteca')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">fitness_center</span>
+          <span class="font-label-caps text-[10px] mt-1">TREINOS</span>
+        </button>
+        <button onclick="showScreen('historico')" class="flex flex-col items-center justify-center text-primary-fixed bg-secondary-container rounded-lg px-sm py-xs transition-all duration-150 active:scale-90">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">history</span>
+          <span class="font-label-caps text-[10px] mt-1">HISTÓRICO</span>
+        </button>
+        <button onclick="showScreen('perfil')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">person</span>
+          <span class="font-label-caps text-[10px] mt-1">PERFIL</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- SCREEN 5: PERFIL -->
+    <div id="screen-perfil" class="screen">
+      <header class="bg-surface border-b border-outline-variant fixed top-0 z-50 flex justify-between items-center w-full px-margin-mobile py-xs">
+        <div class="flex items-center gap-sm">
+          <img alt="usuário" class="w-10 h-10 rounded-full overflow-hidden border border-primary-fixed" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpbyqyQtJttCp08qEVXakZG-ETjR8u47eaCuCJ0xCcVteFg64VGq9JNkJhReGlOr6ig9Q1TesNpuuec71_tkhliIFzhv29WTcapc3dSByhBJ4TNm9QRvXTfZBoKtQNXh7nkVHvtaZPtiBQ7vAvYgdMiNklSIpRcKWjA4phz3maM37LjCXdgBx9ZD_5-bbNvtsW3YdmIakVPdgELOdrNL3ivJ-9nlINP80tuOGE8vyKDoXslAzOUz2uv-vn_hvRrPCneSmSuTg2qmL8">
+          <span class="font-headline-lg-mobile text-headline-lg-mobile italic font-black text-primary tracking-tighter">FORGE</span>
+        </div>
+        <button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity active:scale-95">notifications</button>
+      </header>
+      <main class="pt-24 pb-32 px-margin-mobile max-w-5xl mx-auto space-y-md">
+        <section class="flex flex-col md:flex-row items-center md:items-end gap-md">
+          <div class="flex flex-col items-center md:items-start">
+            <h1 class="font-display-lg text-display-lg uppercase italic">Alex Johnson</h1>
+            <div class="mt-xs inline-flex items-center px-sm py-xs bg-primary-fixed text-on-primary-fixed rounded-full font-label-caps text-label-caps tracking-widest">NÍVEL 15 ELITE</div>
+          </div>
+        </section>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+          <div class="bg-surface-container border border-outline-variant rounded-xl p-md">
+            <p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">TREINOS COMPLETADOS</p>
+            <p class="font-stats-xl text-stats-xl text-primary">124</p>
+          </div>
+          <div class="bg-surface-container border border-outline-variant rounded-xl p-md">
+            <p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">CALORIAS QUEIMADAS</p>
+            <p class="font-stats-xl text-stats-xl text-secondary-container">42k</p>
+          </div>
+        </div>
+
+        <!-- Badges -->
+        <section class="space-y-sm">
+          <h2 class="font-headline-md text-headline-md uppercase italic">Conquistas</h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+            <div class="bg-surface-container border border-outline-variant p-sm flex flex-col items-center justify-center text-center gap-xs rounded-xl hover:bg-surface-bright transition-colors">
+              <div class="w-16 h-16 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+                <span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+              </div>
+              <p class="font-label-caps text-label-caps">7 DIAS SEGUIDOS</p>
+            </div>
+            <div class="bg-surface-container border border-outline-variant p-sm flex flex-col items-center justify-center text-center gap-xs rounded-xl hover:bg-surface-bright transition-colors">
+              <div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+                <span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">footprint</span>
+              </div>
+              <p class="font-label-caps text-label-caps">100K PASSOS</p>
+            </div>
+            <div class="bg-surface-container border border-outline-variant p-sm flex flex-col items-center justify-center text-center gap-xs rounded-xl hover:bg-surface-bright transition-colors">
+              <div class="w-16 h-16 rounded-full bg-tertiary-fixed-dim flex items-center justify-center text-on-tertiary-fixed">
+                <span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+              </div>
+              <p class="font-label-caps text-label-caps">LEVANTADOR</p>
+            </div>
+            <div class="bg-surface-container border border-outline-variant p-sm flex flex-col items-center justify-center text-center gap-xs rounded-xl hover:bg-surface-bright transition-colors opacity-50">
+              <div class="w-16 h-16 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant border border-dashed border-outline">
+                <span class="material-symbols-outlined text-[32px]">lock</span>
+              </div>
+              <p class="font-label-caps text-label-caps">MARATONISTA</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Bottom Nav -->
+      <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pb-sm pt-xs bg-surface-container border-t-2 border-outline-variant">
+        <button onclick="showScreen('dashboard')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">home</span>
+          <span class="font-label-caps text-[10px] mt-1">INÍCIO</span>
+        </button>
+        <button onclick="showScreen('biblioteca')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">fitness_center</span>
+          <span class="font-label-caps text-[10px] mt-1">TREINOS</span>
+        </button>
+        <button onclick="showScreen('historico')" class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90">
+          <span class="material-symbols-outlined">history</span>
+          <span class="font-label-caps text-[10px] mt-1">HISTÓRICO</span>
+        </button>
+        <button onclick="showScreen('perfil')" class="flex flex-col items-center justify-center text-primary-fixed bg-secondary-container rounded-lg px-sm py-xs transition-all duration-150 active:scale-90">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+          <span class="font-label-caps text-[10px] mt-1">PERFIL</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- SCREEN 6: TREINO EM EXECUÇÃO -->
+    <div id="screen-treino" class="screen">
+      <header class="flex justify-between items-center w-full px-margin-mobile py-xs bg-surface border-b border-outline-variant z-50 fixed">
+        <button onclick="showScreen('dashboard')" aria-label="Cancelar Treino" class="active:scale-95 transition-transform hover:opacity-80 flex items-center gap-xs">
+          <span class="material-symbols-outlined text-primary">close</span>
+          <span class="font-label-caps text-label-caps text-on-surface-variant">PARAR</span>
+        </button>
+        <h1 class="font-headline-lg-mobile text-headline-lg-mobile italic font-black text-primary tracking-tighter">FORGE</h1>
+        <button class="material-symbols-outlined text-primary">more_vert</button>
+      </header>
+      <main class="min-h-[calc(100vh-60px)] flex flex-col items-center justify-between py-md px-margin-mobile relative z-10 pt-20">
+        <!-- Exercise Title -->
+        <section class="w-full text-center space-y-base">
+          <p class="font-label-caps text-label-caps text-primary-fixed tracking-[0.2em]">PERNAS • FORÇA</p>
+          <h2 class="font-headline-lg-mobile md:font-headline-lg italic uppercase tracking-tight">Agachamento com Barra</h2>
+        </section>
+
+        <!-- Video Preview -->
+        <section class="w-full max-w-md aspect-video relative rounded-xl overflow-hidden bg-surface-container-high border border-outline-variant group">
+          <img class="w-full h-full object-cover grayscale brightness-75 transition-all duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMK8hCAOzs4nxeg30JXwwaf5M5J3KTcBzkG5-Rh98u3twblBaroEhivR0lu_4VMk-t8xaykcQdiuJc4_1kZdx3p_pC7P4kMcA609YKa4I-5o8gUlClBjHc2Oo92GuFVmRM_nWnXWyxF0n7qpYBeP79V4B0vCjhsB08pFLoMA7S241ZJTrtMnCwofysxSf0MFwAn8k5iYKdStns_DaFS9I5q_e8HO0gqGA8KD3gZZ5vgG4oKHJE60Db9ZebzK2aATPazTD5-4hTxE9M">
+          <div class="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-[2px]">
+            <div class="w-16 h-16 rounded-full border-2 border-primary-fixed flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-primary-fixed text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </div>
+          </div>
+          <div class="absolute bottom-sm left-sm bg-background/80 px-xs py-1 rounded">
+            <span class="font-label-caps text-[10px] text-on-surface">GUIA EM VÍDEO</span>
+          </div>
+        </section>
+
+        <!-- Timer & Controls -->
+        <section class="flex flex-col items-center space-y-md">
+          <div class="timer-ring-container flex items-center justify-center">
+            <svg class="timer-svg w-full h-full" viewBox="0 0 300 300">
+              <circle class="timer-circle-bg" cx="150" cy="150" r="130"></circle>
+              <circle class="timer-circle-progress" cx="150" cy="150" id="progressCircle" r="130"></circle>
+            </svg>
+            <div class="absolute flex flex-col items-center">
+              <span class="font-label-caps text-label-caps text-on-surface-variant">REPETIÇÕES</span>
+              <span class="font-stats-xl text-stats-xl leading-none">12</span>
+              <span class="font-headline-md text-headline-md text-primary-fixed mt-xs">SÉRIE 1 <span class="text-on-surface-variant/50 font-normal">DE 4</span></span>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="flex items-center gap-xl">
+            <button class="w-14 h-14 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant active:scale-90 transition-all">
+              <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <button class="w-20 h-20 rounded-full bg-surface-container-highest flex items-center justify-center text-primary active:scale-90 transition-all border-2 border-outline" id="toggleTimer">
+              <span class="material-symbols-outlined text-3xl">pause</span>
+            </button>
+            <button class="w-14 h-14 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant active:scale-90 transition-all">
+              <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="w-full max-w-md pb-xs">
+          <button class="w-full bg-primary-fixed text-on-primary-fixed font-headline-md py-md rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-xs shadow-[0_0_20px_rgba(210,240,0,0.2)]">
+            SÉRIE COMPLETA
+            <span class="material-symbols-outlined">check_circle</span>
+          </button>
+          <div class="mt-sm flex justify-between px-xs">
+            <div class="flex flex-col">
+              <span class="font-label-caps text-[10px] text-on-surface-variant">CARGA ANTERIOR</span>
+              <span class="font-headline-md text-[18px]">80 KG</span>
+            </div>
+            <div class="flex flex-col text-right">
+              <span class="font-label-caps text-[10px] text-on-surface-variant">DESCANSO RECOM.</span>
+              <span class="font-headline-md text-[18px]">90 SEG</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+  <script>
+    // Screen Navigation
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+        screen.style.display = 'none';
+      });
+      const screenMap = {
+        'criar': 'screen-criar',
+        'dashboard': 'screen-dashboard',
+        'biblioteca': 'screen-biblioteca',
+        'perfil': 'screen-perfil',
+        'treino': 'screen-treino',
+        'historico': 'screen-historico'
+      };
+      if (screenMap[screenId]) {
+        const screen = document.getElementById(screenMap[screenId]);
+        if (screen) {
+          screen.style.display = 'block';
+          screen.classList.add('active');
+          window.scrollTo(0, 0);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#454932",
+                        "on-surface": "#e5e2e1",
+                        "surface-bright": "#393939",
+                        "primary-fixed-dim": "#b8d300",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#00285c",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#576500",
+                        "tertiary": "#ffffff",
+                        "error-container": "#93000a",
+                        "on-primary": "#2c3400",
+                        "surface-variant": "#353534",
+                        "surface-dim": "#131313",
+                        "surface": "#131313",
+                        "on-tertiary-fixed-variant": "#930005",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-on-surface": "#313030",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "tertiary-container": "#ffdad5",
+                        "background": "#131313",
+                        "on-secondary-fixed": "#001a41",
+                        "surface-container-highest": "#353534",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-container": "#d2f000",
+                        "on-secondary-fixed-variant": "#004493",
+                        "on-tertiary-fixed": "#410001",
+                        "on-tertiary-container": "#ca0a0f",
+                        "on-primary-container": "#5d6b00",
+                        "on-background": "#e5e2e1",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-tint": "#b8d300",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-fixed-variant": "#414c00",
+                        "on-primary-fixed": "#191e00",
+                        "surface-container": "#201f1f",
+                        "secondary-container": "#4b8eff",
+                        "primary-fixed": "#d2f000",
+                        "secondary": "#adc6ff",
+                        "on-secondary": "#002e69",
+                        "tertiary-fixed": "#ffdad5",
+                        "secondary-fixed": "#d8e2ff",
+                        "primary": "#ffffff",
+                        "outline": "#909378",
+                        "on-tertiary": "#690003",
+                        "on-surface-variant": "#c6c9ab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "md": "24px",
+                        "xs": "8px",
+                        "lg": "40px",
+                        "base": "4px",
+                        "xl": "64px",
+                        "margin-desktop": "48px",
+                        "gutter": "16px",
+                        "sm": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "label-caps": ["Space Mono"],
+                        "body-md": ["Inter"],
+                        "stats-xl": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "stats-xl": ["64px", {"lineHeight": "1.0", "fontWeight": "900"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "900"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "800"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-card {
+            border-color: #d2f000 !important;
+            background-color: rgba(210, 240, 0, 0.05) !important;
+        }
+        .gemini-gradient {
+            background: linear-gradient(90deg, #4b8eff, #d2f000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-bottom-width: 2px !important;
+            border-color: #d2f000 !important;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant flex justify-between items-center px-margin-mobile py-xs">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-headline-md">fitness_center</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile italic font-black text-primary tracking-tighter">FORGE</h1>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant hover:opacity-80 transition-opacity cursor-pointer">notifications</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A high-quality digital portrait of a modern fitness enthusiast with a confident expression. The lighting is dramatic and high-contrast, typical of a professional gym photography session in a dark-mode aesthetic. The color palette is dominated by deep grays and blacks with sharp neon lime highlights reflecting off the skin. The style is clean, sharp, and highly detailed, conveying an atmosphere of focus and intensity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGhS4zgVIaYesdyF_anctMwOWYxsN8B1nWGG3ormu3ZZcfKWraJnDO1v991GtRbDEf5mZNFxIpn_d8TawwDnWX8e6RBihc6j_Lm7C_A4TuiZKhni5VwK7oSCkuFj92RmIU6TSw51ww1Q543rrVR6Hz4ECjE4ouOxKdJz8oSetamlPe2h4333yLMBWoea3hakm1zVi9-pdoZWK83Z3rR8xnOXFcIwvtk_zDjLShixcUBNFSjLGfCCUSDhFtUw4f2JHSpQzsTOYNnER7"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 px-margin-mobile max-w-2xl mx-auto">
+<!-- Header & Gemini Badge -->
+<div class="mb-lg">
+<div class="flex items-center justify-between mb-xs">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Criador de Ficha com IA</h2>
+<div class="flex items-center gap-xs bg-surface-container-high px-sm py-xs rounded-full border border-outline-variant shadow-lg">
+<span class="material-symbols-outlined text-[18px] gemini-gradient" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-caps text-label-caps gemini-gradient">GEMINI AI</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-md">Otimize seus resultados com um plano de treinamento hiper-personalizado gerado pela inteligência artificial mais avançada do Google.</p>
+</div>
+<form class="space-y-md" id="workout-form">
+<!-- Basic Info -->
+<section class="bg-surface-container border border-outline-variant p-sm rounded-xl">
+<label class="font-label-caps text-label-caps text-primary-fixed mb-xs block">IDENTIFICAÇÃO</label>
+<input class="w-full bg-transparent border-b border-outline-variant py-xs text-body-md placeholder:text-on-surface-variant mb-md" placeholder="Como podemos te chamar?" type="text"/>
+<div class="grid grid-cols-2 gap-sm">
+<button class="gender-btn flex items-center justify-center gap-xs p-sm border border-outline-variant rounded-lg bg-surface hover:bg-surface-bright transition-colors" onclick="selectGender(this)" type="button">
+<span class="material-symbols-outlined">male</span>
+<span class="font-label-caps text-label-caps">MASCULINO</span>
+</button>
+<button class="gender-btn flex items-center justify-center gap-xs p-sm border border-outline-variant rounded-lg bg-surface hover:bg-surface-bright transition-colors" onclick="selectGender(this)" type="button">
+<span class="material-symbols-outlined">female</span>
+<span class="font-label-caps text-label-caps">FEMININO</span>
+</button>
+</div>
+</section>
+<!-- Biometrics -->
+<section class="bg-surface-container border border-outline-variant p-sm rounded-xl">
+<label class="font-label-caps text-label-caps text-primary-fixed mb-sm block">DADOS BIOMÉTRICOS
+<div class="grid grid-cols-3 gap-sm">
+<div class="space-y-base">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase">Idade</span>
+<input class="w-full bg-transparent border-b border-outline-variant py-xs text-body-md text-center" placeholder="25" type="number"/>
+</div>
+<div class="space-y-base">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase">Peso (kg)</span>
+<input class="w-full bg-transparent border-b border-outline-variant py-xs text-body-md text-center" placeholder="75" type="number"/>
+</div>
+<div class="space-y-base">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase">Altura (cm)</span>
+<input class="w-full bg-transparent border-b border-outline-variant py-xs text-body-md text-center" placeholder="180" type="number"/>
+</div>
+</div>
+</label></section>
+<!-- Goals -->
+<section>
+<label class="font-label-caps text-label-caps text-primary-fixed mb-sm block">QUAL SEU OBJETIVO PRINCIPAL?</label>
+<div class="grid grid-cols-1 gap-sm">
+<div class="goal-card flex items-center gap-md p-md bg-surface-container border border-outline-variant rounded-xl cursor-pointer hover:bg-surface-bright transition-all" onclick="selectGoal(this)">
+<div class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface-container-highest border border-outline-variant">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">Hipertrofia</h4>
+<p class="text-[12px] text-on-surface-variant">Ganho de massa muscular e volume.</p>
+</div>
+</div>
+<div class="goal-card flex items-center gap-md p-md bg-surface-container border border-outline-variant rounded-xl cursor-pointer hover:bg-surface-bright transition-all" onclick="selectGoal(this)">
+<div class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface-container-highest border border-outline-variant">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">Emagrecimento</h4>
+<p class="text-[12px] text-on-surface-variant">Queima calórica e definição muscular.</p>
+</div>
+</div>
+<div class="goal-card flex items-center gap-md p-md bg-surface-container border border-outline-variant rounded-xl cursor-pointer hover:bg-surface-bright transition-all" onclick="selectGoal(this)">
+<div class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface-container-highest border border-outline-variant">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">Condicionamento</h4>
+<p class="text-[12px] text-on-surface-variant">Melhora da resistência e fôlego.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Experience & Logistics -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<section class="bg-surface-container border border-outline-variant p-sm rounded-xl">
+<label class="font-label-caps text-label-caps text-primary-fixed mb-sm block">EXPERIÊNCIA</label>
+<select class="w-full bg-surface-container-high border border-outline-variant rounded-lg p-xs text-body-md text-on-surface focus:ring-1 focus:ring-primary-fixed-dim">
+<option>Iniciante</option>
+<option>Intermediário</option>
+<option>Avançado</option>
+</select>
+</section>
+<section class="bg-surface-container border border-outline-variant p-sm rounded-xl">
+<label class="font-label-caps text-label-caps text-primary-fixed mb-sm block">FREQUÊNCIA SEMANAL</label>
+<div class="flex items-center justify-between gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant">1 dia</span>
+<input class="accent-primary-fixed-dim flex-1" max="7" min="1" type="range" value="4"/>
+<span class="font-label-caps text-label-caps text-on-surface-variant">7 dias</span>
+</div>
+</section>
+</div>
+<!-- Time & Emphasis -->
+<section class="bg-surface-container border border-outline-variant p-sm rounded-xl space-y-md">
+<div>
+<label class="font-label-caps text-label-caps text-primary-fixed mb-sm block">TEMPO DISPONÍVEL (MINUTOS)</label>
+<input class="w-full bg-transparent border-b border-outline-variant py-xs text-body-md" placeholder="Ex: 60" type="number"/>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-primary-fixed mb-sm block">ÊNFASE EM ALGUM GRUPO? (OPCIONAL)</label>
+<textarea class="w-full bg-transparent border-b border-outline-variant py-xs text-body-md resize-none" placeholder="Ex: Pernas e Glúteos, Peito e Tríceps..." rows="2"></textarea>
+</div>
+</section>
+<!-- Primary Action -->
+<button class="w-full bg-primary-container text-on-primary-container font-headline-md text-headline-md py-md rounded-xl active:scale-95 transition-transform uppercase flex items-center justify-center gap-sm mt-lg" onclick="generateWorkout()" type="button">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                Gerar Ficha com IA
+            </button>
+</form>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pb-sm pt-xs bg-surface-container border-t-2 border-outline-variant">
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-caps text-label-caps">HOME</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary-fixed bg-secondary-container rounded-lg px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+<span class="font-label-caps text-label-caps">WORKOUTS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-label-caps">PROGRESS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-sm py-xs hover:bg-surface-bright transition-colors active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-label-caps">PROFILE</span>
+</div>
+</nav>
+<script>
+        function selectGender(btn) {
+            document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active-card'));
+            btn.classList.add('active-card');
+        }
+
+        function selectGoal(card) {
+            document.querySelectorAll('.goal-card').forEach(c => {
+                c.classList.remove('active-card');
+                c.querySelector('div').classList.remove('bg-primary-container');
+                c.querySelector('div').classList.add('bg-surface-container-highest');
+            });
+            card.classList.add('active-card');
+            card.querySelector('div').classList.remove('bg-surface-container-highest');
+            card.querySelector('div').classList.add('bg-primary-container');
+        }
+
+        function generateWorkout() {
+            const btn = event.currentTarget;
+            const originalContent = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `
+                <svg class="animate-spin h-6 w-6 text-on-primary-container" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processando...
+            `;
+            
+            setTimeout(() => {
+                alert('IA FORGE: Seus dados foram processados com sucesso. Sua ficha de treino personalizada está sendo montada e estará disponível em instantes na aba WORKOUTS.');
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }, 2500);
+        }
+    </script>
+</body></html>

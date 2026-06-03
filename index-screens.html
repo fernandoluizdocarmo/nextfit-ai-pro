@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>treinox.ai - Seu Personal Trainer de Elite</title>
+  <meta name="description" content="treinox.ai é seu aplicativo fitness definitivo com IA. Fichas A/B/C inteligentes, cronômetro integrado e acompanhamento série por série.">
+  
+  <!-- PWA Support -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#131313">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="treinox.ai">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <!-- Fonts & Material Icons -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-enhancements.css">
+  
+  <!-- Tailwind Config - FORGE Theme -->
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error": "#ffb4ab",
+            "on-secondary-fixed-variant": "#004493",
+            "surface-dim": "#131313",
+            "on-primary-fixed": "#191e00",
+            "on-primary": "#2c3400",
+            "on-secondary": "#002e69",
+            "on-secondary-fixed": "#001a41",
+            "inverse-on-surface": "#313030",
+            "tertiary-container": "#ffdad5",
+            "inverse-surface": "#e5e2e1",
+            "on-primary-fixed-variant": "#414c00",
+            "surface-container-lowest": "#0e0e0e",
+            "on-tertiary-fixed-variant": "#930005",
+            "outline-variant": "#454932",
+            "surface-bright": "#393939",
+            "tertiary": "#ffffff",
+            "inverse-primary": "#576500",
+            "on-tertiary": "#690003",
+            "on-background": "#e5e2e1",
+            "on-surface-variant": "#c6c9ab",
+            "on-surface": "#e5e2e1",
+            "secondary-fixed-dim": "#adc6ff",
+            "on-error-container": "#ffdad6",
+            "primary-fixed-dim": "#b8d300",
+            "on-tertiary-container": "#ca0a0f",
+            "error-container": "#93000a",
+            "on-secondary-container": "#00285c",
+            "surface-container-low": "#1c1b1b",
+            "surface-container-high": "#2a2a2a",
+            "secondary-fixed": "#d8e2ff",
+            "primary-container": "#d2f000",
+            "tertiary-fixed-dim": "#ffb4aa",
+            "background": "#131313",
+            "on-tertiary-fixed": "#410001",
+            "surface-container-highest": "#353534",
+            "secondary-container": "#4b8eff",
+            "primary": "#ffffff",
+            "surface-container": "#201f1f",
+            "on-error": "#690005",
+            "surface": "#131313",
+            "secondary": "#adc6ff",
+            "surface-tint": "#b8d300",
+            "primary-fixed": "#d2f000",
+            "on-primary-container": "#5d6b00",
+            "outline": "#909378",
+            "surface-variant": "#353534",
+            "tertiary-fixed": "#ffdad5"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "20px",
+            "md": "24px",
+            "xs": "8px",
+            "lg": "40px",
+            "base": "4px",
+            "xl": "64px",
+            "margin-desktop": "48px",
+            "gutter": "16px",
+            "sm": "16px"
+          },
+          "fontFamily": {
+            "headline-md": ["Inter"],
+            "label-caps": ["Space Mono"],
+            "body-md": ["Inter"],
+            "stats-xl": ["Inter"],
+            "display-lg": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+            "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+            "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+            "stats-xl": ["64px", {"lineHeight": "1.0", "fontWeight": "900"}],
+            "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "900"}],
+            "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "800"}],
+            "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    
+    .progress-ring-circle {
+      transition: stroke-dashoffset 0.35s;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+    
+    .timer-ring-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+    }
+    
+    .timer-svg {
+      transform: rotate(-90deg);
+    }
+    
+    .timer-circle-bg {
+      stroke: #2C2C2C;
+      stroke-width: 8;
+      fill: transparent;
+    }
+    
+    .timer-circle-progress {
+      stroke: #d2f000;
+      stroke-width: 8;
+      stroke-linecap: round;
+      fill: transparent;
+      stroke-dasharray: 816.8;
+      stroke-dashoffset: 200;
+      transition: stroke-dashoffset 1s linear;
+    }
+    
+    .bg-noise {
+      background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+      opacity: 0.05;
+    }
+    
+    .neon-glow:focus-within {
+      box-shadow: 0 0 15px rgba(210, 240, 0, 0.2);
+    }
+    
+    .kinetic-bg {
+      background: linear-gradient(rgba(18, 18, 28, 0.85), rgba(18, 18, 28, 0.95)), url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABZJREFUeNpi2L9//38gYGAEEWAADPUCeKl44+gAAAAASUVORK5CYII=');
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+  <!-- Root App Container -->
+  <div id="app-root"></div>
+  
+  <script src="app-screens-integrated.js"></script>
+</body>
+</html>
