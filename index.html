@@ -26,38 +26,8 @@
   <!-- AUTH OVERLAY -->
   <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: #12121c; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem; overflow: hidden;">
     
-    <!-- LOGIN SCREEN -->
-    <div id="login-screen" style="max-width: 420px; width: 100%;">
-      <div class="card" style="padding: 1.5rem 1.25rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-        <div style="margin-bottom: 1.25rem;">
-          <span class="material-symbols-outlined text-primary" style="font-size: 2.5rem;">fitness_center</span>
-          <h1 class="font-headline-lg" style="font-size: 1.6rem; color: white; margin-top: 0.5rem; margin-bottom: 0.25rem;">treinox.ai</h1>
-          <p class="text-secondary" style="font-size: 0.85rem; color: #94A3B8;">Bem-vindo ao seu Personal Trainer de Elite</p>
-        </div>
-        <form id="login-form" onsubmit="event.preventDefault(); performLogin();">
-          <div class="form-group" style="text-align: left; margin-bottom: 1rem;">
-            <label class="form-label" for="login-email" style="color: #94A3B8; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.4rem;">E-mail</label>
-            <input type="email" class="input-field" id="login-email" name="username" placeholder="seu@email.com" required style="min-height: 44px; padding: 0.75rem 1rem;" autocomplete="username">
-          </div>
-          <div class="form-group" style="text-align: left; margin-bottom: 1.25rem;">
-            <label class="form-label" for="login-password" style="color: #94A3B8; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.4rem;">Senha</label>
-            <input type="password" class="input-field" id="login-password" name="password" placeholder="Sua senha secreta" required style="min-height: 44px; padding: 0.75rem 1rem;" autocomplete="current-password">
-          </div>
-          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.8rem; font-size: 1rem; margin-top: 1rem; min-height: 44px;">
-            <span class="material-symbols-outlined">login</span> Entrar
-          </button>
-        </form>
-        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
-          <p style="color: #94A3B8; font-size: 0.85rem; margin-bottom: 0.75rem;">Não tem conta?</p>
-          <button type="button" onclick="switchAuthScreen('register')" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.7rem; min-height: 40px; font-size: 0.9rem;">
-            <span class="material-symbols-outlined">person_add</span> Criar Nova Conta
-          </button>
-        </div>
-      </div>
-    </div>
-
     <!-- REGISTRATION SCREEN -->
-    <div id="register-screen" style="max-width: 420px; width: 100%; display: none;">
+    <div id="register-screen" style="max-width: 420px; width: 100%;">
       <div class="card" style="padding: 1.5rem 1.25rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
         <div style="margin-bottom: 1.25rem;">
           <span class="material-symbols-outlined text-primary" style="font-size: 2.5rem;">fitness_center</span>
@@ -95,12 +65,6 @@
             <span class="material-symbols-outlined">person_add</span> Criar Conta
           </button>
         </form>
-        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
-          <p style="color: #94A3B8; font-size: 0.85rem; margin-bottom: 0.75rem;">Já tem conta?</p>
-          <button type="button" onclick="switchAuthScreen('login')" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.7rem; min-height: 40px; font-size: 0.9rem;">
-            <span class="material-symbols-outlined">login</span> Fazer Login
-          </button>
-        </div>
       </div>
     </div>
   </div>
@@ -142,12 +106,7 @@
             <span>Criar Ficha</span>
           </a>
         </li>
-        <li class="nav-item" data-page="biblioteca" id="nav-lib-link">
-          <a onclick="navigateTo('biblioteca')">
-            <span class="material-symbols-outlined">menu_book</span>
-            <span>Biblioteca</span>
-          </a>
-        </li>
+
         <li class="nav-item" data-page="historico" id="nav-hist-link">
           <a onclick="navigateTo('historico')">
             <span class="material-symbols-outlined">history</span>
@@ -441,21 +400,7 @@
         </div>
       </section>
 
-      <!-- ============================================== -->
-      <!-- 4. EXERCISE LIBRARY TUTORIALS PAGE             -->
-      <!-- ============================================== -->
-      <section id="biblioteca" class="page">
-        <div class="header-section">
-          <div class="header-title">
-            <h1>Biblioteca de Exercícios</h1>
-            <p>Navegue pela lista completa de movimentos e confira a execução correta em vídeo.</p>
-          </div>
-        </div>
 
-        <div class="grid-container" id="library-grid">
-          <!-- Rendered dynamically -->
-        </div>
-      </section>
 
       <!-- ============================================== -->
       <!-- 5. COMPLETED SESSIONS HISTORY LOGS             -->
@@ -592,10 +537,7 @@
       <span class="material-symbols-outlined">smart_toy</span>
       <span>Criar Ficha</span>
     </button>
-    <button class="mobile-nav-item" data-page="biblioteca" onclick="navigateTo('biblioteca')">
-      <span class="material-symbols-outlined">menu_book</span>
-      <span>Exercícios</span>
-    </button>
+
     <button class="mobile-nav-item" data-page="historico" onclick="navigateTo('historico')">
       <span class="material-symbols-outlined">history</span>
       <span>Histórico</span>

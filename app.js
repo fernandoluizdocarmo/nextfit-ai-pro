@@ -438,25 +438,16 @@ const MAX_HISTORY_ITEMS = 50; // Limitar histórico para não overflow localStor
 // ─── AUTHENTICATION FUNCTIONS ──────────────────────────────────────────────────
 
 const switchAuthScreen = (screen) => {
-  const loginScreen = document.getElementById("login-screen");
   const registerScreen = document.getElementById("register-screen");
   const authOverlay = document.getElementById("auth-overlay");
   
-  if (screen === "login") {
-    loginScreen.style.display = "block";
-    registerScreen.style.display = "none";
-    if (authOverlay) {
-      authOverlay.classList.add("login-active");
-      authOverlay.classList.remove("register-active");
-      authOverlay.scrollTop = 0; // Garantir que volte ao topo
-    }
-  } else if (screen === "register") {
-    loginScreen.style.display = "none";
+  if (registerScreen) {
     registerScreen.style.display = "block";
-    if (authOverlay) {
-      authOverlay.classList.remove("login-active");
-      authOverlay.classList.add("register-active");
-    }
+  }
+  if (authOverlay) {
+    authOverlay.classList.remove("login-active");
+    authOverlay.classList.add("register-active");
+    authOverlay.scrollTop = 0; // Garantir que volte ao topo
   }
 };
 
@@ -526,81 +517,40 @@ const performRegister = () => {
   
   // Atualizar UI
   updateUserUI();
+  populateGeneratorForm();
   console.log("✅ Conta criada com sucesso:", state.userName);
 };
 
-// Login Logic
+// Login Logic (kept as dummy/fallback helper)
 const performLogin = () => {
-  const emailInput = document.getElementById("login-email");
-  const passwordInput = document.getElementById("login-password");
-  
-  const email = (emailInput.value || "").trim();
-  const password = (passwordInput.value || "").trim();
+  // Login directly bypassed to registration
+  alert("⚠️ Operação indisponível. Cadastre-se diretamente.");
+};
 
-  // Validação básica
-  if (!email || !password) {
-    alert("⚠️ Por favor, preencha e-mail e senha.");
-    return;
+const populateGeneratorForm = () => {
+  const nameInput = document.getElementById("user-name-input");
+  const ageInput = document.getElementById("form-age");
+  const weightInput = document.getElementById("form-weight");
+  const heightInput = document.getElementById("form-height");
+
+  if (nameInput && state.userName) {
+    nameInput.value = state.userName;
   }
-
-  // Validar formato de email
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    alert("⚠️ E-mail inválido.");
-    return;
+  if (state.userProfile) {
+    if (ageInput && state.userProfile.age) ageInput.value = state.userProfile.age;
+    if (weightInput && state.userProfile.weight) weightInput.value = state.userProfile.weight;
+    if (heightInput && state.userProfile.height) heightInput.value = state.userProfile.height;
   }
-
-  if (password.length < 3) {
-    alert("⚠️ Senha deve ter pelo menos 3 caracteres.");
-    return;
-  }
-
-  // Verificar credenciais
-  if (!state.users[email]) {
-    alert("⚠️ E-mail não encontrado. Crie uma conta primeiro.");
-    return;
-  }
-
-  if (state.users[email].password !== password) {
-    alert("⚠️ Senha incorreta.");
-    return;
-  }
-
-  // Login bem-sucedido
-  state.isLoggedIn = true;
-  localStorage.setItem('treinox_ai_session_active', 'true');
-  localStorage.setItem('treinox_ai_last_email', email);
-  localStorage.setItem('treinox_ai_last_password', password);
-  state.userEmail = email;
-  state.userName = state.users[email].name;
-  state.userProfile = { ...state.users[email].profile };
-  
-  saveStateToStorage();
-  document.getElementById("auth-overlay").style.display = "none";
-  
-  // Atualizar UI
-  updateUserUI();
-  
-  console.log("✅ Login bem-sucedido:", state.userName);
 };
 
 const checkLoginStatus = () => {
   if (state.isLoggedIn) {
     document.getElementById("auth-overlay").style.display = "none";
     updateUserUI();
+    populateGeneratorForm();
   } else {
     document.getElementById("auth-overlay").style.display = "flex";
-    switchAuthScreen("login");
-    
-    // Preencher automaticamente as credenciais salvas
-    const savedEmail = localStorage.getItem('treinox_ai_last_email');
-    const savedPassword = localStorage.getItem('treinox_ai_last_password');
-    if (savedEmail) {
-      document.getElementById("login-email").value = savedEmail;
-    }
-    if (savedPassword) {
-      document.getElementById("login-password").value = savedPassword;
-    }
+    switchAuthScreen("register");
   }
 };
 
@@ -632,17 +582,22 @@ const performLogout = () => {
     state.activeWorkout = null;
     saveStateToStorage();
     
-    // Preencher automaticamente as credenciais salvas em vez de limpar
-    const savedEmail = localStorage.getItem('treinox_ai_last_email');
-    const savedPassword = localStorage.getItem('treinox_ai_last_password');
-    document.getElementById("login-email").value = savedEmail || "";
-    document.getElementById("login-password").value = savedPassword || "";
+    const regName = document.getElementById("register-name");
+    const regEmail = document.getElementById("register-email");
+    const regPass = document.getElementById("register-password");
+    const regAge = document.getElementById("register-age");
+    const regWeight = document.getElementById("register-weight");
+    const regHeight = document.getElementById("register-height");
     
-    document.getElementById("register-name").value = "";
-    document.getElementById("register-email").value = "";
-    document.getElementById("register-password").value = "";
+    if (regName) regName.value = "";
+    if (regEmail) regEmail.value = "";
+    if (regPass) regPass.value = "";
+    if (regAge) regAge.value = "";
+    if (regWeight) regWeight.value = "";
+    if (regHeight) regHeight.value = "";
+    
     document.getElementById("auth-overlay").style.display = "flex";
-    switchAuthScreen("login");
+    switchAuthScreen("register");
   }
 };
 
@@ -716,6 +671,7 @@ const saveProfileChanges = () => {
   saveStateToStorage();
   updateUserUI();
   renderProfile();
+  populateGeneratorForm();
   toggleEditMode();
   
   alert("✅ Perfil atualizado com sucesso!");
@@ -904,8 +860,8 @@ window.navigateTo = (pageId) => {
     // Trigger specific page load actions
     if (pageId === "dashboard") {
       renderDashboard();
-    } else if (pageId === "biblioteca") {
-      renderLibrary();
+    } else if (pageId === "generator") {
+      populateGeneratorForm();
     } else if (pageId === "historico") {
       renderHistory();
     } else if (pageId === "perfil") {
@@ -1082,42 +1038,7 @@ const renderDashboard = () => {
   `;
 };
 
-// Render exercise library
-const renderLibrary = () => {
-  const container = document.getElementById("library-grid");
-  if (!container) return;
 
-  let html = "";
-  Object.keys(EXERCISES_DB).forEach(key => {
-    const ex = EXERCISES_DB[key];
-    html += `
-      <div class="card col-span-4" style="cursor: pointer;" onclick="openExerciseDetailsModal('${key}')">
-        <div style="position: relative; border-radius: var(--border-radius-md); overflow: hidden; aspect-ratio: 16/9; background: #000; margin-bottom: 1rem;">
-          ${ex.videoUrl ? `
-            <video style="width: 100%; height: 100%; object-fit: cover;" autoplay muted loop>
-              <source src="${ex.videoUrl}" type="video/mp4">
-              <img src="${ex.gif}" alt="${ex.name}">
-            </video>
-          ` : `
-            <img src="${ex.gif || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(ex.name) + '&background=1A1A26&color=FF5E00&size=256&font-size=0.3'}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85;" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80'" />
-          `}
-          <div style="position: absolute; bottom: 0.75rem; left: 0.75rem;">
-            <span class="badge badge-orange">${ex.muscle}</span>
-          </div>
-          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,94,0,0.9); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--glow-orange);">
-            <span class="material-symbols-outlined" style="color: white; font-size: 1.5rem;">play_arrow</span>
-          </div>
-        </div>
-        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">${ex.name}</h3>
-        <p class="text-secondary" style="font-size: 0.85rem; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-          ${ex.steps[0]}
-        </p>
-      </div>
-    `;
-  });
-
-  container.innerHTML = html;
-};
 
 // Render Workout History list
 const renderHistory = () => {
