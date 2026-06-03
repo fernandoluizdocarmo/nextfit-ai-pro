@@ -1712,7 +1712,7 @@ const AVAILABLE_EXERCISES = {
   bicicleta_ergometrica: "Cardio - Bicicleta Ergométrica (Cardio)"
 };
 
-const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis, age, weight, height, bmi) => {
+const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis, age, weight, height, bmi, historySummary = "") => {
   const exerciseList = Object.entries(AVAILABLE_EXERCISES)
     .map(([id, desc]) => `- ${id}: ${desc}`)
     .join("\n");
@@ -1824,6 +1824,11 @@ ${exerciseList}
 ${ageSpecificGuidance}
 ${bodyCompositionGuidance}
 ${sexSpecificGuidance}
+
+${historySummary ? `INFORMAÇÕES DE HISTÓRICO DE TREINOS ANTERIORES:
+O aluno já realizou treinos com as seguintes cargas máximas recentemente. Use essas cargas como referência de força para progredir a dificuldade:
+${historySummary}
+` : ''}
 
 RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum texto antes ou depois do JSON):
 {
@@ -2409,96 +2414,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // Check initial status
   updateOnlineStatus();
 
-  // ─── AI WORKOUT GENERATION WITH GROQ ─────────────────────────────────────
-  window.handleGenerateWorkout = async () => {
-    if (isGeneratingWorkout) {
-      alert("⏳ Já está gerando uma ficha, por favor aguarde...");
-      return;
-    }
 
-    isGeneratingWorkout = true;
-
-    // Get form data
-    const objetivo = document.getElementById("form-objetivo")?.value;
-    const frequencia = document.getElementById("form-frequencia")?.value;
-    const nivel = document.getElementById("form-nivel")?.value;
-    const equipamentos = Array.from(document.querySelectorAll("input[name='equipamentos']:checked")).map(cb => cb.value);
-
-    if (!objetivo || !frequencia || !nivel) {
-      alert("⚠️ Por favor, preencha todos os campos obrigatórios!");
-      isGeneratingWorkout = false;
-      return;
-    }
-
-    try {
-      showAILoadingOverlay();
-
-      // Call API to generate with AI
-      const response = await fetch("/api/generate-workout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: state.userName || "Usuário",
-          sex: "Não especificado",
-          objective: objetivo,
-          level: nivel,
-          days: parseInt(frequencia),
-          time: 60,
-          emphasis: "",
-          age: state.userProfile.age || 30,
-          weight: state.userProfile.weight || 70,
-          height: state.userProfile.height || 175,
-          bmi: state.userProfile.bmi || 23
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.workout) {
-          // Success - use AI generated workout
-          state.currentFicha = {
-            ...data.workout,
-            aiGenerated: true,
-            aiRationale: data.rationale || "Ficha gerada com IA baseada em seus dados.",
-            expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000) // 30 dias
-          };
-          saveStateToStorage();
-          hideAILoadingOverlay();
-          alert("✅ Ficha gerada com sucesso pela IA!");
-          navigateTo("dashboard");
-          return;
-        }
-      }
-
-      throw new Error("API retornou erro");
-    } catch (error) {
-      console.error("Erro ao gerar com IA:", error);
-      
-      // Fallback to local generator
-      hideAILoadingOverlay();
-      alert("⚠️ API indisponível - usando gerador local");
-      
-      const ficha = generateLocalWorkout(
-        state.userName || "Usuário",
-        objetivo,
-        nivel,
-        parseInt(frequencia),
-        equipamentos
-      );
-      
-      state.currentFicha = {
-        ...ficha,
-        aiGenerated: false,
-        expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
-      };
-      
-      saveStateToStorage();
-      alert("✅ Ficha gerada com sucesso (modo local)!");
-      navigateTo("dashboard");
-    } finally {
-      isGeneratingWorkout = false;
-    }
-  };
 
   // Local fallback workout generator
   window.generateLocalWorkout = (name, objective, level, days, equipamentos) => {

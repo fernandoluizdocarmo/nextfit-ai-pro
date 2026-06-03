@@ -60,6 +60,7 @@
 html, body {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   background: linear-gradient(135deg, var(--bg-ultra-dark) 0%, var(--bg-dark) 50%, var(--bg-darker) 100%) !important;
 }
 
