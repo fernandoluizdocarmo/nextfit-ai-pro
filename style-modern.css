@@ -68,7 +68,8 @@ body {
   font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif !important;
   font-size: 16px;
   line-height: 1.6;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   backdrop-filter: blur(10px);
   position: relative;
 }
