@@ -454,29 +454,20 @@ const switchAuthScreen = (screen) => {
 // Registration Logic
 const performRegister = () => {
   const nameInput = document.getElementById("register-name");
-  const emailInput = document.getElementById("register-email");
   const passwordInput = document.getElementById("register-password");
   const ageInput = document.getElementById("register-age");
   const weightInput = document.getElementById("register-weight");
   const heightInput = document.getElementById("register-height");
   
   const name = (nameInput.value || "").trim();
-  const email = (emailInput.value || "").trim();
   const password = (passwordInput.value || "").trim();
   const age = parseInt(ageInput.value) || null;
   const weight = parseFloat(weightInput.value) || null;
   const height = parseInt(heightInput.value) || null;
 
   // Validação
-  if (!name || !email || !password || !age || !weight || !height) {
+  if (!name || !password || !age || !weight || !height) {
     alert("⚠️ Por favor, preencha todos os campos.");
-    return;
-  }
-
-  // Validar email
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    alert("⚠️ E-mail inválido.");
     return;
   }
 
@@ -485,14 +476,14 @@ const performRegister = () => {
     return;
   }
 
-  // Verificar se email já existe
-  if (state.users[email]) {
-    alert("⚠️ Este e-mail já está registrado.");
+  // Verificar se nome já existe
+  if (state.users[name]) {
+    alert("⚠️ Este nome já está registrado.");
     return;
   }
 
   // Registrar usuário
-  state.users[email] = {
+  state.users[name] = {
     password: password, // em produção, usar hash!
     name: sanitizeInput(name),
     profile: {
@@ -506,14 +497,14 @@ const performRegister = () => {
   // Fazer login automaticamente
   state.isLoggedIn = true;
   localStorage.setItem('treinox_ai_session_active', 'true');
-  localStorage.setItem('treinox_ai_last_email', email);
+  localStorage.setItem('treinox_ai_last_email', name);
   localStorage.setItem('treinox_ai_last_password', password);
-  state.userEmail = email;
-  state.userName = state.users[email].name;
-  state.userProfile = state.users[email].profile;
+  state.userEmail = name;
+  state.userName = state.users[name].name;
+  state.userProfile = state.users[name].profile;
   
   saveStateToStorage();
-  document.getElementById("auth-overlay").style.display = "none";
+  checkLoginStatus();
   
   // Atualizar UI
   updateUserUI();
@@ -544,12 +535,20 @@ const populateGeneratorForm = () => {
 };
 
 const checkLoginStatus = () => {
+  const authOverlay = document.getElementById("auth-overlay");
+  const appContainer = document.getElementById("app-container");
+  const mobileNav = document.getElementById("mobileTaskbar");
+
   if (state.isLoggedIn) {
-    document.getElementById("auth-overlay").style.display = "none";
+    if (authOverlay) authOverlay.style.display = "none";
+    if (appContainer) appContainer.style.display = "block";
+    if (mobileNav) mobileNav.style.display = "flex";
     updateUserUI();
     populateGeneratorForm();
   } else {
-    document.getElementById("auth-overlay").style.display = "flex";
+    if (authOverlay) authOverlay.style.display = "flex";
+    if (appContainer) appContainer.style.display = "none";
+    if (mobileNav) mobileNav.style.display = "none";
     switchAuthScreen("register");
   }
 };
@@ -583,21 +582,18 @@ const performLogout = () => {
     saveStateToStorage();
     
     const regName = document.getElementById("register-name");
-    const regEmail = document.getElementById("register-email");
     const regPass = document.getElementById("register-password");
     const regAge = document.getElementById("register-age");
     const regWeight = document.getElementById("register-weight");
     const regHeight = document.getElementById("register-height");
     
     if (regName) regName.value = "";
-    if (regEmail) regEmail.value = "";
     if (regPass) regPass.value = "";
     if (regAge) regAge.value = "";
     if (regWeight) regWeight.value = "";
     if (regHeight) regHeight.value = "";
     
-    document.getElementById("auth-overlay").style.display = "flex";
-    switchAuthScreen("register");
+    checkLoginStatus();
   }
 };
 
