@@ -2,7 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>treinox.ai - Seu Personal Trainer de Elite</title>
   <meta name="description" content="treinox.ai é seu aplicativo fitness definitivo. Geração de fichas inteligentes A/B/C, acompanhamento série por série com cargas personalizadas, cronômetro de descanso integrado e vídeos explicativos em HD de execução correta.">
   
@@ -19,10 +20,11 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="style-enhancements.css">
   <link rel="stylesheet" href="style-modern.css">
+  <link rel="stylesheet" href="style-mobile-fix.css">
 </head>
 <body>
   <!-- AUTH OVERLAY -->
-  <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #12121c; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto;">
+  <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100%; background: #12121c; z-index: 9999; display: flex; align-items: flex-start; justify-content: center; padding: 1rem env(safe-area-inset-right, 1rem) 1rem env(safe-area-inset-left, 1rem); overflow-y: auto; -webkit-overflow-scrolling: touch;">
     
     <!-- LOGIN SCREEN -->
     <div id="login-screen" style="max-width: 420px; width: 100%;">
@@ -56,7 +58,7 @@
 
     <!-- REGISTRATION SCREEN -->
     <div id="register-screen" style="max-width: 420px; width: 100%; display: none;">
-      <div class="card" style="padding: 2.5rem 2rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto;">
+      <div class="card" style="padding: 2.5rem 2rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
         <div style="margin-bottom: 2rem;">
           <span class="material-symbols-outlined text-primary" style="font-size: 4rem;">fitness_center</span>
           <h1 class="font-headline-lg mt-2 mb-1" style="font-size: 2rem; color: white; margin-top: 1rem; margin-bottom: 0.5rem;">treinox.ai</h1>
@@ -492,7 +494,6 @@
             <span class="material-symbols-outlined">delete_sweep</span> Apagar Histórico
           </button>
         </div>
-        </div>
 
         <div class="history-timeline" id="history-timeline">
           <!-- Rendered dynamically from LocalStorage logs -->
@@ -510,18 +511,18 @@
           </div>
         </div>
 
-        <div class="grid-container" style="max-width: 800px;">
+        <div class="grid-container profile-grid" style="max-width: 800px;">
           <!-- Profile Card -->
           <div class="card col-span-12">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem;">
-              <div style="display: flex; align-items: center; gap: 1rem;">
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjbMKKIWKGidqfNL9RsnBx5VfllMJPikkHZVRQfI-nLipH8u96G1RDnD1cmusGhOesuBCpokywMapihy2UpBcHsI2hvGCHTSCBg1O_p3WcT6u01f_9Z-1rhnIE8R58TFXmkVlwYggBa7aeaA4ZEZUz-QLdGuiEyRxr_yofr4wCtEmkEoDVtQuWMdwZphCTZ9toSHWkv6Ndl_nJoZdT2ClG5Kq1WXdYKpzBBrWW2jJ3l15PxeQNqMA4dBDyxCeyYeNxZNd3NkDGwls" alt="Avatar" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary);">
-                <div>
-                  <h2 id="profile-user-name" style="font-size: 1.4rem; margin-bottom: 0.25rem;">Carregando...</h2>
-                  <p id="profile-user-email" style="color: var(--text-secondary);">E-mail</p>
+            <div class="profile-card-header">
+              <div class="profile-avatar-section">
+                <img id="profile-avatar-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjbMKKIWKGidqfNL9RsnBx5VfllMJPikkHZVRQfI-nLipH8u96G1RDnD1cmusGhOesuBCpokywMapihy2UpBcHsI2hvGCHTSCBg1O_p3WcT6u01f_9Z-1rhnIE8R58TFXmkVlwYggBa7aeaA4ZEZUz-QLdGuiEyRxr_yofr4wCtEmkEoDVtQuWMdwZphCTZ9toSHWkv6Ndl_nJoZdT2ClG5Kq1WXdYKpzBBrWW2jJ3l15PxeQNqMA4dBDyxCeyYeNxZNd3NkDGwls" alt="Avatar" class="profile-avatar-lg">
+                <div class="profile-name-group">
+                  <h2 id="profile-user-name" class="profile-username">Carregando...</h2>
+                  <p id="profile-user-email" class="profile-useremail">E-mail</p>
                 </div>
               </div>
-              <button onclick="toggleEditMode()" class="btn-secondary" style="gap: 0.5rem;">
+              <button onclick="toggleEditMode()" class="btn-secondary btn-edit-profile">
                 <span class="material-symbols-outlined">edit</span> <span id="edit-mode-btn-text">Editar Perfil</span>
               </button>
             </div>
@@ -570,7 +571,7 @@
                   <label class="form-label" for="edit-age">Idade (anos)</label>
                   <input type="number" class="input-field" id="edit-age" placeholder="Ex: 30" min="15" max="100" required>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="profile-edit-biometric">
                   <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" for="edit-weight">Peso (kg)</label>
                     <input type="number" class="input-field" id="edit-weight" placeholder="Ex: 80" min="30" max="250" step="0.5" required>
@@ -580,7 +581,7 @@
                     <input type="number" class="input-field" id="edit-height" placeholder="Ex: 180" min="130" max="220" required>
                   </div>
                 </div>
-                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <div class="profile-edit-actions">
                   <button type="submit" class="btn-primary" style="flex: 1; justify-content: center;">
                     <span class="material-symbols-outlined">check</span> Salvar Alterações
                   </button>
