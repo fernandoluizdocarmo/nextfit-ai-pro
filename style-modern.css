@@ -59,7 +59,7 @@
 
 html, body {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   background: linear-gradient(135deg, var(--bg-ultra-dark) 0%, var(--bg-dark) 50%, var(--bg-darker) 100%) !important;
 }
 
@@ -68,7 +68,8 @@ body {
   font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif !important;
   font-size: 16px;
   line-height: 1.6;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   backdrop-filter: blur(10px);
   position: relative;
 }
