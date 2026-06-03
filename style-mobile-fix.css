@@ -1526,11 +1526,13 @@ body, html {
 
 /* Scroll-based hide/show transition and styling for mobile taskbar */
 @media (max-width: 768px) {
-  .mobile-nav {
+  .mobile-nav,
+  nav[class*="fixed"][class*="bottom-0"] {
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease !important;
   }
   
-  .mobile-nav.hidden-taskbar {
+  .mobile-nav.hidden-taskbar,
+  nav[class*="fixed"][class*="bottom-0"].hidden-taskbar {
     transform: translateY(100%) !important;
     opacity: 0 !important;
     pointer-events: none !important;

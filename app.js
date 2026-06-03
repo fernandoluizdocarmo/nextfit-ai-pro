@@ -883,6 +883,14 @@ window.navigateTo = (pageId) => {
     }
   });
 
+  // Restaurar visibilidade da barra de tarefas e resetar scroll no mobile ao trocar de tela
+  if (typeof window.resetMobileTaskbar === "function") {
+    window.resetMobileTaskbar();
+  }
+  window.scrollTo(0, 0);
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) mainContent.scrollTop = 0;
+
   // Hide all page sections
   document.querySelectorAll(".page").forEach(page => {
     page.classList.remove("active");
@@ -3014,16 +3022,24 @@ window.toggleMobileMenu = (forceState) => {
 (function() {
   let lastScrollY = window.scrollY || 0;
   
+  window.resetMobileTaskbar = () => {
+    const taskbars = document.querySelectorAll('nav[class*="fixed"][class*="bottom-0"], .mobile-nav');
+    taskbars.forEach(bar => bar.classList.remove('hidden-taskbar'));
+    lastScrollY = 0;
+  };
+  
   function handleScroll(currentScrollY) {
-    const taskbar = document.getElementById('mobileTaskbar');
-    if (!taskbar || window.innerWidth > 768) return;
+    if (window.innerWidth > 768) return;
+    
+    const taskbars = document.querySelectorAll('nav[class*="fixed"][class*="bottom-0"], .mobile-nav');
+    if (taskbars.length === 0) return;
     
     // Se o treino estiver ativo, a barra de tarefas móvel já está oculta via display: none
     if (state.activeWorkout) return;
     
     // Sempre mostrar o menu quando estiver no topo da página
     if (currentScrollY <= 10) {
-      taskbar.classList.remove('hidden-taskbar');
+      taskbars.forEach(bar => bar.classList.remove('hidden-taskbar'));
       lastScrollY = currentScrollY;
       return;
     }
@@ -3032,9 +3048,9 @@ window.toggleMobileMenu = (forceState) => {
     
     // Oculta ao rolar para baixo (tela desce) e mostra ao rolar para cima (tela sobe)
     if (currentScrollY > lastScrollY) {
-      taskbar.classList.add('hidden-taskbar');
+      taskbars.forEach(bar => bar.classList.add('hidden-taskbar'));
     } else {
-      taskbar.classList.remove('hidden-taskbar');
+      taskbars.forEach(bar => bar.classList.remove('hidden-taskbar'));
     }
     
     lastScrollY = currentScrollY;
