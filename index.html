@@ -582,29 +582,51 @@
     </main>
   </div>
 
-  <!-- MOBILE NAVIGATION BOTTOM TAB-BAR -->
-  <nav class="mobile-nav">
-    <a class="mobile-nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')" id="mob-nav-dash">
-      <span class="material-symbols-outlined">dashboard</span>
-      <span>Ficha</span>
-    </a>
-    <a class="mobile-nav-item" data-page="generator" onclick="navigateTo('generator')" id="mob-nav-gen">
-      <span class="material-symbols-outlined">smart_toy</span>
-      <span>Criar</span>
-    </a>
-    <a class="mobile-nav-item" data-page="biblioteca" onclick="navigateTo('biblioteca')" id="mob-nav-lib">
-      <span class="material-symbols-outlined">menu_book</span>
-      <span>Exercícios</span>
-    </a>
-    <a class="mobile-nav-item" data-page="historico" onclick="navigateTo('historico')" id="mob-nav-hist">
-      <span class="material-symbols-outlined">history</span>
-      <span>Histórico</span>
-    </a>
-    <a class="mobile-nav-item" data-page="perfil" onclick="navigateTo('perfil')" id="mob-nav-perf">
-      <span class="material-symbols-outlined">person</span>
-      <span>Perfil</span>
-    </a>
-  </nav>
+  <!-- SMART BOTTOM NAVIGATION PILL (Mobile Only) -->
+  <div id="mobileMenuPillWrapper" class="mobile-menu-pill-wrapper" style="bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));">
+    <div class="menu-pill-aura"></div>
+    <button onclick="toggleMobileMenu()" class="menu-pill-btn">
+      <div class="menu-pill-gradient"></div>
+      <span class="material-symbols-outlined menu-pill-icon" id="btnMaisIcon">apps</span>
+      <span class="menu-pill-text">Menu</span>
+    </button>
+  </div>
+
+  <!-- BOTTOM SHEET MOBILE MENU DRAWER -->
+  <div id="bottomSheetBackdrop" onclick="toggleMobileMenu(false)" class="bottom-sheet-backdrop"></div>
+  <div id="bottomSheetMenu" class="bottom-sheet-menu" style="padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));">
+    <div class="bottom-sheet-handle"></div>
+    <h3 class="bottom-sheet-title">Menu Principal</h3>
+    
+    <div class="bottom-sheet-grid">
+      <button onclick="navigateTo('dashboard'); toggleMobileMenu(false)" class="bottom-sheet-btn">
+        <span class="material-symbols-outlined text-primary">dashboard</span>
+        <span>Ficha</span>
+      </button>
+      <button onclick="navigateTo('generator'); toggleMobileMenu(false)" class="bottom-sheet-btn">
+        <span class="material-symbols-outlined" style="color: #00F29B;">smart_toy</span>
+        <span>Criar Ficha</span>
+      </button>
+      <button onclick="navigateTo('biblioteca'); toggleMobileMenu(false)" class="bottom-sheet-btn">
+        <span class="material-symbols-outlined" style="color: #FFB300;">menu_book</span>
+        <span>Exercícios</span>
+      </button>
+      <button onclick="navigateTo('historico'); toggleMobileMenu(false)" class="bottom-sheet-btn">
+        <span class="material-symbols-outlined" style="color: #00C6FF;">history</span>
+        <span>Histórico</span>
+      </button>
+      <button onclick="navigateTo('perfil'); toggleMobileMenu(false)" class="bottom-sheet-btn">
+        <span class="material-symbols-outlined" style="color: #FF5E00;">person</span>
+        <span>Meu Perfil</span>
+      </button>
+    </div>
+    
+    <button onclick="toggleMobileMenu(false); performLogout()" class="bottom-sheet-logout-btn">
+      <span class="material-symbols-outlined">logout</span>
+      Sair da Conta
+    </button>
+  </div>
+
 
   <!-- DYNAMIC MODAL FOR DETAILED TUTORIALS & DETAILED HISTORY -->
   <div class="modal-overlay" id="details-modal">

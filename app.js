@@ -2951,4 +2951,44 @@ window.addEventListener("DOMContentLoaded", () => {
     const overlay = document.getElementById("ai-loading-overlay");
     if (overlay) overlay.style.display = "none";
   };
-});
+})();
+
+// ─────────────────────────────────────────────────────────
+// MOBILE PILL MENU & BOTTOM SHEET LOGIC
+// ─────────────────────────────────────────────────────────
+window.toggleMobileMenu = (forceState) => {
+  const backdrop = document.getElementById('bottomSheetBackdrop');
+  const menu = document.getElementById('bottomSheetMenu');
+  if (!backdrop || !menu) return;
+  
+  const isActive = backdrop.classList.contains('active');
+  const newState = forceState !== undefined ? forceState : !isActive;
+  
+  if (newState) {
+    backdrop.classList.add('active');
+    menu.classList.add('active');
+    document.body.style.overflow = 'hidden'; // prevent scrolling behind modal
+  } else {
+    backdrop.classList.remove('active');
+    menu.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+};
+
+(function() {
+  let lastScrollY = window.scrollY || 0;
+  window.addEventListener('scroll', () => {
+    const wrapper = document.getElementById('mobileMenuPillWrapper');
+    if (!wrapper || window.innerWidth > 768) return;
+    
+    const currentScrollY = window.scrollY || 0;
+    
+    if (currentScrollY > lastScrollY && currentScrollY > 60) {
+      wrapper.classList.add('hidden-pill'); // Hides when scrolling down
+    } else if (currentScrollY < lastScrollY) {
+      wrapper.classList.remove('hidden-pill'); // Shows when scrolling up
+    }
+    
+    lastScrollY = currentScrollY;
+  }, { passive: true });
+})();
