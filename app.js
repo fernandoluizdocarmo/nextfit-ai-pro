@@ -3015,23 +3015,26 @@ window.toggleMobileMenu = (forceState) => {
   let lastScrollY = window.scrollY || 0;
   
   function handleScroll(currentScrollY) {
-    const wrapper = document.getElementById('mobileMenuPillWrapper');
-    if (!wrapper || window.innerWidth > 768) return;
+    const taskbar = document.getElementById('mobileTaskbar');
+    if (!taskbar || window.innerWidth > 768) return;
+    
+    // Se o treino estiver ativo, a barra de tarefas móvel já está oculta via display: none
+    if (state.activeWorkout) return;
     
     // Sempre mostrar o menu quando estiver no topo da página
     if (currentScrollY <= 10) {
-      wrapper.classList.remove('hidden-pill');
+      taskbar.classList.remove('hidden-taskbar');
       lastScrollY = currentScrollY;
       return;
     }
     
-    if (Math.abs(currentScrollY - lastScrollY) < 5) return;
+    if (Math.abs(currentScrollY - lastScrollY) < 10) return;
     
-    // Lógica do app de finanças: ao rolar a tela para cima (scrollY aumenta) fica oculto, ao rolar a tela para baixo (scrollY diminui) ou no topo aparece
+    // Oculta ao rolar para baixo (tela desce) e mostra ao rolar para cima (tela sobe)
     if (currentScrollY > lastScrollY) {
-      wrapper.classList.add('hidden-pill'); // Oculta ao rolar para cima (dedo desliza para cima, tela desce)
+      taskbar.classList.add('hidden-taskbar');
     } else {
-      wrapper.classList.remove('hidden-pill'); // Aparece ao rolar para baixo (dedo desliza para baixo, tela sobe)
+      taskbar.classList.remove('hidden-taskbar');
     }
     
     lastScrollY = currentScrollY;
@@ -3049,3 +3052,4 @@ window.toggleMobileMenu = (forceState) => {
     }, { passive: true });
   }
 })();
+
