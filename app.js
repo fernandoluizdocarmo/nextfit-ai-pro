@@ -503,6 +503,12 @@ const performRegister = () => {
   state.userName = state.users[name].name;
   state.userProfile = state.users[name].profile;
   
+  // Limpar dados de treino para que a nova conta inicie vazia (sem a ficha padrão)
+  state.currentFicha = null;
+  state.previousFicha = null;
+  state.history = [];
+  state.activeWorkout = null;
+  
   saveStateToStorage();
   checkLoginStatus();
   
