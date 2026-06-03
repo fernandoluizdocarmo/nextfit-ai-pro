@@ -2002,17 +2002,22 @@ const generateIntelligentWorkout = async () => {
       throw new Error(`Servidor respondeu com status ${response.status} - ${details}`);
     }
 
-    const { text, error } = await response.json();
-    if (error) throw new Error(error);
+    const responseData = await response.json();
+    if (responseData.error) throw new Error(responseData.error);
 
     updateAILoadingStatus("Validando e aplicando a ficha gerada pela IA...");
 
     // Parse the JSON returned by Gemini
     let aiData;
     try {
-      // Gemini sometimes wraps in ```json ... ``` blocks, strip those
-      const cleaned = text.replace(/```json\s*/gi, "").replace(/```\s*/gi, "").trim();
-      aiData = JSON.parse(cleaned);
+      if (responseData.workout && !responseData.workout.rawContent) {
+        aiData = responseData.workout;
+      } else {
+        const text = responseData.text || (responseData.workout && responseData.workout.rawContent) || "";
+        // Gemini sometimes wraps in ```json ... ``` blocks, strip those
+        const cleaned = text.replace(/```json\s*/gi, "").replace(/```\s*/gi, "").trim();
+        aiData = JSON.parse(cleaned);
+      }
     } catch (parseErr) {
       throw new Error("A IA retornou uma resposta em formato inválido. Tentando geração local...");
     }
