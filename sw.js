@@ -1,7 +1,7 @@
 // sw.js - treinox.ai Service Worker
 // v7: Updated cache with modern design CSS (neon colors, responsive)
 
-const CACHE_NAME = "treinox-ai-cache-v7";
+const CACHE_NAME = "treinox-ai-cache-v8";
 
 // All static assets that must be pre-cached on install
 const ASSETS_TO_CACHE = [
@@ -10,6 +10,7 @@ const ASSETS_TO_CACHE = [
   "/style.css",
   "/style-enhancements.css",
   "/style-modern.css",
+  "/style-mobile-fix.css",
   "/app.js",
   "/manifest.json",
   "/icon-192.png",
@@ -70,7 +71,7 @@ self.addEventListener("fetch", (event) => {
   if (isLocalAsset) {
     // ── Cache-First strategy for own assets ────────────────────────────────
     event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
+      caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
         if (cachedResponse) {
           // Serve from cache immediately
           return cachedResponse;
@@ -105,7 +106,7 @@ self.addEventListener("fetch", (event) => {
         })
         .catch(() => {
           // Fallback to cache for external resources
-          return caches.match(event.request);
+          return caches.match(event.request, { ignoreSearch: true });
         })
     );
   }
