@@ -1092,7 +1092,7 @@ h1, h2, h3, h4, h5, h6 {
   .main-content {
     margin-left: 0;
     width: 100%;
-    padding: 1rem 1rem calc(6rem + env(safe-area-inset-bottom, 0px)) 1rem;
+    padding: 1rem 1rem calc(8rem + env(safe-area-inset-bottom, 0px)) 1rem;
     max-width: 100%;
   }
 
@@ -1638,7 +1638,7 @@ h1, h2, h3, h4, h5, h6 {
 /* ============================================================ */
 @media (max-width: 480px) {
   .main-content {
-    padding: 0.9rem 0.8rem calc(6rem + env(safe-area-inset-bottom, 0px)) 0.8rem;
+    padding: 0.9rem 0.8rem calc(8rem + env(safe-area-inset-bottom, 0px)) 0.8rem;
   }
 
   .card {
