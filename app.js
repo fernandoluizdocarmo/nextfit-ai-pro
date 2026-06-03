@@ -1936,12 +1936,12 @@ const generateIntelligentWorkout = async () => {
   const nameInput = document.getElementById("user-name-input").value.trim();
   const name = sanitizeInput(nameInput) || "Atleta treinox.ai";
   const sex = document.getElementById("form-sex").value || "Masculino";
-  const objective = document.getElementById("form-objective").value;
-  const level = document.getElementById("form-level").value;
-  const days = parseInt(document.getElementById("form-days").value) || 3;
-  const time = parseInt(document.getElementById("form-time").value) || 60;
-  const emphasis = sanitizeInput(document.getElementById("form-emphasis").value.trim());
-  const validityWeeks = parseInt(document.getElementById("form-validity").value) || 4;
+  const objective = document.getElementById("form-objetivo")?.value || "Hipertrofia";
+  const level = document.getElementById("form-nivel")?.value || "Intermediário";
+  const days = parseInt(document.getElementById("form-frequencia")?.value) || 3;
+  const time = parseInt(document.getElementById("form-time")?.value) || 60;
+  const emphasis = sanitizeInput(document.getElementById("form-emphasis")?.value.trim());
+  const validityWeeks = parseInt(document.getElementById("form-validity")?.value) || 4;
   
   // Capture user biometric data
   const age = parseInt(document.getElementById("form-age").value) || 30;
@@ -2109,6 +2109,8 @@ const generateIntelligentWorkout = async () => {
     isGeneratingWorkout = false;
   }
 };
+
+window.handleGenerateWorkout = generateIntelligentWorkout;
 
 // ─── HEURISTIC GENERATOR (kept as fallback) ───────────────────────────────────
 
