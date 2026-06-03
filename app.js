@@ -504,6 +504,7 @@ const performRegister = () => {
 
   // Fazer login automaticamente
   state.isLoggedIn = true;
+  sessionStorage.setItem('treinox_ai_session_active', 'true');
   state.userEmail = email;
   state.userName = state.users[email].name;
   state.userProfile = state.users[email].profile;
@@ -555,6 +556,7 @@ const performLogin = () => {
 
   // Login bem-sucedido
   state.isLoggedIn = true;
+  sessionStorage.setItem('treinox_ai_session_active', 'true');
   state.userEmail = email;
   state.userName = state.users[email].name;
   state.userProfile = { ...state.users[email].profile };
@@ -597,6 +599,7 @@ const updateUserUI = () => {
 const performLogout = () => {
   if (confirm("Deseja sair da conta atual?")) {
     state.isLoggedIn = false;
+    sessionStorage.removeItem('treinox_ai_session_active');
     state.userEmail = "";
     state.userName = "";
     state.userProfile = { age: null, weight: null, height: null, bmi: null };
@@ -768,7 +771,7 @@ const loadStateFromStorage = () => {
     try {
       const parsed = JSON.parse(saved);
       // Explicitly restore each field to avoid Object.assign array-merge bugs
-      state.isLoggedIn = parsed.isLoggedIn !== undefined ? parsed.isLoggedIn : false;
+      state.isLoggedIn = sessionStorage.getItem('treinox_ai_session_active') === 'true';
       state.userEmail = parsed.userEmail || "";
       state.userName = parsed.userName || "";
       state.userProfile = parsed.userProfile || { age: null, weight: null, height: null, bmi: null };
