@@ -2986,12 +2986,19 @@ window.addEventListener("DOMContentLoaded", () => {
 // MOBILE PILL MENU & BOTTOM SHEET LOGIC
 // ─────────────────────────────────────────────────────────
 window.toggleMobileMenu = (forceState) => {
+  console.log("[DEBUG] toggleMobileMenu called with forceState =", forceState);
   const backdrop = document.getElementById('bottomSheetBackdrop');
   const menu = document.getElementById('bottomSheetMenu');
-  if (!backdrop || !menu) return;
+  
+  if (!backdrop || !menu) {
+    console.warn("[DEBUG] backdrop or menu not found in DOM!", { backdrop, menu });
+    return;
+  }
   
   const isActive = backdrop.classList.contains('active');
   const newState = forceState !== undefined ? forceState : !isActive;
+  
+  console.log("[DEBUG] Current active state:", isActive, "-> New state:", newState);
   
   if (newState) {
     backdrop.classList.add('active');
