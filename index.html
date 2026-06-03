@@ -24,32 +24,32 @@
 </head>
 <body>
   <!-- AUTH OVERLAY -->
-  <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: #12121c; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem;">
+  <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: #12121c; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem; overflow: hidden;">
     
     <!-- LOGIN SCREEN -->
     <div id="login-screen" style="max-width: 420px; width: 100%;">
-      <div class="card" style="padding: 2.5rem 2rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-        <div style="margin-bottom: 2rem;">
-          <span class="material-symbols-outlined text-primary" style="font-size: 4rem;">fitness_center</span>
-          <h1 class="font-headline-lg mt-2 mb-1" style="font-size: 2rem; color: white; margin-top: 1rem; margin-bottom: 0.5rem;">treinox.ai</h1>
-          <p class="text-secondary" style="font-size: 0.95rem; color: #94A3B8;">Bem-vindo ao seu Personal Trainer de Elite</p>
+      <div class="card" style="padding: 1.5rem 1.25rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+        <div style="margin-bottom: 1.25rem;">
+          <span class="material-symbols-outlined text-primary" style="font-size: 2.5rem;">fitness_center</span>
+          <h1 class="font-headline-lg" style="font-size: 1.6rem; color: white; margin-top: 0.5rem; margin-bottom: 0.25rem;">treinox.ai</h1>
+          <p class="text-secondary" style="font-size: 0.85rem; color: #94A3B8;">Bem-vindo ao seu Personal Trainer de Elite</p>
         </div>
         <form id="login-form" onsubmit="event.preventDefault(); performLogin();">
-          <div class="form-group" style="text-align: left;">
-            <label class="form-label" for="login-email" style="color: #94A3B8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">E-mail</label>
-            <input type="email" class="input-field" id="login-email" name="email" placeholder="seu@email.com" required style="min-height: 48px;" autocomplete="email">
+          <div class="form-group" style="text-align: left; margin-bottom: 1rem;">
+            <label class="form-label" for="login-email" style="color: #94A3B8; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.4rem;">E-mail</label>
+            <input type="email" class="input-field" id="login-email" name="username" placeholder="seu@email.com" required style="min-height: 44px; padding: 0.75rem 1rem;" autocomplete="username">
           </div>
-          <div class="form-group" style="text-align: left;">
-            <label class="form-label" for="login-password" style="color: #94A3B8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">Senha</label>
-            <input type="password" class="input-field" id="login-password" name="password" placeholder="Sua senha secreta" required style="min-height: 48px;" autocomplete="current-password">
+          <div class="form-group" style="text-align: left; margin-bottom: 1.25rem;">
+            <label class="form-label" for="login-password" style="color: #94A3B8; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.4rem;">Senha</label>
+            <input type="password" class="input-field" id="login-password" name="password" placeholder="Sua senha secreta" required style="min-height: 44px; padding: 0.75rem 1rem;" autocomplete="current-password">
           </div>
-          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem; margin-top: 1.5rem; min-height: 48px;">
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.8rem; font-size: 1rem; margin-top: 1rem; min-height: 44px;">
             <span class="material-symbols-outlined">login</span> Entrar
           </button>
         </form>
-        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
-          <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 1rem;">Não tem conta?</p>
-          <button type="button" onclick="switchAuthScreen('register')" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.8rem;">
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+          <p style="color: #94A3B8; font-size: 0.85rem; margin-bottom: 0.75rem;">Não tem conta?</p>
+          <button type="button" onclick="switchAuthScreen('register')" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.7rem; min-height: 40px; font-size: 0.9rem;">
             <span class="material-symbols-outlined">person_add</span> Criar Nova Conta
           </button>
         </div>
@@ -58,46 +58,46 @@
 
     <!-- REGISTRATION SCREEN -->
     <div id="register-screen" style="max-width: 420px; width: 100%; display: none;">
-      <div class="card" style="padding: 2.5rem 2rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-        <div style="margin-bottom: 2rem;">
-          <span class="material-symbols-outlined text-primary" style="font-size: 4rem;">fitness_center</span>
-          <h1 class="font-headline-lg mt-2 mb-1" style="font-size: 2rem; color: white; margin-top: 1rem; margin-bottom: 0.5rem;">treinox.ai</h1>
-          <p class="text-secondary" style="font-size: 0.95rem; color: #94A3B8;">Crie sua conta e comece a treinar</p>
+      <div class="card" style="padding: 1.5rem 1.25rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+        <div style="margin-bottom: 1.25rem;">
+          <span class="material-symbols-outlined text-primary" style="font-size: 2.5rem;">fitness_center</span>
+          <h1 class="font-headline-lg" style="font-size: 1.6rem; color: white; margin-top: 0.5rem; margin-bottom: 0.25rem;">treinox.ai</h1>
+          <p class="text-secondary" style="font-size: 0.85rem; color: #94A3B8;">Crie sua conta e comece a treinar</p>
         </div>
         <form id="register-form" onsubmit="event.preventDefault(); performRegister();">
-          <div class="form-group" style="text-align: left;">
-            <label class="form-label" for="register-name">Nome Completo</label>
-            <input type="text" class="input-field" id="register-name" placeholder="Digite seu nome" required style="min-height: 48px;">
+          <div class="form-group" style="text-align: left; margin-bottom: 0.85rem;">
+            <label class="form-label" for="register-name" style="margin-bottom: 0.4rem; font-size: 0.8rem;">Nome Completo</label>
+            <input type="text" class="input-field" id="register-name" placeholder="Digite seu nome" required style="min-height: 44px; padding: 0.75rem 1rem;">
           </div>
-          <div class="form-group" style="text-align: left;">
-            <label class="form-label" for="register-email">E-mail</label>
-            <input type="email" class="input-field" id="register-email" placeholder="seu@email.com" required style="min-height: 48px;" autocomplete="email">
+          <div class="form-group" style="text-align: left; margin-bottom: 0.85rem;">
+            <label class="form-label" for="register-email" style="margin-bottom: 0.4rem; font-size: 0.8rem;">E-mail</label>
+            <input type="email" class="input-field" id="register-email" name="username" placeholder="seu@email.com" required style="min-height: 44px; padding: 0.75rem 1rem;" autocomplete="username">
           </div>
-          <div class="form-group" style="text-align: left;">
-            <label class="form-label" for="register-password">Senha</label>
-            <input type="password" class="input-field" id="register-password" placeholder="Mínimo 6 caracteres" required style="min-height: 48px;" autocomplete="new-password">
+          <div class="form-group" style="text-align: left; margin-bottom: 0.85rem;">
+            <label class="form-label" for="register-password" style="margin-bottom: 0.4rem; font-size: 0.8rem;">Senha</label>
+            <input type="password" class="input-field" id="register-password" name="password" placeholder="Mínimo 6 caracteres" required style="min-height: 44px; padding: 0.75rem 1rem;" autocomplete="new-password">
           </div>
-          <div class="form-group" style="text-align: left;">
-            <label class="form-label" for="register-age">Idade (anos)</label>
-            <input type="number" class="input-field" id="register-age" placeholder="Ex: 30" min="15" max="100" required style="min-height: 48px;">
+          <div class="form-group" style="text-align: left; margin-bottom: 0.85rem;">
+            <label class="form-label" for="register-age" style="margin-bottom: 0.4rem; font-size: 0.8rem;">Idade (anos)</label>
+            <input type="number" class="input-field" id="register-age" placeholder="Ex: 30" min="15" max="100" required style="min-height: 44px; padding: 0.75rem 1rem;">
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
             <div class="form-group" style="text-align: left; margin-bottom: 0;">
-              <label class="form-label" for="register-weight">Peso (kg)</label>
-              <input type="number" class="input-field" id="register-weight" placeholder="Ex: 80" min="30" max="250" step="0.5" required style="min-height: 48px;">
+              <label class="form-label" for="register-weight" style="margin-bottom: 0.4rem; font-size: 0.8rem;">Peso (kg)</label>
+              <input type="number" class="input-field" id="register-weight" placeholder="Ex: 80" min="30" max="250" step="0.5" required style="min-height: 44px; padding: 0.75rem 1rem;">
             </div>
             <div class="form-group" style="text-align: left; margin-bottom: 0;">
-              <label class="form-label" for="register-height">Altura (cm)</label>
-              <input type="number" class="input-field" id="register-height" placeholder="Ex: 180" min="130" max="220" required style="min-height: 48px;">
+              <label class="form-label" for="register-height" style="margin-bottom: 0.4rem; font-size: 0.8rem;">Altura (cm)</label>
+              <input type="number" class="input-field" id="register-height" placeholder="Ex: 180" min="130" max="220" required style="min-height: 44px; padding: 0.75rem 1rem;">
             </div>
           </div>
-          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem; margin-top: 1.5rem; min-height: 48px;">
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem; font-size: 1rem; margin-top: 1rem; min-height: 44px;">
             <span class="material-symbols-outlined">person_add</span> Criar Conta
           </button>
         </form>
-        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
-          <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 1rem;">Já tem conta?</p>
-          <button type="button" onclick="switchAuthScreen('login')" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.8rem;">
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+          <p style="color: #94A3B8; font-size: 0.85rem; margin-bottom: 0.75rem;">Já tem conta?</p>
+          <button type="button" onclick="switchAuthScreen('login')" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.7rem; min-height: 40px; font-size: 0.9rem;">
             <span class="material-symbols-outlined">login</span> Fazer Login
           </button>
         </div>

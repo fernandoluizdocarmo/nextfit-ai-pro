@@ -440,13 +440,23 @@ const MAX_HISTORY_ITEMS = 50; // Limitar histórico para não overflow localStor
 const switchAuthScreen = (screen) => {
   const loginScreen = document.getElementById("login-screen");
   const registerScreen = document.getElementById("register-screen");
+  const authOverlay = document.getElementById("auth-overlay");
   
   if (screen === "login") {
     loginScreen.style.display = "block";
     registerScreen.style.display = "none";
+    if (authOverlay) {
+      authOverlay.classList.add("login-active");
+      authOverlay.classList.remove("register-active");
+      authOverlay.scrollTop = 0; // Garantir que volte ao topo
+    }
   } else if (screen === "register") {
     loginScreen.style.display = "none";
     registerScreen.style.display = "block";
+    if (authOverlay) {
+      authOverlay.classList.remove("login-active");
+      authOverlay.classList.add("register-active");
+    }
   }
 };
 
@@ -504,7 +514,9 @@ const performRegister = () => {
 
   // Fazer login automaticamente
   state.isLoggedIn = true;
-  sessionStorage.setItem('treinox_ai_session_active', 'true');
+  localStorage.setItem('treinox_ai_session_active', 'true');
+  localStorage.setItem('treinox_ai_last_email', email);
+  localStorage.setItem('treinox_ai_last_password', password);
   state.userEmail = email;
   state.userName = state.users[email].name;
   state.userProfile = state.users[email].profile;
@@ -556,7 +568,9 @@ const performLogin = () => {
 
   // Login bem-sucedido
   state.isLoggedIn = true;
-  sessionStorage.setItem('treinox_ai_session_active', 'true');
+  localStorage.setItem('treinox_ai_session_active', 'true');
+  localStorage.setItem('treinox_ai_last_email', email);
+  localStorage.setItem('treinox_ai_last_password', password);
   state.userEmail = email;
   state.userName = state.users[email].name;
   state.userProfile = { ...state.users[email].profile };
@@ -577,6 +591,16 @@ const checkLoginStatus = () => {
   } else {
     document.getElementById("auth-overlay").style.display = "flex";
     switchAuthScreen("login");
+    
+    // Preencher automaticamente as credenciais salvas
+    const savedEmail = localStorage.getItem('treinox_ai_last_email');
+    const savedPassword = localStorage.getItem('treinox_ai_last_password');
+    if (savedEmail) {
+      document.getElementById("login-email").value = savedEmail;
+    }
+    if (savedPassword) {
+      document.getElementById("login-password").value = savedPassword;
+    }
   }
 };
 
@@ -599,7 +623,7 @@ const updateUserUI = () => {
 const performLogout = () => {
   if (confirm("Deseja sair da conta atual?")) {
     state.isLoggedIn = false;
-    sessionStorage.removeItem('treinox_ai_session_active');
+    localStorage.removeItem('treinox_ai_session_active');
     state.userEmail = "";
     state.userName = "";
     state.userProfile = { age: null, weight: null, height: null, bmi: null };
@@ -607,8 +631,13 @@ const performLogout = () => {
     state.history = [];
     state.activeWorkout = null;
     saveStateToStorage();
-    document.getElementById("login-email").value = "";
-    document.getElementById("login-password").value = "";
+    
+    // Preencher automaticamente as credenciais salvas em vez de limpar
+    const savedEmail = localStorage.getItem('treinox_ai_last_email');
+    const savedPassword = localStorage.getItem('treinox_ai_last_password');
+    document.getElementById("login-email").value = savedEmail || "";
+    document.getElementById("login-password").value = savedPassword || "";
+    
     document.getElementById("register-name").value = "";
     document.getElementById("register-email").value = "";
     document.getElementById("register-password").value = "";
@@ -771,7 +800,7 @@ const loadStateFromStorage = () => {
     try {
       const parsed = JSON.parse(saved);
       // Explicitly restore each field to avoid Object.assign array-merge bugs
-      state.isLoggedIn = sessionStorage.getItem('treinox_ai_session_active') === 'true';
+      state.isLoggedIn = localStorage.getItem('treinox_ai_session_active') === 'true';
       state.userEmail = parsed.userEmail || "";
       state.userName = parsed.userName || "";
       state.userProfile = parsed.userProfile || { age: null, weight: null, height: null, bmi: null };
@@ -2982,12 +3011,20 @@ window.toggleMobileMenu = (forceState) => {
     const wrapper = document.getElementById('mobileMenuPillWrapper');
     if (!wrapper || window.innerWidth > 768) return;
     
+    // Sempre mostrar o menu quando estiver no topo da página
+    if (currentScrollY <= 10) {
+      wrapper.classList.remove('hidden-pill');
+      lastScrollY = currentScrollY;
+      return;
+    }
+    
     if (Math.abs(currentScrollY - lastScrollY) < 5) return;
     
-    if (currentScrollY > lastScrollY && currentScrollY > 60) {
-      wrapper.classList.add('hidden-pill'); // Hides when scrolling down
-    } else if (currentScrollY < lastScrollY) {
-      wrapper.classList.remove('hidden-pill'); // Shows when scrolling up
+    // Lógica do app de finanças: ao rolar a tela para cima (scrollY aumenta) fica oculto, ao rolar a tela para baixo (scrollY diminui) ou no topo aparece
+    if (currentScrollY > lastScrollY) {
+      wrapper.classList.add('hidden-pill'); // Oculta ao rolar para cima (dedo desliza para cima, tela desce)
+    } else {
+      wrapper.classList.remove('hidden-pill'); // Aparece ao rolar para baixo (dedo desliza para baixo, tela sobe)
     }
     
     lastScrollY = currentScrollY;
