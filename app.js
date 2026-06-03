@@ -757,6 +757,17 @@ const loadStateFromStorage = () => {
       state.userName = parsed.userName || "";
       state.userProfile = parsed.userProfile || { age: null, weight: null, height: null, bmi: null };
       state.users = parsed.users || {};
+      
+      // Limpeza solicitada de todos os usuários cadastrados
+      if (!localStorage.getItem("treinox_ai_users_wiped_v1")) {
+        state.users = {};
+        state.isLoggedIn = false;
+        state.userEmail = "";
+        state.userName = "";
+        state.userProfile = { age: null, weight: null, height: null, bmi: null };
+        localStorage.removeItem('treinox_ai_session_active');
+        localStorage.setItem("treinox_ai_users_wiped_v1", "true");
+      }
       state.currentFicha = parsed.currentFicha || null;
       state.previousFicha = parsed.previousFicha || null;
       state.expirationAlertDismissed = parsed.expirationAlertDismissed !== undefined ? parsed.expirationAlertDismissed : false;
