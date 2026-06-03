@@ -2977,11 +2977,12 @@ window.toggleMobileMenu = (forceState) => {
 
 (function() {
   let lastScrollY = window.scrollY || 0;
-  window.addEventListener('scroll', () => {
+  
+  function handleScroll(currentScrollY) {
     const wrapper = document.getElementById('mobileMenuPillWrapper');
     if (!wrapper || window.innerWidth > 768) return;
     
-    const currentScrollY = window.scrollY || 0;
+    if (Math.abs(currentScrollY - lastScrollY) < 5) return;
     
     if (currentScrollY > lastScrollY && currentScrollY > 60) {
       wrapper.classList.add('hidden-pill'); // Hides when scrolling down
@@ -2990,5 +2991,17 @@ window.toggleMobileMenu = (forceState) => {
     }
     
     lastScrollY = currentScrollY;
+  }
+
+  window.addEventListener('scroll', () => {
+    handleScroll(window.scrollY || 0);
   }, { passive: true });
+
+  // Fallback / support for potential layouts scrolling main-content container
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) {
+    mainContent.addEventListener('scroll', () => {
+      handleScroll(mainContent.scrollTop || 0);
+    }, { passive: true });
+  }
 })();

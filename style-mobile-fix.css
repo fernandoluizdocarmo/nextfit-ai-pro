@@ -948,9 +948,237 @@ body, html {
   }
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────────────────────────
+   SMART BOTTOM NAVIGATION PILL & BOTTOM SHEET
+   ─────────────────────────────────────────────────────────────*/
+
+/* Hide the old navigation bar completely */
+.mobile-nav {
+  display: none !important;
+}
+
+/* Pill: globally hidden on desktop */
+.mobile-menu-pill-wrapper {
+  display: none;
+}
+
+/* Backdrop: hidden via opacity so transitions work */
+.bottom-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
+}
+.bottom-sheet-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Bottom Sheet: hidden below screen via transform */
+.bottom-sheet-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1600;
+  background: #0d0d15;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px 28px 0 0;
+  padding: 1.5rem;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -12px 50px rgba(0, 0, 0, 0.8);
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: translateY(105%);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  visibility: hidden;
+}
+.bottom-sheet-menu.active {
+  transform: translateY(0);
+  visibility: visible;
+}
+
+/* Mobile-only: pill button + sheet inner styles */
+@media (max-width: 768px) {
+
+  /* Show the floating pill */
+  .mobile-menu-pill-wrapper {
+    display: block;
+    position: fixed;
+    z-index: 1400;
+    left: 50%;
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    will-change: transform, opacity;
+  }
+
+  /* Hide pill when scrolling UP (tela vai para baixo) */
+  .mobile-menu-pill-wrapper.hidden-pill {
+    transform: translate(-50%, 120%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Aura glow behind pill */
+  .menu-pill-aura {
+    position: absolute;
+    inset: -8px;
+    background: rgba(255, 94, 0, 0.4);
+    filter: blur(20px);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: pillPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pillPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+
+  /* The pill button */
+  .menu-pill-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 1.85rem;
+    border-radius: 2rem;
+    background: rgba(14, 14, 22, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 94, 0, 0.25);
+    color: #FF5E00;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 94, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .menu-pill-btn:active {
+    transform: scale(0.93);
+  }
+
+  .menu-pill-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 94, 0, 0.1), transparent 50%, rgba(0, 242, 155, 0.07));
+    pointer-events: none;
+  }
+
+  .menu-pill-icon {
+    font-size: 22px;
+    filter: drop-shadow(0 0 10px rgba(255, 94, 0, 0.8));
+    position: relative;
+    z-index: 1;
+    font-variation-settings: 'FILL' 1;
+  }
+
+  .menu-pill-text {
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Bottom sheet handle bar */
+  .bottom-sheet-handle {
+    width: 44px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    margin: 0 auto 1.5rem auto;
+  }
+
+  .bottom-sheet-title {
+    font-weight: 700;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.3);
+    margin-bottom: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  /* 3-column grid for nav items */
+  .bottom-sheet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .bottom-sheet-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.1rem 0.5rem;
+    border-radius: 18px;
+    background: rgba(22, 22, 34, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    color: #fff;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .bottom-sheet-btn:active {
+    transform: scale(0.93);
+    background: rgba(40, 40, 60, 0.9);
+  }
+
+  .bottom-sheet-btn .material-symbols-outlined {
+    font-size: 26px;
+    font-variation-settings: 'FILL' 1;
+  }
+
+  .bottom-sheet-btn span:not(.material-symbols-outlined) {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Logout button */
+  .bottom-sheet-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 14px;
+    background: rgba(255, 59, 48, 0.08);
+    border: 1px solid rgba(255, 59, 48, 0.2);
+    color: #ff453a;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s;
+  }
+
+  .bottom-sheet-logout-btn:active {
+    background: rgba(255, 59, 48, 0.2);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
    SAFE AREA UTILITIES
-   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
+   ─────────────────────────────────────────────────────────────*/
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   @media (max-width: 768px) {
     .mobile-nav {
@@ -962,9 +1190,9 @@ body, html {
   }
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   PROFILE CARD â€” Semantic Classes (Desktop + Mobile)
-   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
+/* ─────────────────────────────────────────────────────────────
+   PROFILE CARD — Semantic Classes (Desktop + Mobile)
+   ─────────────────────────────────────────────────────────────*/
 
 .profile-card-header {
   display: flex;
@@ -1079,9 +1307,9 @@ body, html {
   }
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   REGISTER FORM â€” Biometric Grid Mobile Fix
-   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
+/* ─────────────────────────────────────────────────────────────
+   REGISTER FORM — Biometric Grid Mobile Fix
+   ─────────────────────────────────────────────────────────────*/
 @media (max-width: 480px) {
   /* Register page weight/height fields side by side */
   #register-form [style*="grid-template-columns: 1fr 1fr"] {

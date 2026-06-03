@@ -20,11 +20,11 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="style-enhancements.css">
   <link rel="stylesheet" href="style-modern.css">
-  <link rel="stylesheet" href="style-mobile-fix.css?v=9">
+  <link rel="stylesheet" href="style-mobile-fix.css?v=10">
 </head>
 <body>
   <!-- AUTH OVERLAY -->
-  <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100%; background: #12121c; z-index: 9999; display: flex; align-items: flex-start; justify-content: center; padding: 1rem env(safe-area-inset-right, 1rem) 1rem env(safe-area-inset-left, 1rem); overflow-y: auto; -webkit-overflow-scrolling: touch;">
+  <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: #12121c; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem;">
     
     <!-- LOGIN SCREEN -->
     <div id="login-screen" style="max-width: 420px; width: 100%;">
@@ -37,11 +37,11 @@
         <form id="login-form" onsubmit="event.preventDefault(); performLogin();">
           <div class="form-group" style="text-align: left;">
             <label class="form-label" for="login-email" style="color: #94A3B8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">E-mail</label>
-            <input type="email" class="input-field" id="login-email" placeholder="seu@email.com" required style="min-height: 48px;" autocomplete="email">
+            <input type="email" class="input-field" id="login-email" name="email" placeholder="seu@email.com" required style="min-height: 48px;" autocomplete="email">
           </div>
           <div class="form-group" style="text-align: left;">
             <label class="form-label" for="login-password" style="color: #94A3B8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">Senha</label>
-            <input type="password" class="input-field" id="login-password" placeholder="Sua senha secreta" required style="min-height: 48px;" autocomplete="current-password">
+            <input type="password" class="input-field" id="login-password" name="password" placeholder="Sua senha secreta" required style="min-height: 48px;" autocomplete="current-password">
           </div>
           <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem; margin-top: 1.5rem; min-height: 48px;">
             <span class="material-symbols-outlined">login</span> Entrar
@@ -702,6 +702,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=9"></script>
+  <script src="app.js?v=10"></script>
 </body>
 </html>
