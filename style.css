@@ -486,6 +486,73 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1.5rem;
 }
 
+/* Validity Badges (Dashboard Ficha) */
+.validity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.validity-badge .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+.validity-badge.valid {
+  background: rgba(0, 255, 136, 0.06);
+  border: 1px solid rgba(0, 255, 136, 0.15);
+  color: var(--secondary);
+}
+
+.validity-badge.warning {
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  color: var(--warning);
+}
+
+.validity-badge.expired {
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  color: var(--danger);
+}
+
+/* AI Rationale Banner / Card */
+.ai-rationale-card {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 107, 0, 0.2);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(255, 107, 0, 0.03);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  line-height: 1.6;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.ai-rationale-card .material-symbols-outlined {
+  color: #FF9A00;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  background: rgba(255, 107, 0, 0.1);
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-rationale-card strong {
+  color: #FF9A00;
+  font-weight: 700;
+}
+
 /* AI Banner (Generator Page) */
 .ai-banner {
   display: flex;

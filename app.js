@@ -923,13 +923,8 @@ const renderDashboard = () => {
     if (ficha.aiRationale) {
       const rationale = document.createElement("div");
       rationale.id = "ai-rationale-banner";
-      rationale.style.cssText = `
-        margin-top: 0.75rem; padding: 0.7rem 1rem;
-        background: rgba(255,107,0,0.08); border-left: 3px solid #FF6B00;
-        border-radius: 4px; font-size: 0.82rem; color: rgba(255,255,255,0.7);
-        display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5;
-      `;
-      rationale.innerHTML = `<span class="material-symbols-outlined" style="font-size:1rem;color:#FF6B00;flex-shrink:0;margin-top:0.05rem;">lightbulb</span><span><strong style="color:#FF9A00;">IA explica:</strong> ${ficha.aiRationale}</span>`;
+      rationale.className = "ai-rationale-card";
+      rationale.innerHTML = `<span class="material-symbols-outlined">lightbulb</span><span><strong>IA explica:</strong> ${ficha.aiRationale}</span>`;
       fichaInfoEl.parentNode.insertBefore(rationale, fichaInfoEl.nextSibling);
     }
   }
