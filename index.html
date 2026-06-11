@@ -18,47 +18,42 @@
   <!-- Material Symbols and Typography -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="style-enhancements.css">
-  <link rel="stylesheet" href="style-modern.css">
-  <link rel="stylesheet" href="style-mobile-fix.css?v=14">
 </head>
 <body>
   <!-- AUTH OVERLAY -->
-  <div id="auth-overlay" style="position: fixed; inset: 0; width: 100vw; height: 100%; min-height: 100dvh; background: #12121c; z-index: 9999; display: flex; flex-direction: column; padding: 1rem; overflow-y: auto; overflow-x: hidden;">
+  <div id="auth-overlay" class="auth-overlay">
     
     <!-- REGISTRATION SCREEN -->
-    <div id="register-screen" style="margin: auto; max-width: 420px; width: 100%;">
-      <div class="card" style="padding: 1.5rem 1.25rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-        <div style="margin-bottom: 1.25rem;">
-          <span class="material-symbols-outlined text-primary" style="font-size: 2.5rem;">fitness_center</span>
-          <h1 class="font-headline-lg" style="font-size: 1.6rem; color: white; margin-top: 0.5rem; margin-bottom: 0.25rem;">treinox.ai</h1>
-          <p class="text-secondary" style="font-size: 0.85rem; color: #94A3B8;">Crie sua conta e comece a treinar</p>
+    <div id="register-screen" style="width: 100%; display: flex; justify-content: center;">
+      <div class="auth-card">
+        <div style="margin-bottom: 2rem;">
+          <span class="material-symbols-outlined text-accent" style="font-size: 3rem;">fitness_center</span>
+          <h1 style="font-size: 1.8rem; margin-top: 0.5rem; margin-bottom: 0.25rem;">treinox.ai</h1>
+          <p class="text-secondary" style="font-size: 0.95rem;">Crie seu perfil inteligente</p>
         </div>
         <form id="register-form" onsubmit="event.preventDefault(); performRegister();">
-          <div class="form-group" style="text-align: left; margin-bottom: 0.85rem;">
-            <label class="form-label" for="register-name" style="margin-bottom: 0.4rem; font-size: 0.8rem;">Nome Completo</label>
-            <input type="text" class="input-field" id="register-name" placeholder="Digite seu nome" required style="min-height: 44px; padding: 0.75rem 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="register-name">Nome Completo</label>
+            <input type="text" class="input-field" id="register-name" placeholder="Como quer ser chamado?" required>
           </div>
-          <div class="form-group" style="text-align: left; margin-bottom: 0.85rem;">
-            <label class="form-label" for="register-password" style="margin-bottom: 0.4rem; font-size: 0.8rem;">Senha</label>
-            <input type="password" class="input-field" id="register-password" name="password" placeholder="Mínimo 6 caracteres" required style="min-height: 44px; padding: 0.75rem 1rem;" autocomplete="new-password">
+
+          <div class="form-group">
+            <label class="form-label" for="register-age">Idade (anos)</label>
+            <input type="number" class="input-field" id="register-age" placeholder="Ex: 30" min="15" max="100" required>
           </div>
-          <div class="form-group" style="text-align: left; margin-bottom: 0.85rem;">
-            <label class="form-label" for="register-age" style="margin-bottom: 0.4rem; font-size: 0.8rem;">Idade (anos)</label>
-            <input type="number" class="input-field" id="register-age" placeholder="Ex: 30" min="15" max="100" required style="min-height: 44px; padding: 0.75rem 1rem;">
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
-            <div class="form-group" style="text-align: left; margin-bottom: 0;">
-              <label class="form-label" for="register-weight" style="margin-bottom: 0.4rem; font-size: 0.8rem;">Peso (kg)</label>
-              <input type="number" class="input-field" id="register-weight" placeholder="Ex: 80" min="30" max="250" step="0.5" required style="min-height: 44px; padding: 0.75rem 1rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="register-weight">Peso (kg)</label>
+              <input type="number" class="input-field" id="register-weight" placeholder="Ex: 80" min="30" max="250" step="0.5" required>
             </div>
-            <div class="form-group" style="text-align: left; margin-bottom: 0;">
-              <label class="form-label" for="register-height" style="margin-bottom: 0.4rem; font-size: 0.8rem;">Altura (cm)</label>
-              <input type="number" class="input-field" id="register-height" placeholder="Ex: 180" min="130" max="220" required style="min-height: 44px; padding: 0.75rem 1rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="register-height">Altura (cm)</label>
+              <input type="number" class="input-field" id="register-height" placeholder="Ex: 180" min="130" max="220" required>
             </div>
           </div>
-          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem; font-size: 1rem; margin-top: 1rem; min-height: 44px;">
-            <span class="material-symbols-outlined">person_add</span> Criar Conta
+          <button type="submit" class="btn-primary" style="width: 100%;">
+            <span>Iniciar Jornada</span>
+            <span class="material-symbols-outlined" style="font-size: 1.2rem;">arrow_forward</span>
           </button>
         </form>
       </div>
@@ -67,16 +62,23 @@
 
   <!-- MOBILE COMPACT HEADER -->
   <header class="mobile-header">
-    <div class="mobile-logo">
-      <div class="mobile-logo-icon">
-        <span class="material-symbols-outlined" style="color: white; font-size: 1.25rem;">fitness_center</span>
+    <div style="display: flex; align-items: center; gap: 0.8rem;">
+      <button id="menu-toggle-btn" class="btn-icon" onclick="toggleSidebar()" aria-label="Toggle Menu">
+        <span class="material-symbols-outlined" style="color: white; font-size: 1.8rem;">menu</span>
+      </button>
+      <div class="mobile-logo">
+        <div class="mobile-logo-icon">
+          <span class="material-symbols-outlined" style="color: white; font-size: 1.25rem;">fitness_center</span>
+        </div>
+        <span class="mobile-logo-text">treinox.ai</span>
       </div>
-      <span class="mobile-logo-text">treinox.ai</span>
     </div>
     <div style="display: flex; align-items: center; gap: 0.5rem;">
       <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjbMKKIWKGidqfNL9RsnBx5VfllMJPikkHZVRQfI-nLipH8u96G1RDnD1cmusGhOesuBCpokywMapihy2UpBcHsI2hvGCHTSCBg1O_p3WcT6u01f_9Z-1rhnIE8R58TFXmkVlwYggBa7aeaA4ZEZUz-QLdGuiEyRxr_yofr4wCtEmkEoDVtQuWMdwZphCTZ9toSHWkv6Ndl_nJoZdT2ClG5Kq1WXdYKpzBBrWW2jJ3l15PxeQNqMA4dBDyxCeyYeNxZNd3NkDGwls" class="user-avatar" style="width: 32px; height: 32px; border-width: 1px;" alt="Avatar">
     </div>
   </header>
+
+  <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
   <div id="app-container">
     
@@ -138,49 +140,49 @@
       <!-- ============================================== -->
       <section id="dashboard" class="page active">
         <!-- Header with Ficha Info -->
-        <div class="header-section">
+        <div class="header-section" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
           <div class="header-title" style="flex: 1;">
             <h1 id="dashboard-ficha-title">Ficha de Treino</h1>
             <p id="dashboard-ficha-info">Carregando ficha...</p>
             <div id="dashboard-ficha-validity" style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;"></div>
           </div>
-          <button class="btn-secondary" style="border-color: rgba(255, 59, 48, 0.4); color: #FF3B30; padding: 0.6rem 1rem; flex-shrink: 0;" onclick="deleteCurrentFicha()" id="btn-delete-ficha">
+          <button class="btn-secondary" style="color: var(--danger); border-color: rgba(239,68,68,0.3);" onclick="deleteCurrentFicha()" id="btn-delete-ficha">
             <span class="material-symbols-outlined">delete</span> Apagar
           </button>
         </div>
 
         <!-- Quick Stats Cards -->
         <div class="grid-container" style="gap: 1rem; margin-bottom: 2rem;">
-          <div class="card" style="padding: 1.5rem; background: linear-gradient(135deg, rgba(212,255,0,0.1) 0%, rgba(212,255,0,0.05) 100%); border: 1px solid rgba(212,255,0,0.2);">
+          <div class="card stat-card">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div>
                 <p class="text-secondary" style="font-size: 0.8rem;">Treinos Esta Semana</p>
-                <h3 style="font-size: 1.8rem; color: #D4FF00; margin-top: 0.25rem;" id="stats-workouts-week">0</h3>
+                <h3 style="font-size: 1.8rem; color: var(--primary); margin-top: 0.25rem;" id="stats-workouts-week">0</h3>
               </div>
-              <span class="material-symbols-outlined" style="font-size: 2.5rem; color: rgba(212,255,0,0.5);">calendar_today</span>
+              <span class="material-symbols-outlined" style="font-size: 2.5rem; color: rgba(232,255,0,0.3);">calendar_today</span>
             </div>
           </div>
-          <div class="card" style="padding: 1.5rem; background: linear-gradient(135deg, rgba(100,200,255,0.1) 0%, rgba(100,200,255,0.05) 100%); border: 1px solid rgba(100,200,255,0.2);">
+          <div class="card stat-card">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div>
                 <p class="text-secondary" style="font-size: 0.8rem;">Último Treino</p>
-                <h3 style="font-size: 1.8rem; color: #64C8FF; margin-top: 0.25rem;" id="stats-last-workout">Nunca</h3>
+                <h3 style="font-size: 1.8rem; color: var(--info); margin-top: 0.25rem;" id="stats-last-workout">Nunca</h3>
               </div>
-              <span class="material-symbols-outlined" style="font-size: 2.5rem; color: rgba(100,200,255,0.5);">history</span>
+              <span class="material-symbols-outlined" style="font-size: 2.5rem; color: rgba(59,130,246,0.3);">history</span>
             </div>
           </div>
         </div>
 
         <!-- Treino A, B, C Selection Tabs -->
-        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); overflow-x: auto; padding-bottom: 1rem;">
-          <button class="split-tab-btn active" data-split="A" id="btn-split-a" style="padding: 0.6rem 1.2rem; border: none; border-bottom: 2px solid transparent; background: none; color: var(--text-secondary); cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-secondary)'">
-            <span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: middle;">fitness_center</span> Treino A
+        <div class="split-tabs-container">
+          <button class="split-tab-btn active" data-split="A" id="btn-split-a">
+            <span class="material-symbols-outlined" style="font-size: 1rem;">fitness_center</span> Treino A
           </button>
-          <button class="split-tab-btn" data-split="B" id="btn-split-b" style="padding: 0.6rem 1.2rem; border: none; border-bottom: 2px solid transparent; background: none; color: var(--text-secondary); cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-secondary)'">
-            <span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: middle;">fitness_center</span> Treino B
+          <button class="split-tab-btn" data-split="B" id="btn-split-b">
+            <span class="material-symbols-outlined" style="font-size: 1rem;">fitness_center</span> Treino B
           </button>
-          <button class="split-tab-btn" data-split="C" id="btn-split-c" style="padding: 0.6rem 1.2rem; border: none; border-bottom: 2px solid transparent; background: none; color: var(--text-secondary); cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--text-secondary)'">
-            <span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: middle;">fitness_center</span> Treino C
+          <button class="split-tab-btn" data-split="C" id="btn-split-c">
+            <span class="material-symbols-outlined" style="font-size: 1rem;">fitness_center</span> Treino C
           </button>
         </div>
 
@@ -234,88 +236,99 @@
       <section id="generator" class="page">
         <div class="header-section">
           <div class="header-title">
-            <h1>Criador de Ficha com IA Gemini</h1>
-            <p>Descreva seus objetivos e nossa IA Gemini cria um treino 100% personalizado para você.</p>
+            <h1>Criar Ficha com IA</h1>
+            <p>Preencha seu perfil e a IA Gemini cria uma ficha 100% personalizada ao seu nível.</p>
           </div>
         </div>
 
-        <div class="card generator-card">
-          <div style="background: var(--primary-grad); padding: 1.5rem; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0; margin: -1.75rem -1.75rem 2rem -1.75rem; display: flex; align-items: center; gap: 0.75rem; box-shadow: var(--glow-orange);">
-            <span class="material-symbols-outlined" style="font-size: 2.25rem; color: white;">smart_toy</span>
-            <div style="flex: 1;">
-              <h2 style="color: white; font-size: 1.25rem;">treinox.ai × Gemini AI</h2>
-              <p style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Geração real com IA — ficha única baseada no seu perfil</p>
-            </div>
-            <div style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 0.3rem 0.75rem; display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0;">
-              <span style="width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: ai-pulse-dot 2s ease-in-out infinite;"></span>
-              <span style="font-size: 0.7rem; color: white; font-weight: 700; letter-spacing: 0.05em;">GEMINI ONLINE</span>
-            </div>
+        <!-- AI Banner -->
+        <div class="ai-banner">
+          <span class="material-symbols-outlined" style="font-size: 2rem; color: var(--bg-dark); flex-shrink: 0;">smart_toy</span>
+          <div style="flex: 1;">
+            <div style="font-size: 1rem; font-weight: 700; margin-bottom: 0.15rem;">treinox.ai × Gemini AI</div>
+            <div style="font-size: 0.8rem; opacity: 0.8;">Geração real com IA — ficha exclusiva baseada no seu perfil biométrico e nível</div>
           </div>
-          <style>
-            @keyframes ai-pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
-          </style>
+          <div class="ai-status-pill">
+            <span class="ai-pulse-dot"></span>
+            <span style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em;">ONLINE</span>
+          </div>
+        </div>
 
+
+        <div class="card generator-card">
           <form id="workout-gen-form" onsubmit="event.preventDefault(); handleGenerateWorkout();">
+
             <!-- Name -->
-            <div class="form-group">
-              <label class="form-label" for="user-name-input">Seu Nome</label>
-              <input type="text" class="input-field" id="user-name-input" placeholder="Digite seu nome (ex: Fernando)" required>
+            <div class="gen-section">
+              <div class="gen-section-header">
+                <span class="material-symbols-outlined gen-section-icon">person</span>
+                <label class="form-label" style="margin:0;">Seu Nome</label>
+              </div>
+              <input type="text" class="input-field" id="user-name-input" placeholder="Ex: Fernando" required>
             </div>
 
             <!-- Sex/Gender Selector -->
-            <div class="form-group">
-              <label class="form-label">Sexo</label>
+            <div class="gen-section">
+              <div class="gen-section-header">
+                <span class="material-symbols-outlined gen-section-icon">wc</span>
+                <label class="form-label" style="margin:0;">Sexo Biológico</label>
+              </div>
               <input type="hidden" id="form-sex" value="Masculino">
-              <div class="form-options-grid">
+              <div class="form-options-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="form-option-card selected" onclick="selectGeneratorOption('sex', 'Masculino', this)">
                   <span class="material-symbols-outlined icon">male</span>
                   <span class="title">Masculino</span>
-                  <span class="desc">Foco hormonal & fisiológico</span>
+                  <span class="desc">Foco em peito, costas e braços</span>
                 </div>
                 <div class="form-option-card" onclick="selectGeneratorOption('sex', 'Feminino', this)">
                   <span class="material-symbols-outlined icon">female</span>
                   <span class="title">Feminino</span>
-                  <span class="desc">Foco hormonal & fisiológico</span>
+                  <span class="desc">Foco em glúteos, pernas e core</span>
                 </div>
               </div>
             </div>
 
-            <!-- User Biometric Data -->
-            <div style="background: rgba(255, 107, 0, 0.05); border: 1px solid rgba(255, 107, 0, 0.2); border-radius: var(--border-radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
-              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-                <span class="material-symbols-outlined" style="color: var(--primary); font-size: 1.3rem;">health_metrics</span>
-                <label class="form-label" style="margin: 0;">Dados Biométricos (Personalizarão sua Ficha)</label>
+            <!-- Biometric Data -->
+            <div class="gen-section">
+              <div class="gen-section-header">
+                <span class="material-symbols-outlined gen-section-icon">health_metrics</span>
+                <label class="form-label" style="margin:0;">Dados Biométricos</label>
               </div>
-              <div class="biometric-grid">
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label class="form-label" for="form-age">Idade (anos)</label>
-                  <input type="number" class="input-field" id="form-age" placeholder="Ex: 30" min="15" max="100" value="30" required>
+              <div style="background: rgba(255,107,0,0.05); border: 1px solid rgba(255,107,0,0.15); border-radius: 12px; padding: 1.25rem;">
+                <div class="biometric-grid">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" for="form-age" style="font-size: 0.75rem;">Idade (anos)</label>
+                    <input type="number" class="input-field" id="form-age" placeholder="30" min="15" max="100" value="30" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" for="form-weight" style="font-size: 0.75rem;">Peso (kg)</label>
+                    <input type="number" class="input-field" id="form-weight" placeholder="80" min="30" max="250" step="0.5" value="80" required>
+                  </div>
                 </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label class="form-label" for="form-weight">Peso (kg)</label>
-                  <input type="number" class="input-field" id="form-weight" placeholder="Ex: 80" min="30" max="250" step="0.5" value="80" required>
+                <div class="form-group" style="margin-bottom: 0; margin-top: 0.75rem;">
+                  <label class="form-label" for="form-height" style="font-size: 0.75rem;">Altura (cm)</label>
+                  <input type="number" class="input-field" id="form-height" placeholder="180" min="130" max="220" step="1" value="180" required>
                 </div>
-              </div>
-              <div class="form-group" style="margin-bottom: 0; margin-top: 1rem;">
-                <label class="form-label" for="form-height">Altura (cm)</label>
-                <input type="number" class="input-field" id="form-height" placeholder="Ex: 180" min="130" max="220" step="1" value="180" required>
               </div>
             </div>
 
-            <!-- Objective Selector - MAPEADO PARA VALORES IA -->
-            <div class="form-group">
-              <label class="form-label">Qual é o seu objetivo?</label>
+            <!-- Objective Selector -->
+            <div class="gen-section">
+              <div class="gen-section-header">
+                <span class="material-symbols-outlined gen-section-icon">flag</span>
+                <label class="form-label" style="margin:0;">Objetivo Principal</label>
+              </div>
               <input type="hidden" id="form-objetivo" value="Ganho Muscular">
-              <div class="form-options-grid">
+              <div class="form-options-grid" style="grid-template-columns: repeat(3, 1fr);">
                 <div class="form-option-card selected" onclick="document.getElementById('form-objetivo').value='Ganho Muscular'; selectGeneratorOption('objective', 'Ganho Muscular', this)">
                   <span class="material-symbols-outlined icon">fitness_center</span>
                   <span class="title">Hipertrofia</span>
-                  <span class="desc">Ganho de massa</span>
+                  <span class="desc">Ganhar massa muscular</span>
                 </div>
                 <div class="form-option-card" onclick="document.getElementById('form-objetivo').value='Perda de Gordura'; selectGeneratorOption('objective', 'Perda de Gordura', this)">
                   <span class="material-symbols-outlined icon">local_fire_department</span>
                   <span class="title">Emagrecimento</span>
-                  <span class="desc">Perder gordura</span>
+                  <span class="desc">Queimar gordura</span>
                 </div>
                 <div class="form-option-card" onclick="document.getElementById('form-objetivo').value='Resistência'; selectGeneratorOption('objective', 'Resistência', this)">
                   <span class="material-symbols-outlined icon">directions_run</span>
@@ -325,49 +338,131 @@
               </div>
             </div>
 
-            <!-- Level Selector -->
-            <div class="form-group">
-              <label class="form-label">Qual o seu nível de experiência?</label>
+            <!-- Level Selector - REDESIGNED with premium cards -->
+            <div class="gen-section">
+              <div class="gen-section-header">
+                <span class="material-symbols-outlined gen-section-icon">signal_cellular_alt</span>
+                <label class="form-label" style="margin:0;">Nível de Experiência</label>
+              </div>
               <input type="hidden" id="form-nivel" value="Intermediário">
-              <div class="form-options-grid">
-                <div class="form-option-card" onclick="document.getElementById('form-nivel').value='Iniciante'; selectGeneratorOption('level', 'Iniciante', this)">
-                  <span class="material-symbols-outlined icon">explore</span>
-                  <span class="title">Iniciante</span>
-                  <span class="desc">Menos de 6 meses</span>
+              <div class="level-cards-grid">
+                <!-- INICIANTE -->
+                <div class="level-card" data-level="Iniciante" onclick="document.getElementById('form-nivel').value='Iniciante'; selectLevelCard('Iniciante', this)">
+                  <div class="level-card-header" style="background: linear-gradient(135deg, #10B981, #059669);">
+                    <div class="level-bars">
+                      <div class="bar active"></div>
+                      <div class="bar"></div>
+                      <div class="bar"></div>
+                    </div>
+                    <span class="material-symbols-outlined" style="font-size:1.5rem; color:white;">explore</span>
+                  </div>
+                  <div class="level-card-body">
+                    <div class="level-name" style="color: #10B981;">Iniciante</div>
+                    <div class="level-exp">Menos de 6 meses</div>
+                    <ul class="level-features">
+                      <li>✅ 4–5 exercícios por treino</li>
+                      <li>✅ 2–3 séries por exercício</li>
+                      <li>✅ 12–15 repetições (foco técnica)</li>
+                      <li>✅ Máquinas guiadas e pesos leves</li>
+                      <li>✅ Full body simples</li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="form-option-card selected" onclick="document.getElementById('form-nivel').value='Intermediário'; selectGeneratorOption('level', 'Intermediário', this)">
-                  <span class="material-symbols-outlined icon">military_tech</span>
-                  <span class="title">Intermediário</span>
-                  <span class="desc">6 meses a 2 anos</span>
+
+                <!-- INTERMEDIÁRIO -->
+                <div class="level-card selected" data-level="Intermediário" onclick="document.getElementById('form-nivel').value='Intermediário'; selectLevelCard('Intermediário', this)">
+                  <div class="level-card-header" style="background: linear-gradient(135deg, #FF5E00, #FF2D55);">
+                    <div class="level-bars">
+                      <div class="bar active"></div>
+                      <div class="bar active"></div>
+                      <div class="bar"></div>
+                    </div>
+                    <span class="material-symbols-outlined" style="font-size:1.5rem; color:white;">military_tech</span>
+                  </div>
+                  <div class="level-card-body">
+                    <div class="level-name" style="color: #FF5E00;">Intermediário</div>
+                    <div class="level-exp">6 meses a 2 anos</div>
+                    <ul class="level-features">
+                      <li>✅ 5–7 exercícios por treino</li>
+                      <li>✅ 3–4 séries por exercício</li>
+                      <li>✅ 8–12 repetições com carga</li>
+                      <li>✅ Push/Pull/Legs (PPL)</li>
+                      <li>✅ Livres + máquinas</li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="form-option-card" onclick="document.getElementById('form-nivel').value='Avançado'; selectGeneratorOption('level', 'Avançado', this)">
-                  <span class="material-symbols-outlined icon">workspace_premium</span>
-                  <span class="title">Avançado</span>
-                  <span class="desc">Mais de 2 anos</span>
+
+                <!-- AVANÇADO -->
+                <div class="level-card" data-level="Avançado" onclick="document.getElementById('form-nivel').value='Avançado'; selectLevelCard('Avançado', this)">
+                  <div class="level-card-header" style="background: linear-gradient(135deg, #8B5CF6, #EC4899);">
+                    <div class="level-bars">
+                      <div class="bar active"></div>
+                      <div class="bar active"></div>
+                      <div class="bar active"></div>
+                    </div>
+                    <span class="material-symbols-outlined" style="font-size:1.5rem; color:white;">workspace_premium</span>
+                  </div>
+                  <div class="level-card-body">
+                    <div class="level-name" style="color: #8B5CF6;">Avançado</div>
+                    <div class="level-exp">Mais de 2 anos</div>
+                    <ul class="level-features">
+                      <li>✅ 6–8 exercícios por treino</li>
+                      <li>✅ 4–5 séries com cargas pesadas</li>
+                      <li>✅ 6–12 reps (força + hipertrofia)</li>
+                      <li>✅ Compostos pesados (agach., supino)</li>
+                      <li>✅ Alto volume e intensidade</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- Routine Split Selection -->
-            <div class="form-group">
-              <label class="form-label" for="form-frequencia">Quantos dias na semana você treina?</label>
-              <input type="number" class="input-field" id="form-frequencia" placeholder="Ex: 3" min="1" max="7" value="3" required>
-            </div>
-            
-            <div class="form-group">
-              <label class="form-label" for="form-time">Quanto tempo disponível por dia? (minutos)</label>
-              <input type="number" class="input-field" id="form-time" placeholder="Ex: 60" min="10" max="180" value="60" required>
+            <!-- Training Frequency & Time -->
+            <div class="gen-section">
+              <div class="gen-section-header">
+                <span class="material-symbols-outlined gen-section-icon">schedule</span>
+                <label class="form-label" style="margin:0;">Frequência e Tempo Disponível</label>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" for="form-frequencia" style="font-size: 0.8rem;">
+                    <span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: middle; color: var(--primary);">calendar_today</span>
+                    Dias por semana
+                  </label>
+                  <input type="number" class="input-field" id="form-frequencia" placeholder="3" min="1" max="7" value="3" required style="text-align: center; font-size: 1.4rem; font-weight: 800; color: var(--primary);">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" for="form-time" style="font-size: 0.8rem;">
+                    <span class="material-symbols-outlined" style="font-size: 1rem; vertical-align: middle; color: var(--primary);">timer</span>
+                    Minutos por sessão
+                  </label>
+                  <input type="number" class="input-field" id="form-time" placeholder="60" min="20" max="180" value="60" required style="text-align: center; font-size: 1.4rem; font-weight: 800; color: var(--primary);">
+                </div>
+              </div>
+              <!-- Time context hint -->
+              <div id="time-context-hint" style="margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(255,94,0,0.06); border: 1px solid rgba(255,94,0,0.15); border-radius: 10px; font-size: 0.82rem; color: #FFA266; display: flex; align-items: center; gap: 0.5rem;">
+                <span class="material-symbols-outlined" style="font-size: 1rem; flex-shrink: 0;">info</span>
+                <span id="time-hint-text">60 min → Sessão padrão: 5–6 exercícios com aquecimento</span>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">Quer dar ênfase em algum músculo específico? <span style="color: var(--text-secondary); font-weight: 400;">(opcional)</span></label>
-              <textarea class="input-field" id="form-emphasis" rows="3" placeholder="Ex: Quero focar mais em pernas e ombros, pois sinto que estão atrasados..." style="resize: vertical; min-height: 80px; font-family: inherit; line-height: 1.5;"></textarea>
+            <!-- Emphasis (optional) -->
+            <div class="gen-section">
+              <div class="gen-section-header">
+                <span class="material-symbols-outlined gen-section-icon">star</span>
+                <label class="form-label" style="margin:0;">Ênfase Muscular <span style="color: var(--text-secondary); font-weight: 400;">(opcional)</span></label>
+              </div>
+              <textarea class="input-field" id="form-emphasis" rows="2" placeholder="Ex: Quero focar mais em glúteos e panturrilha..." style="resize: vertical; min-height: 70px; font-family: inherit; line-height: 1.5;"></textarea>
             </div>
 
-            <div class="form-group">
-              <label class="form-label" for="form-validity">Validade da ficha (semanas)</label>
+            <!-- Validity -->
+            <div class="gen-section">
+              <div class="gen-section-header">
+                <span class="material-symbols-outlined gen-section-icon">event</span>
+                <label class="form-label" style="margin:0;">Validade da Ficha</label>
+              </div>
               <input type="hidden" id="form-validity" value="4">
-              <div class="form-options-grid">
+              <div class="form-options-grid" style="grid-template-columns: repeat(3,1fr);">
                 <div class="form-option-card" onclick="selectGeneratorOption('validity', '3', this)">
                   <span class="material-symbols-outlined icon">flash_on</span>
                   <span class="title">3 Semanas</span>
@@ -379,36 +474,36 @@
                   <span class="desc">Recomendado</span>
                 </div>
                 <div class="form-option-card" onclick="selectGeneratorOption('validity', '6', this)">
-                  <span class="material-symbols-outlined icon">event</span>
+                  <span class="material-symbols-outlined icon">event_available</span>
                   <span class="title">6 Semanas</span>
                   <span class="desc">Foco Estendido</span>
                 </div>
               </div>
             </div>
 
-            <button type="submit" class="btn-primary" style="width: 100%; padding: 1.15rem; font-size: 1.05rem; justify-content: center; margin-top: 1rem;" id="btn-generate-submit">
-              <span class="material-symbols-outlined">auto_awesome</span> Gerar Ficha com IA
+            <button type="submit" class="btn-generate-main" id="btn-generate-submit">
+              <span class="material-symbols-outlined" style="font-size: 1.5rem;">auto_awesome</span>
+              <span>Gerar Minha Ficha com IA</span>
+              <span class="material-symbols-outlined" style="font-size: 1.2rem; opacity: 0.7;">arrow_forward</span>
             </button>
-            <p style="text-align: center; font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.75rem;">
-              ⚡ Powered by Groq • Ficha exclusiva gerada por IA em segundos
+            <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.75rem;">
+              ⚡ Powered by Gemini AI • Ficha exclusiva gerada em segundos
             </p>
           </form>
         </div>
       </section>
 
-
-
       <!-- ============================================== -->
       <!-- 5. COMPLETED SESSIONS HISTORY LOGS             -->
       <!-- ============================================== -->
       <section id="historico" class="page">
-        <div class="header-section">
+        <div class="header-section" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
           <div class="header-title" style="flex: 1;">
             <h1>Histórico de Treinos</h1>
             <p>Visualize as fichas completadas e acompanhe sua evolução de cargas.</p>
           </div>
-          <button class="btn-secondary" style="border-color: rgba(255, 59, 48, 0.4); color: #FF3B30; padding: 0.6rem 1rem; flex-shrink: 0;" onclick="clearHistory()" id="btn-clear-history">
-            <span class="material-symbols-outlined">delete_sweep</span> Apagar Histórico
+          <button class="btn-secondary" style="color: var(--danger); border-color: rgba(239,68,68,0.3);" onclick="clearHistory()" id="btn-clear-history">
+            <span class="material-symbols-outlined">delete_sweep</span> Apagar
           </button>
         </div>
 
@@ -510,40 +605,14 @@
             </div>
           </div>
 
-          <!-- Security Section -->
-          <div class="card col-span-12">
-            <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem;">Segurança</h3>
-            <button onclick="changePassword()" class="btn-secondary" style="width: 100%; justify-content: flex-start; gap: 0.75rem;">
-              <span class="material-symbols-outlined">lock</span> Alterar Senha
-            </button>
-          </div>
+
         </div>
       </section>
 
     </main>
   </div>
 
-  <!-- BOTTOM TASKBAR NAVIGATION (Mobile Only) -->
-  <nav class="mobile-nav" id="mobileTaskbar">
-    <button class="mobile-nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
-      <span class="material-symbols-outlined">dashboard</span>
-      <span>Ficha</span>
-    </button>
-    <button class="mobile-nav-item" data-page="generator" onclick="navigateTo('generator')">
-      <span class="material-symbols-outlined">smart_toy</span>
-      <span>Criar Ficha</span>
-    </button>
-
-    <button class="mobile-nav-item" data-page="historico" onclick="navigateTo('historico')">
-      <span class="material-symbols-outlined">history</span>
-      <span>Histórico</span>
-    </button>
-    <button class="mobile-nav-item" data-page="perfil" onclick="navigateTo('perfil')">
-      <span class="material-symbols-outlined">person</span>
-      <span>Perfil</span>
-    </button>
-  </nav>
-
+  <!-- Bottom navigation removed in favor of top hamburger sidebar menu -->
 
 
 

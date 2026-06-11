@@ -164,7 +164,7 @@ const testPromptBuilder = () => {
 const testExerciseRotation = () => {
   console.log("\n🔄 TESTES: Rotação de Exercícios\n");
 
-  const prevIds = ["supino_reto", "agachamento_barra", "rosca_direta"];
+  const prevIds = ["supino_reto", "agachamento_barra", "rosca_direta", "esteira"];
   
   const alt1 = getAlternativeExercise("supino_reto", prevIds);
   assert(

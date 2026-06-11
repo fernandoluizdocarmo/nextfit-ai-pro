@@ -454,37 +454,29 @@ const switchAuthScreen = (screen) => {
 // Registration Logic
 const performRegister = () => {
   const nameInput = document.getElementById("register-name");
-  const passwordInput = document.getElementById("register-password");
   const ageInput = document.getElementById("register-age");
   const weightInput = document.getElementById("register-weight");
   const heightInput = document.getElementById("register-height");
   
   const name = (nameInput.value || "").trim();
-  const password = (passwordInput.value || "").trim();
   const age = parseInt(ageInput.value) || null;
   const weight = parseFloat(weightInput.value) || null;
   const height = parseInt(heightInput.value) || null;
 
   // Validação
-  if (!name || !password || !age || !weight || !height) {
+  if (!name || !age || !weight || !height) {
     alert("⚠️ Por favor, preencha todos os campos.");
-    return;
-  }
-
-  if (password.length < 6) {
-    alert("⚠️ Senha deve ter pelo menos 6 caracteres.");
     return;
   }
 
   // Verificar se nome já existe
   if (state.users[name]) {
-    alert("⚠️ Este nome já está registrado.");
+    alert("⚠️ Este nome já está registrado. Por favor, tente outro ou faça login.");
     return;
   }
 
   // Registrar usuário
   state.users[name] = {
-    password: password, // em produção, usar hash!
     name: sanitizeInput(name),
     profile: {
       age: age,
@@ -498,7 +490,7 @@ const performRegister = () => {
   state.isLoggedIn = true;
   localStorage.setItem('treinox_ai_session_active', 'true');
   localStorage.setItem('treinox_ai_last_email', name);
-  localStorage.setItem('treinox_ai_last_password', password);
+  localStorage.removeItem('treinox_ai_last_password');
   state.userEmail = name;
   state.userName = state.users[name].name;
   state.userProfile = state.users[name].profile;
@@ -543,18 +535,18 @@ const populateGeneratorForm = () => {
 const checkLoginStatus = () => {
   const authOverlay = document.getElementById("auth-overlay");
   const appContainer = document.getElementById("app-container");
-  const mobileNav = document.getElementById("mobileTaskbar");
+  const mobileHeader = document.querySelector(".mobile-header");
 
   if (state.isLoggedIn) {
     if (authOverlay) authOverlay.style.display = "none";
-    if (appContainer) appContainer.style.display = "block";
-    if (mobileNav) mobileNav.style.display = "flex";
+    if (appContainer) appContainer.style.display = "flex";
+    if (mobileHeader) mobileHeader.style.display = "";
     updateUserUI();
     populateGeneratorForm();
   } else {
     if (authOverlay) authOverlay.style.display = "flex";
     if (appContainer) appContainer.style.display = "none";
-    if (mobileNav) mobileNav.style.display = "none";
+    if (mobileHeader) mobileHeader.style.display = "none";
     switchAuthScreen("register");
   }
 };
@@ -831,6 +823,11 @@ const saveStateToStorage = () => {
   }
 };
 
+// Toggle Sidebar for Mobile
+window.toggleSidebar = () => {
+  document.body.classList.toggle("sidebar-open");
+};
+
 // 6. ROUTER (TABS NAVIGATION)
 window.navigateTo = (pageId) => {
   // Hide active workout overlays
@@ -844,18 +841,11 @@ window.navigateTo = (pageId) => {
     }
   });
 
-  // Mobile nav updates
-  document.querySelectorAll(".mobile-nav-item").forEach(item => {
-    item.classList.remove("active");
-    if (item.dataset.page === pageId) {
-      item.classList.add("active");
-    }
-  });
-
-  // Restaurar visibilidade da barra de tarefas e resetar scroll no mobile ao trocar de tela
-  if (typeof window.resetMobileTaskbar === "function") {
-    window.resetMobileTaskbar();
+  // Close sidebar on mobile
+  if (document.body.classList.contains("sidebar-open")) {
+    document.body.classList.remove("sidebar-open");
   }
+
   window.scrollTo(0, 0);
   const mainContent = document.querySelector('.main-content');
   if (mainContent) mainContent.scrollTop = 0;
@@ -1666,6 +1656,16 @@ const selectGeneratorOption = (group, value, element) => {
   document.getElementById(`form-${group}`).value = value;
 };
 
+// Premium level card selector logic
+const selectLevelCard = (level, element) => {
+  // Unselect others
+  const parent = element.parentNode;
+  parent.querySelectorAll(".level-card").forEach(card => {
+    card.classList.remove("selected");
+  });
+  element.classList.add("selected");
+};
+
 // Apagar ficha atual
 const deleteCurrentFicha = () => {
   if (confirm("Tem certeza que deseja apagar sua ficha atual? Você precisará gerar uma nova.")) {
@@ -1719,6 +1719,54 @@ const AVAILABLE_EXERCISES = {
 };
 
 const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis, age, weight, height, bmi, historySummary = "") => {
+  // Level-specific configuration
+  const levelConfig = {
+    "Iniciante": {
+      exercisesPerSession: time <= 45 ? 4 : 5,
+      setsRange: "2-3 séries",
+      repsRange: "12-15 repetições (aprendizagem técnica)",
+      intensity: "LEVE A MODERADA - cargas que permitam execução perfeita da técnica",
+      restTime: "60-90 segundos entre séries",
+      exerciseComplexity: "APENAS exercícios uniarticulares e máquinas guiadas - PROIBIDO movimentos complexos livres pesados",
+      weightGuidance: "Cargas muito leves, foco 100% em técnica. Homem: supino 20-30kg, leg press 40-60kg, remada 15-20kg. Mulher: reduzir 30-40%.",
+      splitType: "Full Body ou Push/Pull simples",
+      volumeTotal: "BAIXO: 4 exercícios por sessão máximo se tempo <= 45min, 5 se tempo >= 60min",
+      restrictions: "PROIBIDO: agachamento livre com barra pesada, levantamento terra, exercícios olímpicos. Preferir máquinas e halteres leves.",
+      cardioRule: "Incluir 1 cardio leve (10-15 min) apenas se tempo >= 60min",
+      techniqueNote: "MUITO IMPORTANTE: Iniciante nunca deve chegar à falha muscular. Sempre 2-3 reps de reserva."
+    },
+    "Intermediário": {
+      exercisesPerSession: time <= 45 ? 5 : time <= 60 ? 6 : 7,
+      setsRange: "3-4 séries",
+      repsRange: "8-12 repetições com boa técnica",
+      intensity: "MODERADA A ALTA - pode chegar próximo à falha nas últimas séries",
+      restTime: "45-75 segundos entre séries",
+      exerciseComplexity: "Mistura de máquinas E exercícios livres. Pode incluir agachamento, remadas e supinos livres.",
+      weightGuidance: "Cargas desafiadoras mas controláveis. Homem: supino 40-60kg, leg press 80-120kg, remada 25-40kg. Mulher: reduzir 25-35%.",
+      splitType: "Push/Pull/Legs ou Upper/Lower",
+      volumeTotal: "MÉDIO: 5-6 exercícios por sessão dependendo do tempo disponível",
+      restrictions: "Pode usar todos exercícios da lista, mas com técnica bem estabelecida.",
+      cardioRule: "Incluir cardio (10-20 min) apenas se objetivo é emagrecimento ou se houver tempo",
+      techniqueNote: "Pode tentar chegar próximo à falha nas últimas 1-2 séries de cada exercício."
+    },
+    "Avançado": {
+      exercisesPerSession: time <= 45 ? 6 : time <= 60 ? 7 : 8,
+      setsRange: "4-5 séries",
+      repsRange: "Variado: 6-8 reps força / 8-12 reps hipertrofia / 12-15 reps finalização",
+      intensity: "ALTA - treinar até próximo da falha, técnicas avançadas aplicadas",
+      restTime: "30-60 segundos para hipertrofia, 2-3 min para força",
+      exerciseComplexity: "TODOS exercícios disponíveis. Priorizar compostos pesados (agachamento, supino livre, remadas pesadas) como base.",
+      weightGuidance: "Cargas pesadas e progressivas. Homem: supino 70-100kg+, leg press 150-200kg+, remada 50-70kg+. Mulher: reduzir 20-30%.",
+      splitType: "PPL (Push/Pull/Legs) com maior volume, ou especialização muscular",
+      volumeTotal: "ALTO: 6-8 exercícios por sessão conforme tempo, incluindo exercícios compostos E isolados",
+      restrictions: "Sem restrições. Usar toda a lista de exercícios disponíveis com múltiplos ângulos.",
+      cardioRule: "Cardio apenas para emagrecimento ou condicionamento específico, não misturar com treino de força no mesmo dia",
+      techniqueNote: "Pode usar técnicas avançadas: drop sets, rest-pause, bi-sets, etc. Chegar à falha muscular nas séries principais."
+    }
+  };
+
+  const config = levelConfig[level] || levelConfig["Intermediário"];
+  const numExercises = config.exercisesPerSession;
   const exerciseList = Object.entries(AVAILABLE_EXERCISES)
     .map(([id, desc]) => `- ${id}: ${desc}`)
     .join("\n");
@@ -1806,7 +1854,7 @@ ADAPTAÇÕES ESPECÍFICAS PARA HOMENS:
 - CARGA: Trabalhar com cargas mais desafiadoras para estimular ganho muscular
     `;
 
-  return `Você é um personal trainer especialista em musculação. Crie uma ficha de treino personalizada completa em JSON para o seguinte aluno:
+  return `Você é um personal trainer especialista em musculação. Crie uma ficha de treino ALTAMENTE PERSONALIZADA e PROFISSIONAL em JSON para o seguinte aluno:
 
 Nome: ${name}
 Sexo: ${sex}
@@ -1817,10 +1865,35 @@ DADOS BIOMÉTRICOS:
 - IMC: ${bmi} (${bmiCategory})
 
 Objetivo: ${objective}
-Nível: ${level}
+Nível de Experiência: ${level}
 Dias de treino por semana: ${days}
 Tempo disponível por sessão: ${time} minutos
 ${emphasis ? `Ênfase muscular desejada: ${emphasis}` : "Sem ênfase específica"}
+
+═══════════════════════════════════════════
+🎯 CONFIGURAÇÃO OBRIGATÓRIA PARA NÍVEL ${level.toUpperCase()}:
+═══════════════════════════════════════════
+⚡ Exercícios por sessão: EXATAMENTE ${numExercises} exercícios
+💪 Séries: ${config.setsRange}
+🔢 Repetições: ${config.repsRange}
+🔥 Intensidade: ${config.intensity}
+⏱️ Descanso: ${config.restTime}
+🏋️ Complexidade dos Exercícios: ${config.exerciseComplexity}
+⚖️ Cargas Recomendadas: ${config.weightGuidance}
+📋 Tipo de Split: ${config.splitType}
+📊 Volume Total: ${config.volumeTotal}
+❌ Restrições: ${config.restrictions}
+🏃 Cardio: ${config.cardioRule}
+⚠️ TÉCNICA: ${config.techniqueNote}
+
+═══════════════════════════════════════════
+⏰ ADAPTAÇÃO AO TEMPO DISPONÍVEL (${time} MINUTOS):
+═══════════════════════════════════════════
+${time <= 30 ? `SESSÃO MUITO CURTA (${time} min): Use apenas ${numExercises} exercícios compostos! Sem cardio. Séries máx: 2-3. Descanso: 30-45s.` : ''}
+${time > 30 && time <= 45 ? `SESSÃO CURTA (${time} min): ${numExercises} exercícios. Sem cardio extra. Descanso: 45-60s. Foco em compostos.` : ''}
+${time > 45 && time <= 60 ? `SESSÃO PADRÃO (${time} min): ${numExercises} exercícios. Cardio opcional apenas para emagrecimento. Descanso: 60-75s.` : ''}
+${time > 60 && time <= 90 ? `SESSÃO LONGA (${time} min): ${numExercises} exercícios com aquecimento. Pode incluir cardio (10-15min). Descanso: 60-90s.` : ''}
+${time > 90 ? `SESSÃO EXTENSA (${time} min): ${numExercises} exercícios completos. Cardio incluído se pertinente ao objetivo. Descanso: 90-120s para compostos pesados.` : ''}
 
 IMPORTANTE: Use APENAS os IDs exatos da lista abaixo. Não invente exercícios novos.
 
@@ -1832,20 +1905,20 @@ ${bodyCompositionGuidance}
 ${sexSpecificGuidance}
 
 ${historySummary ? `INFORMAÇÕES DE HISTÓRICO DE TREINOS ANTERIORES:
-O aluno já realizou treinos com as seguintes cargas máximas recentemente. Use essas cargas como referência de força para progredir a dificuldade:
+O aluno já realizou treinos com as seguintes cargas máximas recentemente. Use essas cargas como referência de força para progredir:
 ${historySummary}
 ` : ''}
 
 RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum texto antes ou depois do JSON):
 {
-  "name": "Nome da ficha (inclua o nome do aluno)",
+  "name": "Nome da ficha (inclua o nome do aluno e o nível ${level})",
   "objective": "${objective}",
   "level": "${level}",
   "days": ${days},
   "time": ${time},
   "emphasis": "${emphasis || ""}",
   "aiGenerated": true,
-  "aiRationale": "Breve explicação (1-2 frases) de por que você montou essa ficha assim considerando idade (${age}), peso (${weight}kg), altura (${height}cm) e objetivo",
+  "aiRationale": "Explique em 2 frases por que montou ESSA ficha específica para nível ${level} com ${time} minutos disponíveis, considerando idade ${age} e objetivo ${objective}",
   "treinoA": {
     "name": "Treino A - [grupos musculares]",
     "exercises": [
@@ -1866,16 +1939,19 @@ RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum 
   }
 }
 
-Regras:
-- Para cada treino, inclua entre 4 e 6 exercícios
-- Distribua os grupos musculares seguindo as prioridades acima para ${sex}
-- Sugira cargas iniciais (weight em kg) REALISTAS para nível ${level}, idade ${age}, peso ${weight}kg e categoria de peso ${bmiCategory}
+═══════════════════════════════════════════
+📋 REGRAS ABSOLUTAS (NÃO DESOBEDEÇA):
+═══════════════════════════════════════════
+- QUANTIDADE: Coloque EXATAMENTE ${numExercises} exercícios por treino (nem mais, nem menos)
+- NÍVEL ${level.toUpperCase()}: As cargas, séries e complexidade DEVEM corresponder exatamente ao nível
+- TEMPO ${time}min: Adapte o volume ao tempo disponível (${numExercises} exercícios devem caber em ${time} minutos)
+- Distribua os grupos musculares seguindo as prioridades para ${sex}
+- Cargas iniciais (weight) REALISTAS para nível ${level}, idade ${age}, peso ${weight}kg
 - Para cardio (esteira, bicicleta), use setsCount: 1 e reps em formato texto como "20 minutos"
 - Para prancha/abdominal, use reps em texto como "40 segundos"
 - Se days <= 2, retorne apenas treinoA e treinoB (deixe treinoC igual ao treinoB)
-- Adapte a intensidade ao tempo disponível por sessão (${time} minutos)
-- MUITO IMPORTANTE: Considere a idade e recuperação (quanto mais velho, menos volume)
-- MUITO IMPORTANTE: Adapt cargas de acordo com IMC (sobrepeso = começar mais leve, abaixo do peso = pode focar em força)`;
+- MUITO IMPORTANTE: Considere a idade e recuperação (40+ anos = menos volume, mais descanso)
+- MUITO IMPORTANTE: Adapte cargas ao IMC (sobrepeso = começar mais leve, abaixo do peso = pode focar em força)`;
 };
 
 const showAILoadingOverlay = () => {
@@ -1986,64 +2062,6 @@ const generateIntelligentWorkout = async () => {
       body: JSON.stringify({ prompt }),
       timeout: 35000 // 35 segundos
     });
-
-    if (!response.ok) {
-      let details = "";
-      try {
-        const errJson = await response.json();
-        if (errJson.raw?.error?.message) {
-          details = errJson.raw.error.message;
-        } else {
-          details = errJson.error || JSON.stringify(errJson);
-        }
-      } catch (e) {
-        details = "Erro desconhecido";
-      }
-      throw new Error(`Servidor respondeu com status ${response.status} - ${details}`);
-    }
-
-    const responseData = await response.json();
-    if (responseData.error) throw new Error(responseData.error);
-
-    updateAILoadingStatus("Validando e aplicando a ficha gerada pela IA...");
-
-    // Parse the JSON returned by Gemini
-    let aiData;
-    try {
-      if (responseData.workout && !responseData.workout.rawContent) {
-        aiData = responseData.workout;
-      } else {
-        const text = responseData.text || (responseData.workout && responseData.workout.rawContent) || "";
-        // Gemini sometimes wraps in ```json ... ``` blocks, strip those
-        const cleaned = text.replace(/```json\s*/gi, "").replace(/```\s*/gi, "").trim();
-        aiData = JSON.parse(cleaned);
-      }
-    } catch (parseErr) {
-      throw new Error("A IA retornou uma resposta em formato inválido. Tentando geração local...");
-    }
-
-    // Validate that all exercise IDs exist in our DB
-    const validIds = Object.keys(EXERCISES_DB);
-    const sanitizeExercises = (exercises) => {
-      if (!Array.isArray(exercises)) return [];
-      return exercises.filter(ex => {
-        if (!validIds.includes(ex.id)) {
-          console.warn(`[AI] Exercício desconhecido ignorado: ${ex.id}`);
-          return false;
-        }
-        return true;
-      }).map(ex => ({
-        id: ex.id,
-        setsCount: Math.max(1, parseInt(ex.setsCount) || 3),
-        reps: String(ex.reps || "10-12"),
-        weight: Math.max(0, parseFloat(ex.weight) || 0)
-      }));
-    };
-
-    if (state.currentFicha) {
-      state.previousFicha = JSON.parse(JSON.stringify(state.currentFicha));
-    }
-
     const newFicha = {
       id: "ficha_ai_" + Date.now(),
       name: aiData.name || `Ficha IA ${objective} (${name})`,
@@ -2076,7 +2094,7 @@ const generateIntelligentWorkout = async () => {
     ["treinoA", "treinoB", "treinoC"].forEach(key => {
       if (!newFicha[key] || newFicha[key].exercises.length === 0) {
         console.warn(`[AI] ${key} ficou sem exercícios válidos, usando fallback heurístico`);
-        newFicha[key] = generateHeuristicFicha(objective, level, name)[key];
+        newFicha[key] = generateHeuristicFicha(objective, level, name, time)[key];
       }
     });
 
@@ -2123,112 +2141,394 @@ const generateIntelligentWorkout = async () => {
 
 window.handleGenerateWorkout = generateIntelligentWorkout;
 
-// ─── HEURISTIC GENERATOR (kept as fallback) ───────────────────────────────────
+const generateHeuristicFicha = (objective, level, name = "Atleta", time = 60) => {
+  const getExerciseCount = (lvl, tm) => {
+    if (lvl === "Iniciante") {
+      if (tm <= 30) return 3;
+      if (tm <= 45) return 4;
+      return 5;
+    } else if (lvl === "Avançado") {
+      if (tm <= 30) return 5;
+      if (tm <= 45) return 6;
+      if (tm <= 60) return 7;
+      if (tm <= 90) return 8;
+      return 9;
+    } else { // Intermediário
+      if (tm <= 30) return 4;
+      if (tm <= 45) return 5;
+      if (tm <= 60) return 6;
+      return 7;
+    }
+  };
 
-const generateHeuristicFicha = (objective, level, name = "Atleta") => {
-  const plans = {
+  const numExercises = getExerciseCount(level, time);
+
+  // ═══ INICIANTE: Máquinas guiadas, baixo volume, técnica em foco ═══
+  const plansIniciante = {
     "Hipertrofia": {
-      name: `Ficha Hipertrofia Elite (${name})`,
+      name: `Ficha Iniciante – Construção Muscular (${name})`,
       treinoA: {
-        name: "Treino A - Peito, Ombro e Tríceps",
+        name: "Treino A - Full Body Básico 1",
         exercises: [
-          { id: "supino_reto", setsCount: 4, reps: "8-12", weight: level === "Iniciante" ? 10 : 20 },
-          { id: "crucifixo_maquina", setsCount: 3, reps: "10-15", weight: level === "Iniciante" ? 10 : 20 },
-          { id: "desenvolvimento_ombro", setsCount: 3, reps: "10-12", weight: level === "Iniciante" ? 6 : 14 },
-          { id: "elevacao_lateral", setsCount: 3, reps: "12-15", weight: level === "Iniciante" ? 4 : 10 },
-          { id: "triceps_pulley", setsCount: 4, reps: "10-12", weight: level === "Iniciante" ? 10 : 20 }
-        ]
+          { id: "leg_press", setsCount: 3, reps: "12-15", weight: 40 },
+          { id: "crucifixo_maquina", setsCount: 3, reps: "12-15", weight: 10 },
+          { id: "remada_baixa_triangulo", setsCount: 3, reps: "12-15", weight: 18 },
+          { id: "desenvolvimento_ombro", setsCount: 2, reps: "12-15", weight: 6 },
+          { id: "triceps_pulley", setsCount: 2, reps: "12-15", weight: 8 },
+          { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 }
+        ].slice(0, numExercises)
       },
       treinoB: {
-        name: "Treino B - Costas, Bíceps e Core",
+        name: "Treino B - Full Body Básico 2",
         exercises: [
-          { id: "puxada_frente", setsCount: 4, reps: "8-12", weight: level === "Iniciante" ? 20 : 35 },
-          { id: "remada_curvada", setsCount: 3, reps: "10-12", weight: level === "Iniciante" ? 10 : 18 },
-          { id: "rosca_direta", setsCount: 4, reps: "10-12", weight: level === "Iniciante" ? 6 : 12 },
-          { id: "prancha_abdominal", setsCount: 3, reps: "45 segundos", weight: 0 },
-          { id: "esteira", setsCount: 1, reps: "10 min", weight: 0 }
-        ]
+          { id: "cadeira_extensora", setsCount: 3, reps: "12-15", weight: 15 },
+          { id: "remada_curvada", setsCount: 3, reps: "12-15", weight: 10 },
+          { id: "supino_inclinado_halter", setsCount: 3, reps: "12-15", weight: 8 },
+          { id: "rosca_direta", setsCount: 2, reps: "12-15", weight: 6 },
+          { id: "prancha_abdominal", setsCount: 3, reps: "30 segundos", weight: 0 },
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "15 minutos", weight: 0 }
+        ].slice(0, numExercises)
       },
       treinoC: {
-        name: "Treino C - Pernas Completas",
+        name: "Treino C - Full Body Básico 3",
         exercises: [
-          { id: "agachamento_barra", setsCount: 4, reps: "8-10", weight: level === "Iniciante" ? 15 : 35 },
-          { id: "leg_press", setsCount: 3, reps: "10-12", weight: level === "Iniciante" ? 30 : 80 },
-          { id: "cadeira_extensora", setsCount: 3, reps: "12-15", weight: level === "Iniciante" ? 15 : 30 },
-          { id: "mesa_flexora", setsCount: 3, reps: "10-12", weight: level === "Iniciante" ? 15 : 25 },
-          { id: "panturrilha_maquina", setsCount: 4, reps: "15-20", weight: level === "Iniciante" ? 20 : 40 }
-        ]
+          { id: "mesa_flexora", setsCount: 3, reps: "12-15", weight: 12 },
+          { id: "puxada_frente", setsCount: 3, reps: "12-15", weight: 20 },
+          { id: "panturrilha_maquina", setsCount: 3, reps: "15-20", weight: 20 },
+          { id: "elevacao_lateral", setsCount: 2, reps: "12-15", weight: 4 },
+          { id: "rosca_martelo", setsCount: 2, reps: "12-15", weight: 6 },
+          { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 }
+        ].slice(0, numExercises)
       }
     },
     "Emagrecimento": {
-      name: `Ficha Queima Rápida & Definição (${name})`,
+      name: `Ficha Iniciante – Queima de Gordura (${name})`,
       treinoA: {
-        name: "Treino A - Resistência Peito & Costas",
+        name: "Treino A - Cardio + Musculação Leve",
+        exercises: [
+          { id: "esteira", setsCount: 1, reps: "20 minutos", weight: 0 },
+          { id: "leg_press", setsCount: 3, reps: "12-15", weight: 35 },
+          { id: "crucifixo_maquina", setsCount: 3, reps: "12-15", weight: 8 },
+          { id: "remada_baixa_triangulo", setsCount: 3, reps: "12-15", weight: 15 },
+          { id: "prancha_abdominal", setsCount: 3, reps: "30 segundos", weight: 0 },
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "10 minutos", weight: 0 }
+        ].slice(0, numExercises)
+      },
+      treinoB: {
+        name: "Treino B - Membros Inferiores + Cardio",
+        exercises: [
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "20 minutos", weight: 0 },
+          { id: "cadeira_extensora", setsCount: 3, reps: "12-15", weight: 10 },
+          { id: "supino_inclinado_halter", setsCount: 3, reps: "12-15", weight: 6 },
+          { id: "puxada_frente", setsCount: 3, reps: "12-15", weight: 18 },
+          { id: "abdominal_infra", setsCount: 3, reps: "15 reps", weight: 0 },
+          { id: "esteira", setsCount: 1, reps: "10 minutos", weight: 0 }
+        ].slice(0, numExercises)
+      },
+      treinoC: {
+        name: "Treino C - Superior + Core",
         exercises: [
           { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 },
-          { id: "supino_reto", setsCount: 3, reps: "15 reps", weight: level === "Iniciante" ? 8 : 16 },
-          { id: "puxada_frente", setsCount: 3, reps: "15 reps", weight: level === "Iniciante" ? 15 : 25 },
-          { id: "triceps_pulley", setsCount: 3, reps: "15 reps", weight: level === "Iniciante" ? 10 : 15 },
-          { id: "prancha_abdominal", setsCount: 3, reps: "45 segundos", weight: 0 }
-        ]
-      },
-      treinoB: {
-        name: "Treino B - Resistência Pernas",
-        exercises: [
-          { id: "esteira", setsCount: 1, reps: "10 minutos", weight: 0 },
-          { id: "leg_press", setsCount: 4, reps: "15 reps", weight: level === "Iniciante" ? 25 : 50 },
-          { id: "cadeira_extensora", setsCount: 3, reps: "15 reps", weight: level === "Iniciante" ? 10 : 20 },
-          { id: "panturrilha_maquina", setsCount: 3, reps: "20 reps", weight: level === "Iniciante" ? 15 : 30 },
-          { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 }
-        ]
-      },
-      treinoC: {
-        name: "Treino C - Ombros, Braços & Core",
-        exercises: [
-          { id: "desenvolvimento_ombro", setsCount: 3, reps: "15 reps", weight: level === "Iniciante" ? 6 : 12 },
-          { id: "elevacao_lateral", setsCount: 3, reps: "15 reps", weight: level === "Iniciante" ? 4 : 8 },
-          { id: "rosca_direta", setsCount: 3, reps: "15 reps", weight: level === "Iniciante" ? 4 : 10 },
-          { id: "prancha_abdominal", setsCount: 4, reps: "60 segundos", weight: 0 },
-          { id: "esteira", setsCount: 1, reps: "20 minutos", weight: 0 }
-        ]
+          { id: "mesa_flexora", setsCount: 3, reps: "12-15", weight: 10 },
+          { id: "panturrilha_maquina", setsCount: 3, reps: "15-20", weight: 15 },
+          { id: "desenvolvimento_ombro", setsCount: 2, reps: "12-15", weight: 4 },
+          { id: "rosca_direta", setsCount: 2, reps: "12-15", weight: 4 },
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "15 minutos", weight: 0 }
+        ].slice(0, numExercises)
       }
     },
-    "Condicionamento": {
-      name: `Ficha Condicionamento & Saúde (${name})`,
+    "Resistência": {
+      name: `Ficha Iniciante – Condicionamento Físico (${name})`,
       treinoA: {
-        name: "Treino A - Full Body 1",
+        name: "Treino A - Full Body Cardio 1",
         exercises: [
-          { id: "agachamento_barra", setsCount: 3, reps: "12 reps", weight: level === "Iniciante" ? 10 : 25 },
-          { id: "supino_reto", setsCount: 3, reps: "12 reps", weight: level === "Iniciante" ? 10 : 20 },
-          { id: "puxada_frente", setsCount: 3, reps: "12 reps", weight: level === "Iniciante" ? 15 : 25 },
-          { id: "rosca_direta", setsCount: 2, reps: "15 reps", weight: level === "Iniciante" ? 6 : 10 },
+          { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 },
+          { id: "leg_press", setsCount: 3, reps: "15", weight: 35 },
+          { id: "crucifixo_maquina", setsCount: 3, reps: "15", weight: 8 },
+          { id: "prancha_abdominal", setsCount: 3, reps: "30 segundos", weight: 0 },
+          { id: "remada_baixa_triangulo", setsCount: 2, reps: "15", weight: 15 },
+          { id: "esteira", setsCount: 1, reps: "10 minutos", weight: 0 }
+        ].slice(0, numExercises)
+      },
+      treinoB: {
+        name: "Treino B - Cardio + Membros Inferiores",
+        exercises: [
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "20 minutos", weight: 0 },
+          { id: "cadeira_extensora", setsCount: 3, reps: "15", weight: 12 },
+          { id: "remada_curvada", setsCount: 3, reps: "15", weight: 8 },
+          { id: "panturrilha_maquina", setsCount: 3, reps: "20", weight: 18 },
+          { id: "prancha_abdominal", setsCount: 2, reps: "30 segundos", weight: 0 },
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "10 minutos", weight: 0 }
+        ].slice(0, numExercises)
+      },
+      treinoC: {
+        name: "Treino C - Superior Leve + Cardio",
+        exercises: [
+          { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 },
+          { id: "puxada_frente", setsCount: 3, reps: "15", weight: 18 },
+          { id: "supino_inclinado_halter", setsCount: 3, reps: "15", weight: 6 },
+          { id: "elevacao_lateral", setsCount: 2, reps: "15", weight: 4 },
+          { id: "rosca_martelo", setsCount: 2, reps: "15", weight: 4 },
+          { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 }
+        ].slice(0, numExercises)
+      }
+    }
+  };
+
+  // ═══ INTERMEDIÁRIO: Livres + Máquinas, volume médio, intensidade moderada-alta ═══
+  const plansIntermediario = {
+    "Hipertrofia": {
+      name: `Ficha Intermediária – Push/Pull/Legs (${name})`,
+      treinoA: {
+        name: "Treino A - Push (Peito, Ombros, Tríceps)",
+        exercises: [
+          { id: "supino_reto", setsCount: 4, reps: "8-12", weight: 50 },
+          { id: "supino_inclinado_halter", setsCount: 3, reps: "10-12", weight: 18 },
+          { id: "crucifixo_maquina", setsCount: 3, reps: "12-15", weight: 20 },
+          { id: "desenvolvimento_ombro", setsCount: 3, reps: "10-12", weight: 14 },
+          { id: "elevacao_lateral", setsCount: 3, reps: "12-15", weight: 10 },
+          { id: "triceps_pulley", setsCount: 3, reps: "10-12", weight: 22 },
+          { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 }
+        ].slice(0, numExercises)
+      },
+      treinoB: {
+        name: "Treino B - Pull (Costas e Bíceps)",
+        exercises: [
+          { id: "puxada_frente", setsCount: 4, reps: "8-12", weight: 45 },
+          { id: "remada_curvada", setsCount: 3, reps: "10-12", weight: 22 },
+          { id: "remada_baixa_triangulo", setsCount: 3, reps: "10-12", weight: 35 },
+          { id: "rosca_direta", setsCount: 3, reps: "10-12", weight: 14 },
+          { id: "rosca_martelo", setsCount: 3, reps: "10-12", weight: 12 },
+          { id: "prancha_abdominal", setsCount: 3, reps: "45 segundos", weight: 0 },
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "15 minutos", weight: 0 }
+        ].slice(0, numExercises)
+      },
+      treinoC: {
+        name: "Treino C - Legs (Pernas Completas)",
+        exercises: [
+          { id: "agachamento_barra", setsCount: 4, reps: "8-10", weight: 60 },
+          { id: "leg_press", setsCount: 3, reps: "10-12", weight: 100 },
+          { id: "cadeira_extensora", setsCount: 3, reps: "12-15", weight: 35 },
+          { id: "stiff_barra", setsCount: 3, reps: "10-12", weight: 40 },
+          { id: "mesa_flexora", setsCount: 3, reps: "10-12", weight: 28 },
+          { id: "panturrilha_maquina", setsCount: 4, reps: "15-20", weight: 45 },
+          { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 }
+        ].slice(0, numExercises)
+      }
+    },
+    "Emagrecimento": {
+      name: `Ficha Intermediária – Definição Muscular (${name})`,
+      treinoA: {
+        name: "Treino A - Superior + Cardio",
+        exercises: [
+          { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 },
+          { id: "supino_reto", setsCount: 3, reps: "12-15", weight: 40 },
+          { id: "puxada_frente", setsCount: 3, reps: "12-15", weight: 35 },
+          { id: "desenvolvimento_ombro", setsCount: 3, reps: "12-15", weight: 12 },
+          { id: "triceps_pulley", setsCount: 3, reps: "15", weight: 18 },
+          { id: "rosca_direta", setsCount: 3, reps: "15", weight: 10 },
+          { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 }
+        ].slice(0, numExercises)
+      },
+      treinoB: {
+        name: "Treino B - Inferior + Core Intenso",
+        exercises: [
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "15 minutos", weight: 0 },
+          { id: "agachamento_barra", setsCount: 4, reps: "12-15", weight: 45 },
+          { id: "stiff_barra", setsCount: 3, reps: "12-15", weight: 30 },
+          { id: "leg_press", setsCount: 3, reps: "15", weight: 80 },
+          { id: "cadeira_extensora", setsCount: 3, reps: "15", weight: 28 },
+          { id: "panturrilha_maquina", setsCount: 3, reps: "20", weight: 35 },
+          { id: "prancha_abdominal", setsCount: 4, reps: "60 segundos", weight: 0 }
+        ].slice(0, numExercises)
+      },
+      treinoC: {
+        name: "Treino C - Full Body Metabólico",
+        exercises: [
+          { id: "esteira", setsCount: 1, reps: "20 minutos", weight: 0 },
+          { id: "supino_inclinado_halter", setsCount: 3, reps: "15", weight: 14 },
+          { id: "remada_curvada", setsCount: 3, reps: "15", weight: 20 },
+          { id: "elevacao_lateral", setsCount: 3, reps: "15", weight: 8 },
+          { id: "abdominal_infra", setsCount: 3, reps: "15 reps", weight: 0 },
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "20 minutos", weight: 0 }
+        ].slice(0, numExercises)
+      }
+    },
+    "Resistência": {
+      name: `Ficha Intermediária – Condicionamento Avançado (${name})`,
+      treinoA: {
+        name: "Treino A - Circuito Superior",
+        exercises: [
+          { id: "supino_reto", setsCount: 3, reps: "12-15", weight: 40 },
+          { id: "puxada_frente", setsCount: 3, reps: "12-15", weight: 35 },
+          { id: "remada_curvada", setsCount: 3, reps: "12-15", weight: 20 },
+          { id: "desenvolvimento_ombro", setsCount: 3, reps: "15", weight: 12 },
+          { id: "prancha_abdominal", setsCount: 3, reps: "45 segundos", weight: 0 },
           { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 }
         ]
       },
       treinoB: {
-        name: "Treino B - Core & Cardio",
+        name: "Treino B - Cardio Intensivo + Core",
         exercises: [
-          { id: "esteira", setsCount: 1, reps: "30 minutos", weight: 0 },
-          { id: "prancha_abdominal", setsCount: 4, reps: "45 segundos", weight: 0 },
-          { id: "panturrilha_maquina", setsCount: 4, reps: "15 reps", weight: level === "Iniciante" ? 20 : 35 },
-          { id: "crucifixo_maquina", setsCount: 3, reps: "12 reps", weight: level === "Iniciante" ? 10 : 20 },
-          { id: "elevacao_lateral", setsCount: 3, reps: "12 reps", weight: level === "Iniciante" ? 4 : 8 }
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "30 minutos", weight: 0 },
+          { id: "prancha_abdominal", setsCount: 4, reps: "60 segundos", weight: 0 },
+          { id: "abdominal_infra", setsCount: 3, reps: "15", weight: 0 },
+          { id: "panturrilha_maquina", setsCount: 4, reps: "20", weight: 35 },
+          { id: "agachamento_barra", setsCount: 3, reps: "15", weight: 45 }
         ]
       },
       treinoC: {
-        name: "Treino C - Full Body 2",
+        name: "Treino C - Full Body Resistência",
         exercises: [
-          { id: "leg_press", setsCount: 3, reps: "12 reps", weight: level === "Iniciante" ? 30 : 60 },
-          { id: "desenvolvimento_ombro", setsCount: 3, reps: "12 reps", weight: level === "Iniciante" ? 6 : 12 },
-          { id: "remada_curvada", setsCount: 3, reps: "12 reps", weight: level === "Iniciante" ? 10 : 18 },
-          { id: "triceps_pulley", setsCount: 2, reps: "15 reps", weight: level === "Iniciante" ? 10 : 15 },
+          { id: "leg_press", setsCount: 4, reps: "15", weight: 80 },
+          { id: "crucifixo_maquina", setsCount: 3, reps: "15", weight: 18 },
+          { id: "remada_baixa_triangulo", setsCount: 3, reps: "15", weight: 30 },
+          { id: "elevacao_lateral", setsCount: 3, reps: "15", weight: 8 },
+          { id: "abdominal_infra", setsCount: 3, reps: "15", weight: 0 },
           { id: "esteira", setsCount: 1, reps: "15 minutos", weight: 0 }
         ]
       }
     }
   };
 
-  return plans[objective] || plans["Hipertrofia"];
+  // ═══ AVANÇADO: Compostos pesados, alto volume, técnicas avançadas ═══
+  const plansAvancado = {
+    "Hipertrofia": {
+      name: `Ficha Avançada – Hipertrofia Elite PPL (${name})`,
+      treinoA: {
+        name: "Treino A - PUSH Pesado (Peito, Ombros, Tríceps)",
+        exercises: [
+          { id: "supino_reto", setsCount: 5, reps: "6-10", weight: 90 },
+          { id: "supino_inclinado_halter", setsCount: 4, reps: "8-12", weight: 32 },
+          { id: "crucifixo_polia", setsCount: 3, reps: "12-15", weight: 14 },
+          { id: "desenvolvimento_ombro", setsCount: 4, reps: "8-12", weight: 24 },
+          { id: "elevacao_lateral", setsCount: 4, reps: "12-15", weight: 14 },
+          { id: "triceps_testa", setsCount: 4, reps: "8-12", weight: 28 },
+          { id: "triceps_pulley", setsCount: 3, reps: "12-15", weight: 25 }
+        ]
+      },
+      treinoB: {
+        name: "Treino B - PULL Pesado (Costas e Bíceps)",
+        exercises: [
+          { id: "puxada_frente", setsCount: 5, reps: "6-10", weight: 70 },
+          { id: "remada_curvada", setsCount: 4, reps: "8-12", weight: 55 },
+          { id: "remada_alta", setsCount: 3, reps: "10-12", weight: 40 },
+          { id: "remada_baixa_triangulo", setsCount: 4, reps: "8-12", weight: 60 },
+          { id: "rosca_direta", setsCount: 4, reps: "8-12", weight: 22 },
+          { id: "rosca_martelo", setsCount: 3, reps: "10-12", weight: 20 },
+          { id: "prancha_abdominal", setsCount: 4, reps: "60 segundos", weight: 0 }
+        ]
+      },
+      treinoC: {
+        name: "Treino C - LEGS Pesado (Pernas e Glúteos)",
+        exercises: [
+          { id: "agachamento_barra", setsCount: 5, reps: "5-8", weight: 120 },
+          { id: "agachamento_hack", setsCount: 4, reps: "8-12", weight: 80 },
+          { id: "leg_press", setsCount: 4, reps: "10-15", weight: 160 },
+          { id: "cadeira_extensora", setsCount: 3, reps: "12-15", weight: 50 },
+          { id: "stiff_barra", setsCount: 4, reps: "8-12", weight: 80 },
+          { id: "mesa_flexora", setsCount: 4, reps: "10-12", weight: 45 },
+          { id: "panturrilha_maquina", setsCount: 5, reps: "15-20", weight: 70 }
+        ]
+      }
+    },
+    "Emagrecimento": {
+      name: `Ficha Avançada – Definição & Power (${name})`,
+      treinoA: {
+        name: "Treino A - Superior Intenso + HIIT",
+        exercises: [
+          { id: "supino_reto", setsCount: 4, reps: "10-15", weight: 70 },
+          { id: "puxada_frente", setsCount: 4, reps: "10-15", weight: 55 },
+          { id: "desenvolvimento_ombro", setsCount: 4, reps: "10-15", weight: 20 },
+          { id: "remada_curvada", setsCount: 3, reps: "12-15", weight: 45 },
+          { id: "triceps_testa", setsCount: 3, reps: "12-15", weight: 22 },
+          { id: "rosca_direta", setsCount: 3, reps: "12-15", weight: 18 },
+          { id: "esteira", setsCount: 1, reps: "20 minutos", weight: 0 }
+        ]
+      },
+      treinoB: {
+        name: "Treino B - Inferior Intenso + Core",
+        exercises: [
+          { id: "agachamento_barra", setsCount: 5, reps: "10-15", weight: 90 },
+          { id: "stiff_barra", setsCount: 4, reps: "12-15", weight: 70 },
+          { id: "leg_press", setsCount: 4, reps: "15-20", weight: 130 },
+          { id: "mesa_flexora", setsCount: 4, reps: "12-15", weight: 40 },
+          { id: "panturrilha_maquina", setsCount: 4, reps: "20-25", weight: 55 },
+          { id: "prancha_abdominal", setsCount: 4, reps: "60 segundos", weight: 0 },
+          { id: "abdominal_infra", setsCount: 3, reps: "20", weight: 0 }
+        ]
+      },
+      treinoC: {
+        name: "Treino C - Full Body Power + Cardio",
+        exercises: [
+          { id: "agachamento_barra", setsCount: 4, reps: "12-15", weight: 80 },
+          { id: "supino_reto", setsCount: 4, reps: "12-15", weight: 65 },
+          { id: "remada_curvada", setsCount: 4, reps: "12-15", weight: 40 },
+          { id: "elevacao_lateral", setsCount: 3, reps: "15", weight: 14 },
+          { id: "crucifixo_polia", setsCount: 3, reps: "15", weight: 12 },
+          { id: "abdominal_infra", setsCount: 3, reps: "20", weight: 0 },
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "25 minutos", weight: 0 }
+        ]
+      }
+    },
+    "Resistência": {
+      name: `Ficha Avançada – Resistência & Performance (${name})`,
+      treinoA: {
+        name: "Treino A - Força-Resistência Superior",
+        exercises: [
+          { id: "supino_reto", setsCount: 4, reps: "15-20", weight: 65 },
+          { id: "puxada_frente", setsCount: 4, reps: "15-20", weight: 50 },
+          { id: "remada_curvada", setsCount: 4, reps: "15", weight: 40 },
+          { id: "desenvolvimento_ombro", setsCount: 4, reps: "15", weight: 18 },
+          { id: "triceps_pulley", setsCount: 3, reps: "20", weight: 22 },
+          { id: "rosca_direta", setsCount: 3, reps: "20", weight: 16 },
+          { id: "prancha_abdominal", setsCount: 4, reps: "90 segundos", weight: 0 }
+        ]
+      },
+      treinoB: {
+        name: "Treino B - Cardio Elite + Core Avançado",
+        exercises: [
+          { id: "esteira", setsCount: 1, reps: "30 minutos", weight: 0 },
+          { id: "bicicleta_ergometrica", setsCount: 1, reps: "20 minutos", weight: 0 },
+          { id: "prancha_abdominal", setsCount: 5, reps: "90 segundos", weight: 0 },
+          { id: "abdominal_infra", setsCount: 4, reps: "25", weight: 0 },
+          { id: "panturrilha_maquina", setsCount: 4, reps: "25", weight: 50 }
+        ]
+      },
+      treinoC: {
+        name: "Treino C - Força-Resistência Inferior",
+        exercises: [
+          { id: "agachamento_barra", setsCount: 5, reps: "15-20", weight: 80 },
+          { id: "leg_press", setsCount: 4, reps: "20-25", weight: 120 },
+          { id: "agachamento_hack", setsCount: 3, reps: "20", weight: 70 },
+          { id: "mesa_flexora", setsCount: 4, reps: "15-20", weight: 38 },
+          { id: "stiff_barra", setsCount: 4, reps: "15-20", weight: 60 },
+          { id: "panturrilha_maquina", setsCount: 5, reps: "25-30", weight: 60 },
+          { id: "abdominal_infra", setsCount: 3, reps: "20", weight: 0 }
+        ]
+      }
+    }
+  };
+
+  // Map objective names for backward compatibility
+  const objectiveMap = {
+    "Hipertrofia": "Hipertrofia",
+    "Ganho Muscular": "Hipertrofia",
+    "Emagrecimento": "Emagrecimento",
+    "Perda de Gordura": "Emagrecimento",
+    "Condicionamento": "Resistência",
+    "Resistência": "Resistência",
+    "Saúde": "Resistência"
+  };
+  const normalizedObjective = objectiveMap[objective] || "Hipertrofia";
+
+  if (level === "Iniciante") {
+    return plansIniciante[normalizedObjective] || plansIniciante["Hipertrofia"];
+  } else if (level === "Avançado") {
+    return plansAvancado[normalizedObjective] || plansAvancado["Hipertrofia"];
+  } else {
+    return plansIntermediario[normalizedObjective] || plansIntermediario["Hipertrofia"];
+  }
 };
 
 const generateHeuristicWorkout = ({ name, sex, objective, level, days, time, emphasis, validityWeeks, fallbackReason }) => {
@@ -2392,6 +2692,24 @@ window.addEventListener("DOMContentLoaded", () => {
   if (state.isLoggedIn) {
     updateUserUI();
     renderProfile();
+  }
+
+  // Set up generator time hint dynamic updating
+  const timeInput = document.getElementById("form-time");
+  const timeHint = document.getElementById("time-hint-text");
+  if (timeInput && timeHint) {
+    timeInput.addEventListener("input", (e) => {
+      const val = parseInt(e.target.value) || 0;
+      if (val < 30) {
+        timeHint.textContent = `${val} min → Treino rápido: 3–4 exercícios curtos + cardio`;
+      } else if (val < 50) {
+        timeHint.textContent = `${val} min → Treino eficiente: 4–5 exercícios em supersérie`;
+      } else if (val <= 75) {
+        timeHint.textContent = `${val} min → Sessão padrão: 5–6 exercícios com aquecimento`;
+      } else {
+        timeHint.textContent = `${val} min → Treino longo: 6–8 exercícios + cardio completo`;
+      }
+    });
   }
 
   // Navigate to Dashboard initially
@@ -2845,7 +3163,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const overlay = document.getElementById("ai-loading-overlay");
     if (overlay) overlay.style.display = "none";
   };
-})();
+});
 
 // ─────────────────────────────────────────────────────────
 // MOBILE PILL MENU & BOTTOM SHEET LOGIC
