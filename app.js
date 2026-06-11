@@ -2008,6 +2008,37 @@ const updateAILoadingStatus = (msg) => {
   if (el) el.textContent = msg;
 };
 
+const buildHistorySummary = () => {
+  if (!state.history || state.history.length === 0) return "";
+
+  const exerciseMaxWeights = {};
+
+  state.history.forEach(session => {
+    if (!session.logs) return;
+    session.logs.forEach(exLog => {
+      const exId = exLog.id;
+      if (!exLog.sets) return;
+      exLog.sets.forEach(set => {
+        if (set.completed && typeof set.weight === 'number' && set.weight > 0) {
+          if (!exerciseMaxWeights[exId] || set.weight > exerciseMaxWeights[exId]) {
+            exerciseMaxWeights[exId] = set.weight;
+          }
+        }
+      });
+    });
+  });
+
+  const entries = Object.entries(exerciseMaxWeights);
+  if (entries.length === 0) return "";
+
+  return entries
+    .map(([exId, maxW]) => {
+      const exName = AVAILABLE_EXERCISES[exId] || exId;
+      return `- ${exName}: Carga Máxima de ${maxW}kg`;
+    })
+    .join("\n");
+};
+
 const generateIntelligentWorkout = async () => {
   // Prevenir requisições duplicadas
   if (isGeneratingWorkout) {
@@ -2040,7 +2071,7 @@ const generateIntelligentWorkout = async () => {
   const bmi = calculateBMI(weight, height);
   state.userProfile = { age, weight, height, bmi };
   saveStateToStorage();
-
+ 
   // Validar inputs obrigatórios
   if (!objective || !level) {
     alert("⚠️ Por favor, selecione Objetivo e Nível.");
@@ -2054,7 +2085,8 @@ const generateIntelligentWorkout = async () => {
 
   try {
     updateAILoadingStatus("Conectando ao Gemini AI e analisando seu perfil...");
-    const prompt = buildGeminiPrompt(name, sex, objective, level, days, time, emphasis, age, weight, height, bmi);
+    const historySummary = buildHistorySummary();
+    const prompt = buildGeminiPrompt(name, sex, objective, level, days, time, emphasis, age, weight, height, bmi, historySummary);
 
     const response = await fetch("/api/generate-workout", {
       method: "POST",
