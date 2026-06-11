@@ -1,7 +1,7 @@
 // sw.js - treinox.ai Service Worker
 // v7: Updated cache with modern design CSS (neon colors, responsive)
 
-const CACHE_NAME = "treinox-ai-cache-v15";
+const CACHE_NAME = "treinox-ai-cache-v16";
 
 // All static assets that must be pre-cached on install
 const ASSETS_TO_CACHE = [
@@ -53,7 +53,7 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// ─── Fetch: Cache-First for local assets, Network-First for external ──────────
+// ─── Fetch: Network-First for all assets (with Cache Fallback when offline) ───
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
@@ -66,29 +66,28 @@ self.addEventListener("fetch", (event) => {
   const isLocalAsset = url.origin === self.location.origin;
 
   if (isLocalAsset) {
-    // ── Cache-First strategy for own assets ────────────────────────────────
+    // ── Network-First strategy (with Cache Fallback) for local assets ────────
     event.respondWith(
-      caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
-        if (cachedResponse) {
-          // Serve from cache immediately
-          return cachedResponse;
-        }
-
-        // Not in cache — try network
-        return fetch(event.request)
-          .then((networkResponse) => {
-            if (networkResponse && networkResponse.status === 200) {
-              const cloned = networkResponse.clone();
-              caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
+      fetch(event.request)
+        .then((networkResponse) => {
+          // If response is valid, clone and update cache
+          if (networkResponse && networkResponse.status === 200) {
+            const cloned = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          // Network failed (offline) — serve from cache
+          return caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
+            if (cachedResponse) {
+              return cachedResponse;
             }
-            return networkResponse;
-          })
-          .catch(() => {
-            // Network failed (server sleeping) — try to serve index.html as fallback
+            // If resource not in cache, fallback to index.html/shell
             console.warn("[SW] Offline + no cache for:", event.request.url, "— serving index.html fallback.");
             return caches.match("/") || caches.match("/index.html");
           });
-      })
+        })
     );
   } else {
     // ── Network-First for external resources (Fonts, GIFs, etc.) ──────────
