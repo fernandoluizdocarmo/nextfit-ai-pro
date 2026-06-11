@@ -1764,10 +1764,33 @@ h1, h2, h3, h4, h5, h6 {
     border-top: 1px solid var(--border-light);
   }
 
-  /* Exercise row — vertical stack */
+  /* Centering header layout on mobile */
+  .header-section {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 1rem !important;
+  }
+
+  .header-title {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  #dashboard-ficha-validity {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  /* Exercise row — vertical stack and centered */
   .exercise-row {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center !important;
+    text-align: center !important;
     gap: 0.75rem;
     padding: 1rem;
   }
@@ -1776,6 +1799,18 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
     height: 160px;
     border-radius: var(--radius-md);
+  }
+
+  .exercise-info-text {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .exercise-meta-tags {
+    justify-content: center !important;
   }
 
   .exercise-stats-grid {
@@ -1798,13 +1833,14 @@ h1, h2, h3, h4, h5, h6 {
     padding: 1rem !important;
   }
 
-  /* Horizontal scrolling for tabs */
+  /* Horizontal scrolling for tabs with centering */
   .split-tabs-container {
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
     width: 100% !important;
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
+    justify-content: center !important;
     -ms-overflow-style: none; /* IE/Edge */
     scrollbar-width: none; /* Firefox */
   }
