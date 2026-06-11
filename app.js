@@ -2062,6 +2062,39 @@ const generateIntelligentWorkout = async () => {
       body: JSON.stringify({ prompt }),
       timeout: 35000 // 35 segundos
     });
+
+    if (!response.ok) {
+      let details = "";
+      try {
+        const errJson = await response.json();
+        details = errJson.error || JSON.stringify(errJson);
+      } catch (e) {
+        details = "Erro desconhecido";
+      }
+      throw new Error(`Servidor respondeu com status ${response.status} - ${details}`);
+    }
+
+    const resJson = await response.json();
+    if (resJson.error) throw new Error(resJson.error);
+
+    const aiData = resJson.workout;
+    if (!aiData) throw new Error("A resposta da IA não continha os dados da ficha.");
+
+    updateAILoadingStatus("Validando e aplicando a ficha gerada pela IA...");
+
+    // Helper para higienizar exercícios da IA
+    const validIds = Object.keys(EXERCISES_DB);
+    const sanitizeExercises = (exercises) => {
+      if (!Array.isArray(exercises)) return [];
+      return exercises.filter(ex => {
+        if (!validIds.includes(ex.id)) {
+          console.warn(`[AI] Exercício desconhecido ignorado: ${ex.id}`);
+          return false;
+        }
+        return true;
+      });
+    };
+
     const newFicha = {
       id: "ficha_ai_" + Date.now(),
       name: aiData.name || `Ficha IA ${objective} (${name})`,
