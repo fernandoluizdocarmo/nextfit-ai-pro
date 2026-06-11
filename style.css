@@ -999,7 +999,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-options-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 0.75rem;
 }
 
@@ -1811,6 +1811,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .form-options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-options-grid.cols-2-mobile {
     grid-template-columns: 1fr 1fr;
   }
 

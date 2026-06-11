@@ -17,7 +17,7 @@
 
   <!-- Material Symbols and Typography -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-  <link rel="stylesheet" href="style.css?v=19">
+  <link rel="stylesheet" href="style.css?v=20">
 </head>
 <body>
   <!-- AUTH OVERLAY -->
@@ -274,7 +274,7 @@
                 <label class="form-label" style="margin:0;">Sexo Biológico</label>
               </div>
               <input type="hidden" id="form-sex" value="Masculino">
-              <div class="form-options-grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="form-options-grid cols-2-mobile">
                 <div class="form-option-card selected" onclick="selectGeneratorOption('sex', 'Masculino', this)">
                   <span class="material-symbols-outlined icon">male</span>
                   <span class="title">Masculino</span>
@@ -319,7 +319,7 @@
                 <label class="form-label" style="margin:0;">Objetivo Principal</label>
               </div>
               <input type="hidden" id="form-objetivo" value="Ganho Muscular">
-              <div class="form-options-grid" style="grid-template-columns: repeat(3, 1fr);">
+              <div class="form-options-grid">
                 <div class="form-option-card selected" onclick="document.getElementById('form-objetivo').value='Ganho Muscular'; selectGeneratorOption('objective', 'Ganho Muscular', this)">
                   <span class="material-symbols-outlined icon">fitness_center</span>
                   <span class="title">Hipertrofia</span>
@@ -360,11 +360,11 @@
                     <div class="level-name" style="color: #10B981;">Iniciante</div>
                     <div class="level-exp">Menos de 6 meses</div>
                     <ul class="level-features">
-                      <li>✅ 4–5 exercícios por treino</li>
-                      <li>✅ 2–3 séries por exercício</li>
-                      <li>✅ 12–15 repetições (foco técnica)</li>
-                      <li>✅ Máquinas guiadas e pesos leves</li>
-                      <li>✅ Full body simples</li>
+                      <li>4–5 exercícios por treino</li>
+                      <li>2–3 séries por exercício</li>
+                      <li>12–15 repetições (foco técnica)</li>
+                      <li>Máquinas guiadas e pesos leves</li>
+                      <li>Full body simples</li>
                     </ul>
                   </div>
                 </div>
@@ -383,11 +383,11 @@
                     <div class="level-name" style="color: #FF5E00;">Intermediário</div>
                     <div class="level-exp">6 meses a 2 anos</div>
                     <ul class="level-features">
-                      <li>✅ 5–7 exercícios por treino</li>
-                      <li>✅ 3–4 séries por exercício</li>
-                      <li>✅ 8–12 repetições com carga</li>
-                      <li>✅ Push/Pull/Legs (PPL)</li>
-                      <li>✅ Livres + máquinas</li>
+                      <li>5–7 exercícios por treino</li>
+                      <li>3–4 séries por exercício</li>
+                      <li>8–12 repetições com carga</li>
+                      <li>Push/Pull/Legs (PPL)</li>
+                      <li>Livres + máquinas</li>
                     </ul>
                   </div>
                 </div>
@@ -406,11 +406,11 @@
                     <div class="level-name" style="color: #8B5CF6;">Avançado</div>
                     <div class="level-exp">Mais de 2 anos</div>
                     <ul class="level-features">
-                      <li>✅ 6–8 exercícios por treino</li>
-                      <li>✅ 4–5 séries com cargas pesadas</li>
-                      <li>✅ 6–12 reps (força + hipertrofia)</li>
-                      <li>✅ Compostos pesados (agach., supino)</li>
-                      <li>✅ Alto volume e intensidade</li>
+                      <li>6–8 exercícios por treino</li>
+                      <li>4–5 séries com cargas pesadas</li>
+                      <li>6–12 reps (força + hipertrofia)</li>
+                      <li>Compostos pesados (agach., supino)</li>
+                      <li>Alto volume e intensidade</li>
                     </ul>
                   </div>
                 </div>
@@ -462,7 +462,7 @@
                 <label class="form-label" style="margin:0;">Validade da Ficha</label>
               </div>
               <input type="hidden" id="form-validity" value="4">
-              <div class="form-options-grid" style="grid-template-columns: repeat(3,1fr);">
+              <div class="form-options-grid">
                 <div class="form-option-card" onclick="selectGeneratorOption('validity', '3', this)">
                   <span class="material-symbols-outlined icon">flash_on</span>
                   <span class="title">3 Semanas</span>
@@ -690,6 +690,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=19"></script>
+  <script src="app.js?v=20"></script>
 </body>
 </html>
