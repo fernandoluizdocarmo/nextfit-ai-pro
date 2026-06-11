@@ -7,8 +7,8 @@ const CACHE_NAME = "treinox-ai-cache-v19";
 const ASSETS_TO_CACHE = [
   "/",
   "/index.html",
-  "/style.css",
-  "/app.js",
+  "/style.css?v=19",
+  "/app.js?v=19",
   "/manifest.json",
   "/icon-192.png",
   "/icon-512.png"
