@@ -777,8 +777,8 @@ const loadStateFromStorage = () => {
       state.history = [];
     }
   } else {
-    // Set default if empty ONLY on first load
-    state.currentFicha = JSON.parse(JSON.stringify(DEFAULT_FICHAS[0]));
+    // Set default if empty ONLY on first load (start with no card)
+    state.currentFicha = null;
     state.history = [];
   }
   
