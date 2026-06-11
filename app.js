@@ -1718,7 +1718,7 @@ const AVAILABLE_EXERCISES = {
   bicicleta_ergometrica: "Cardio - Bicicleta Ergométrica (Cardio)"
 };
 
-const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis, age, weight, height, bmi, historySummary = "") => {
+const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis, age, weight, height, bmi, historySummary = "", exercisesToAvoid = []) => {
   // Level-specific configuration
   const levelConfig = {
     "Iniciante": {
@@ -1909,6 +1909,12 @@ O aluno já realizou treinos com as seguintes cargas máximas recentemente. Use 
 ${historySummary}
 ` : ''}
 
+${exercisesToAvoid && exercisesToAvoid.length > 0 ? `⚠️ REQUISITO DE VARIAÇÃO DE EXERCÍCIOS:
+O aluno já treinou com os seguintes exercícios nas últimas 4 semanas.
+Para garantir a variação de estímulos (periodização), você deve EVITAR ao máximo repetir esses exercícios na nova ficha. Escolha outros exercícios equivalentes da lista de exercícios disponíveis (só repita se não houver outra opção viável para o grupo muscular):
+${exercisesToAvoid.map(id => `- ${id}: ${AVAILABLE_EXERCISES[id] || id}`).join("\n")}
+` : ''}
+
 RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum texto antes ou depois do JSON):
 {
   "name": "Nome da ficha (inclua o nome do aluno e o nível ${level})",
@@ -2086,7 +2092,23 @@ const generateIntelligentWorkout = async () => {
   try {
     updateAILoadingStatus("Conectando ao Gemini AI e analisando seu perfil...");
     const historySummary = buildHistorySummary();
-    const prompt = buildGeminiPrompt(name, sex, objective, level, days, time, emphasis, age, weight, height, bmi, historySummary);
+
+    // Compilar exercícios da ficha atual para evitar repetição na nova
+    const exercisesToAvoid = [];
+    if (state.currentFicha) {
+      ["treinoA", "treinoB", "treinoC"].forEach(tKey => {
+        const split = state.currentFicha[tKey];
+        if (split && split.exercises) {
+          split.exercises.forEach(ex => {
+            if (ex.id && !exercisesToAvoid.includes(ex.id)) {
+              exercisesToAvoid.push(ex.id);
+            }
+          });
+        }
+      });
+    }
+
+    const prompt = buildGeminiPrompt(name, sex, objective, level, days, time, emphasis, age, weight, height, bmi, historySummary, exercisesToAvoid);
 
     const response = await fetch("/api/generate-workout", {
       method: "POST",
