@@ -1200,7 +1200,7 @@ const renderActiveWorkoutExercise = () => {
   loggedEx.sets.forEach((set) => {
     rowsHtml += `
       <div class="set-row ${set.completed ? 'completed' : ''}" id="set-row-${exRef.id}-${set.setNum}">
-        <div class="set-num">Série ${set.setNum}</div>
+        <div class="set-num">${set.setNum}</div>
         <div>
           <div class="weight-input-wrapper">
             <input type="number" class="weight-input" value="${set.weight}" min="0" onchange="updateActiveSetVal('${exRef.id}', ${set.setNum}, 'weight', this.value)">
@@ -1224,10 +1224,10 @@ const renderActiveWorkoutExercise = () => {
   setsContainer.innerHTML = `
     <h3 class="font-headline-sm mb-4" style="font-size: 1.15rem;">Cargas & Repetições</h3>
     <div class="sets-header">
-      <div>Série</div>
+      <div>Sér.</div>
       <div>Peso</div>
       <div>Reps</div>
-      <div>Status</div>
+      <div><span class="material-symbols-outlined" style="font-size: 1.15rem; vertical-align: middle;" title="Status">done</span></div>
     </div>
     <div style="display: flex; flex-direction: column;">
       ${rowsHtml}
@@ -1390,7 +1390,7 @@ const updateRestTimerVisuals = () => {
   const circle = document.getElementById("timer-circle-bar");
   if (!circle) return;
 
-  const radius = 120;
+  const radius = 115;
   const circumference = 2 * Math.PI * radius;
   circle.style.strokeDasharray = `${circumference} ${circumference}`;
 

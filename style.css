@@ -727,8 +727,28 @@ h1, h2, h3, h4, h5, h6 {
   padding: 1.5rem;
 }
 
+.sets-header {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr 40px;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid var(--border-light);
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sets-header div {
+  text-align: center;
+}
+
 .set-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr 40px;
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 0;
@@ -744,6 +764,7 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(255, 255, 255, 0.02);
 }
 
+.set-num,
 .set-number {
   display: flex;
   align-items: center;
@@ -757,12 +778,15 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   font-size: 0.85rem;
   color: var(--text-secondary);
+  margin: 0 auto;
 }
 
 .weight-input-wrapper,
 .reps-input-wrapper {
   position: relative;
-  flex: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .weight-input,
@@ -771,7 +795,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--bg-elevated);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
-  padding: 0.6rem 0.75rem;
+  padding: 0.6rem 2.2rem 0.6rem 0.75rem; /* right padding to fit units */
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
@@ -779,6 +803,19 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
   transition: all 0.2s ease;
   -moz-appearance: textfield;
+}
+
+.weight-unit,
+.reps-unit {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  pointer-events: none;
+  text-transform: uppercase;
 }
 
 .weight-input::-webkit-outer-spin-button,
@@ -796,19 +833,36 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 0 2px rgba(232, 255, 0, 0.12);
 }
 
+/* Hide native checkbox */
+.set-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
 .set-checkbox-label {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
   border: 2px solid var(--border-light);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.25s ease;
-  color: transparent;
   background: transparent;
+  margin: 0 auto;
+}
+
+.set-checkbox-label::after {
+  content: "check";
+  font-family: "Material Symbols Outlined";
+  font-size: 1.1rem;
+  color: transparent;
+  transition: all 0.2s ease;
 }
 
 .set-checkbox-label:hover {
@@ -816,20 +870,14 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(232, 255, 0, 0.06);
 }
 
-.set-checkbox-label.checked,
-.set-checkbox-label input:checked + .set-checkbox-label {
+.set-checkbox:checked + .set-checkbox-label {
   background: var(--primary);
   border-color: var(--primary);
-  color: var(--bg-dark);
   box-shadow: var(--glow-primary);
 }
 
-/* Hide the native checkbox */
-.set-checkbox-label input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
+.set-checkbox:checked + .set-checkbox-label::after {
+  color: var(--bg-dark);
 }
 
 /* ====================================================================
@@ -1407,6 +1455,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   height: 100%;
   transform: rotate(-90deg);
+  overflow: visible;
 }
 
 .timer-circle-bg {
@@ -1654,6 +1703,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 600px) {
+  .sets-tracker-card {
+    padding: 1rem 0.75rem;
+  }
+
+  .sets-header,
+  .set-row {
+    gap: 0.5rem;
+  }
+
   .font-headline-lg {
     font-size: 1.5rem;
   }
