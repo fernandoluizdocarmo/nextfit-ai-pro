@@ -219,7 +219,7 @@ const EXERCISES_DB = {
   "triceps_testa": {
     name: "Tríceps Testa com Barra EZ",
     muscle: "Braços",
-    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/EZ-Bar_Triceps_Extension/0.jpg",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/EZ-Bar_Skullcrusher/0.jpg",
     steps: [
       "Deite-se no banco plano segurando a barra EZ acima do peito com braços estendidos.",
       "Flexione apenas os cotovelos, descendo a barra em direção à testa.",
@@ -256,7 +256,7 @@ const EXERCISES_DB = {
   "elevacao_frontal": {
     name: "Elevação Frontal com Halteres",
     muscle: "Ombros",
-    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Dumbbell_Front_Raise/0.jpg",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Front_Dumbbell_Raise/0.jpg",
     steps: [
       "Fique em pé com os halteres à frente das coxas.",
       "Eleve um braço de cada vez ou ambos para a frente até a altura dos ombros.",
@@ -344,7 +344,7 @@ const EXERCISES_DB = {
   "esteira": {
     name: "Cardio - Corrida na Esteira",
     muscle: "Cardio",
-    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Treadmill_Running/0.jpg",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Running_Treadmill/0.jpg",
     steps: [
       "Suba na esteira, selecione a velocidade confortável de corrida.",
       "Mantenha uma passada firme e ritmada.",

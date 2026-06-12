@@ -105,7 +105,7 @@ const EXERCISES_DB = {
   "agachamento_hack": {
     name: "Agachamento Hack Máquina",
     muscle: "Pernas",
-    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Sled_Hack_Squat/0.jpg",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Hack_Squat/0.jpg",
     steps: [
       "Posicione-se no Hack com os ombros apoiados e as costas firmes no encosto.",
       "Coloque os pés na plataforma na largura dos ombros.",
@@ -219,7 +219,7 @@ const EXERCISES_DB = {
   "triceps_testa": {
     name: "Tríceps Testa com Barra EZ",
     muscle: "Braços",
-    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/EZ-Bar_Triceps_Extension/0.jpg",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/EZ-Bar_Skullcrusher/0.jpg",
     steps: [
       "Deite-se no banco plano segurando a barra EZ acima do peito com braços estendidos.",
       "Flexione apenas os cotovelos, descendo a barra em direção à testa.",
@@ -256,7 +256,7 @@ const EXERCISES_DB = {
   "elevacao_frontal": {
     name: "Elevação Frontal com Halteres",
     muscle: "Ombros",
-    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Dumbbell_Front_Raise/0.jpg",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Front_Dumbbell_Raise/0.jpg",
     steps: [
       "Fique em pé com os halteres à frente das coxas.",
       "Eleve um braço de cada vez ou ambos para a frente até a altura dos ombros.",
@@ -344,7 +344,7 @@ const EXERCISES_DB = {
   "esteira": {
     name: "Cardio - Corrida na Esteira",
     muscle: "Cardio",
-    gif: "https://images.unsplash.com/photo-1578762560072-46cf152c907f?w=800&q=80",
+    gif: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&q=80",
     steps: [
       "Suba na esteira, selecione a velocidade confortável de corrida.",
       "Mantenha uma passada firme e ritmada.",
@@ -356,7 +356,7 @@ const EXERCISES_DB = {
   "bicicleta_ergometrica": {
     name: "Cardio - Bicicleta Ergométrica",
     muscle: "Cardio",
-    gif: "https://images.unsplash.com/photo-1594737626072-90a74aa97cd4?w=800&q=80",
+    gif: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=800&q=80",
     steps: [
       "Ajuste o selim na altura do quadril ao lado da bicicleta.",
       "Sente-se e pedale em ritmo constante mantendo a resistência adequada.",
