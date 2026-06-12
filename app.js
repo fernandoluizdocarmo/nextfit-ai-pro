@@ -105,7 +105,7 @@ const EXERCISES_DB = {
   "agachamento_hack": {
     name: "Agachamento Hack Máquina",
     muscle: "Pernas",
-    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Hack_Squat/0.jpg",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Sled_Hack_Squat/0.jpg",
     steps: [
       "Posicione-se no Hack com os ombros apoiados e as costas firmes no encosto.",
       "Coloque os pés na plataforma na largura dos ombros.",
@@ -319,7 +319,7 @@ const EXERCISES_DB = {
   "prancha_abdominal": {
     name: "Prancha Abdominal",
     muscle: "Core",
-    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Plank/0.jpg",
+    gif: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
     steps: [
       "Apoie os antebraços e as pontas dos pés no chão.",
       "Mantenha o corpo alinhado e o abdômen contraído.",
@@ -344,7 +344,7 @@ const EXERCISES_DB = {
   "esteira": {
     name: "Cardio - Corrida na Esteira",
     muscle: "Cardio",
-    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Treadmill_Running/0.jpg",
+    gif: "https://images.unsplash.com/photo-1578762560072-46cf152c907f?w=800&q=80",
     steps: [
       "Suba na esteira, selecione a velocidade confortável de corrida.",
       "Mantenha uma passada firme e ritmada.",
@@ -356,7 +356,7 @@ const EXERCISES_DB = {
   "bicicleta_ergometrica": {
     name: "Cardio - Bicicleta Ergométrica",
     muscle: "Cardio",
-    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Bicycling/0.jpg",
+    gif: "https://images.unsplash.com/photo-1594737626072-90a74aa97cd4?w=800&q=80",
     steps: [
       "Ajuste o selim na altura do quadril ao lado da bicicleta.",
       "Sente-se e pedale em ritmo constante mantendo a resistência adequada.",
@@ -829,7 +829,7 @@ window.toggleSidebar = () => {
 };
 
 // 6. ROUTER (TABS NAVIGATION)
-window.navigateTo = (pageId) => {
+window.navigateTo = (pageId, pushState = true) => {
   // Hide active workout overlays
   closeRestTimer();
   
@@ -850,9 +850,10 @@ window.navigateTo = (pageId) => {
   const mainContent = document.querySelector('.main-content');
   if (mainContent) mainContent.scrollTop = 0;
 
-  // Hide all page sections
+  // Hide all page sections and clear any inline overrides
   document.querySelectorAll(".page").forEach(page => {
     page.classList.remove("active");
+    page.style.display = ""; // Clear manual display overrides
   });
 
   // Show target page
@@ -869,6 +870,14 @@ window.navigateTo = (pageId) => {
       renderHistory();
     } else if (pageId === "perfil") {
       renderProfile();
+    }
+  }
+
+  // Handle history state push to prevent app exit on phone back button
+  if (pushState) {
+    const stateUrl = "#" + pageId;
+    if (window.location.hash !== stateUrl) {
+      history.pushState({ pageId: pageId }, "", stateUrl);
     }
   }
 };
@@ -1089,6 +1098,12 @@ const renderDashboard = () => {
       <div class="exercise-list">
         ${exerciseRowsHtml}
       </div>
+
+      <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); display: flex; justify-content: center;">
+        <button class="btn-primary" onclick="quickSaveWorkout('${state.currentSplit}')" style="background: var(--success-grad); box-shadow: var(--glow-green); border-color: var(--success); width: 100%; max-width: 320px; justify-content: center; font-weight: 700;">
+          <span class="material-symbols-outlined">check_circle</span> Concluir e Salvar Treino
+        </button>
+      </div>
     </div>
   `;
 };
@@ -1176,8 +1191,7 @@ const startWorkoutSession = (split) => {
   };
 
   // Hide dashboard page, show active workout page
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("active-workout").style.display = "block";
+  navigateTo("active-workout");
   
   // Hide normal navigation sidebar during active workout so user can focus
   const sidebar = document.querySelector(".sidebar");
@@ -1536,9 +1550,6 @@ const finishWorkoutSession = () => {
   playAlertSound("double-beep");
 
   // Show normal navigation again
-  document.getElementById("active-workout").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
-  
   const sidebar = document.querySelector(".sidebar");
   if (sidebar) sidebar.style.opacity = "1";
   
@@ -1552,13 +1563,66 @@ const finishWorkoutSession = () => {
   navigateTo("historico");
 };
 
+const quickSaveWorkout = (split) => {
+  const ficha = state.currentFicha;
+  if (!ficha) return;
+
+  const splitKey = `treino${split}`;
+  const splitData = ficha[splitKey];
+  if (!splitData || splitData.exercises.length === 0) return;
+
+  if (!confirm(`Deseja concluir e salvar o "${splitData.name}" diretamente no seu histórico com as cargas padrão?`)) {
+    return;
+  }
+
+  // Calculate default weight and log format
+  let maxWeight = 0;
+  const logs = splitData.exercises.map(ex => {
+    const lastWeight = getLastLoad(ex.id);
+    const weight = lastWeight !== null ? lastWeight : ex.weight;
+    const reps = parseInt(ex.reps) || 10;
+    
+    if (weight > maxWeight) {
+      maxWeight = weight;
+    }
+
+    const sets = Array.from({ length: ex.setsCount }, (_, k) => ({
+      weight: weight,
+      reps: reps
+    }));
+
+    return {
+      id: ex.id,
+      sets: sets
+    };
+  });
+
+  const estimatedDuration = Math.max(15, splitData.exercises.length * 8);
+
+  const historyEntry = {
+    date: Date.now(),
+    fichaName: ficha.name,
+    split: split,
+    duration: estimatedDuration,
+    maxWeight: maxWeight,
+    logs: logs
+  };
+
+  // Add to state and save
+  state.history.push(historyEntry);
+  state.activeWorkout = null;
+  saveStateToStorage();
+
+  playAlertSound("double-beep");
+
+  alert("Parabéns! Seu treino foi concluído com sucesso e gravado no seu histórico!");
+  navigateTo("historico");
+};
+
 const cancelActiveWorkout = () => {
   if (confirm("Tem certeza que deseja cancelar o treino atual? Suas séries não serão gravadas.")) {
     state.activeWorkout = null;
     saveStateToStorage();
-
-    document.getElementById("active-workout").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
 
     const sidebar = document.querySelector(".sidebar");
     if (sidebar) sidebar.style.opacity = "1";
@@ -2004,6 +2068,8 @@ RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum 
 - NÍVEL ${level.toUpperCase()}: As cargas, séries e complexidade DEVEM corresponder exatamente ao nível
 - TEMPO ${time}min: Adapte o volume ao tempo disponível (${numExercises} exercícios devem caber em ${time} minutos)
 - Distribua os grupos musculares seguindo as prioridades para ${sex}
+- EQUILÍBRIO PEITO/COSTAS: Se o treino agrupar Peito e Costas (ou Peito, Costas e Ombros), coloque rigorosamente a mesma quantidade de exercícios de costas e de peito (ex: 2 de costas e 2 de peito). Nunca desbalanceie o treino a favor de costas ou peito.
+- TREINO DE PERNAS LIMPO: O treino de Pernas (geralmente Treino C) deve conter APENAS exercícios de pernas, glúteos e panturrilhas (e opcionalmente cardio ou core). É estritamente PROIBIDO incluir exercícios de braço (bíceps, tríceps, antebraço) ou de tronco superior no treino de Pernas.
 - Cargas iniciais (weight) REALISTAS para nível ${level}, idade ${age}, peso ${weight}kg
 - Para cardio (esteira, bicicleta), use setsCount: 1 e reps em formato texto como "20 minutos"
 - Para prancha/abdominal, use reps em texto como "40 segundos"
@@ -2358,8 +2424,8 @@ const generateHeuristicFicha = (objective, level, name = "Atleta", time = 60) =>
         exercises: [
           { id: "bicicleta_ergometrica", setsCount: 1, reps: "20 minutos", weight: 0 },
           { id: "cadeira_extensora", setsCount: 3, reps: "12-15", weight: 10 },
-          { id: "supino_inclinado_halter", setsCount: 3, reps: "12-15", weight: 6 },
-          { id: "puxada_frente", setsCount: 3, reps: "12-15", weight: 18 },
+          { id: "leg_press", setsCount: 3, reps: "12-15", weight: 40 },
+          { id: "mesa_flexora", setsCount: 3, reps: "12-15", weight: 12 },
           { id: "abdominal_infra", setsCount: 3, reps: "15 reps", weight: 0 },
           { id: "esteira", setsCount: 1, reps: "10 minutos", weight: 0 }
         ].slice(0, numExercises)
@@ -2394,7 +2460,7 @@ const generateHeuristicFicha = (objective, level, name = "Atleta", time = 60) =>
         exercises: [
           { id: "bicicleta_ergometrica", setsCount: 1, reps: "20 minutos", weight: 0 },
           { id: "cadeira_extensora", setsCount: 3, reps: "15", weight: 12 },
-          { id: "remada_curvada", setsCount: 3, reps: "15", weight: 8 },
+          { id: "leg_press", setsCount: 3, reps: "15", weight: 35 },
           { id: "panturrilha_maquina", setsCount: 3, reps: "20", weight: 18 },
           { id: "prancha_abdominal", setsCount: 2, reps: "30 segundos", weight: 0 },
           { id: "bicicleta_ergometrica", setsCount: 1, reps: "10 minutos", weight: 0 }
@@ -2827,11 +2893,74 @@ window.addEventListener("DOMContentLoaded", () => {
   // Initialize Login Status
   checkLoginStatus();
 
-  // Initialize Profile Page
+  // Handle phone back button / browser navigation
+  window.addEventListener("popstate", (event) => {
+    // 1. Close sidebar if open on mobile
+    if (document.body.classList.contains("sidebar-open")) {
+      document.body.classList.remove("sidebar-open");
+      const currentPage = document.querySelector(".page.active")?.id || "dashboard";
+      history.pushState({ pageId: currentPage }, "", "#" + currentPage);
+      return;
+    }
+
+    // 2. Close exercise details modal if open
+    const modal = document.getElementById("details-modal");
+    if (modal && modal.classList.contains("active")) {
+      closeModal();
+      const currentPage = document.querySelector(".page.active")?.id || "dashboard";
+      history.pushState({ pageId: currentPage }, "", "#" + currentPage);
+      return;
+    }
+
+    // 3. Close rest timer if active
+    const timerScreen = document.getElementById("rest-timer-screen");
+    if (timerScreen && timerScreen.classList.contains("active")) {
+      closeRestTimer();
+      const currentPage = document.querySelector(".page.active")?.id || "dashboard";
+      history.pushState({ pageId: currentPage }, "", "#" + currentPage);
+      return;
+    }
+
+    const pageId = (event.state && event.state.pageId) || "dashboard";
+
+    // 4. Confirm before leaving active workout
+    if (document.getElementById("active-workout").classList.contains("active")) {
+      if (confirm("Deseja mesmo sair do treino atual? Suas séries não concluídas não serão gravadas.")) {
+        state.activeWorkout = null;
+        saveStateToStorage();
+        // Show normal navigation sidebar
+        const sidebar = document.querySelector(".sidebar");
+        if (sidebar) sidebar.style.opacity = "1";
+        const mobileNav = document.querySelector(".mobile-nav");
+        if (mobileNav) mobileNav.style.display = "flex";
+        navigateTo(pageId, false);
+      } else {
+        // Keep workout active
+        history.pushState({ pageId: "active-workout" }, "", "#active-workout");
+      }
+    } else {
+      navigateTo(pageId, false);
+    }
+  });
+
+  // Initialize Profile and initial navigation if logged in
   if (state.isLoggedIn) {
     updateUserUI();
     renderProfile();
+
+    const initialPage = window.location.hash.replace("#", "") || "dashboard";
+    if (state.activeWorkout) {
+      navigateTo("active-workout");
+    } else {
+      navigateTo(initialPage);
+    }
+  } else {
+    // If not logged in, just clear hash
+    history.replaceState(null, "", window.location.pathname);
   }
+
+  // Check if current ficha is expiring
+  checkFichaExpiration();
 
   // Set up generator time hint dynamic updating
   const timeInput = document.getElementById("form-time");
@@ -2850,12 +2979,6 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  // Navigate to Dashboard initially
-  navigateTo("dashboard");
-
-  // Check if current ficha is expiring
-  checkFichaExpiration();
 
   // Register Service Worker for PWA capabilities
   if ("serviceWorker" in navigator) {
