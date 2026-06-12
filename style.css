@@ -36,6 +36,8 @@
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
   --glow-primary: 0 0 20px rgba(232, 255, 0, 0.2);
+  --glow-green: 0 0 20px rgba(16, 185, 129, 0.25);
+  --success-grad: linear-gradient(135deg, #10B981 0%, #059669 100%);
 }
 
 /* Reset & Base */

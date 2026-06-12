@@ -1325,9 +1325,15 @@ const renderActiveWorkoutExercise = () => {
           <span class="material-symbols-outlined">chevron_left</span> Anterior
         </button>
         <span style="font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap;">${currentNum} / ${totalEx}</span>
-        <button class="btn-secondary" onclick="nextWorkoutExercise()" ${isLast ? 'disabled style="opacity: 0.3;"' : ''} style="flex: 1; justify-content: flex-end;">
+        ${isLast ? `
+        <button class="btn-secondary" onclick="showWorkoutCompletionModal()" style="flex: 1; justify-content: flex-end;">
+          Salvar <span class="material-symbols-outlined">check_circle</span>
+        </button>
+        ` : `
+        <button class="btn-secondary" onclick="nextWorkoutExercise()" style="flex: 1; justify-content: flex-end;">
           Próximo <span class="material-symbols-outlined">chevron_right</span>
         </button>
+        `}
       </div>
       <button class="btn-primary" onclick="finishWorkoutSession()" style="background: var(--success-grad); box-shadow: var(--glow-green); border-color: var(--success); width: 100%; justify-content: center; font-weight: 700; font-size: 1rem; padding: 0.9rem;">
         <span class="material-symbols-outlined">check_circle</span> Concluir e Salvar Treino
@@ -1366,12 +1372,24 @@ const toggleSetCompletion = (exId, setNum, isChecked) => {
     row.classList.add("completed");
     playAlertSound("beep");
     
-    // Automatically trigger the Rest Timer!
-    const dbEx = EXERCISES_DB[exId];
-    if (dbEx && dbEx.rest > 0) {
+    // Check if this is the last exercise and last set of the split
+    const splitData = state.currentFicha[`treino${session.split}`];
+    const isLastExercise = session.currentExerciseIndex === splitData.exercises.length - 1;
+    const isLastSet = setNum === loggedEx.sets.length;
+    
+    if (isLastExercise && isLastSet) {
+      // It's the end of the entire workout! Show completion modal instead of rest timer.
       setTimeout(() => {
-        openRestTimer(dbEx.rest, dbEx.name);
-      }, 500); // 500ms delay for visual feedback
+        showWorkoutCompletionModal();
+      }, 600);
+    } else {
+      // Automatically trigger the Rest Timer!
+      const dbEx = EXERCISES_DB[exId];
+      if (dbEx && dbEx.rest > 0) {
+        setTimeout(() => {
+          openRestTimer(dbEx.rest, dbEx.name);
+        }, 500); // 500ms delay for visual feedback
+      }
     }
   } else {
     row.classList.remove("completed");
@@ -1508,6 +1526,19 @@ const closeRestTimer = () => {
   clearInterval(timerInterval);
   timerInterval = null;
   document.getElementById("rest-timer-screen").classList.remove("active");
+};
+
+const showWorkoutCompletionModal = () => {
+  document.getElementById("workout-complete-overlay").classList.add("active");
+};
+
+const closeWorkoutCompleteOverlay = () => {
+  document.getElementById("workout-complete-overlay").classList.remove("active");
+};
+
+const confirmFinishWorkoutFromOverlay = () => {
+  closeWorkoutCompleteOverlay();
+  finishWorkoutSession();
 };
 
 // FINISH WORKOUT AND RECORD STATS
