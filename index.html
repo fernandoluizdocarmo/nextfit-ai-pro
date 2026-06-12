@@ -7,6 +7,16 @@
   <title>treinox.ai - Seu Personal Trainer de Elite</title>
   <meta name="description" content="treinox.ai é seu aplicativo fitness definitivo. Geração de fichas inteligentes A/B/C, acompanhamento série por série com cargas personalizadas, cronômetro de descanso integrado e vídeos explicativos em HD de execução correta.">
   
+  <!-- NUCLEAR CACHE BUST: Força a remoção de Service Workers antigos -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script>
   <!-- PWA Support & Mobile Meta Tags -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#12121c">
@@ -690,6 +700,6 @@
     </div>
   </div>
 
-  <script src="app-v26.js"></script>
+  <script src="app.js?v=27"></script>
 </body>
 </html>
