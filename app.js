@@ -749,14 +749,15 @@ const loadStateFromStorage = () => {
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
-      // Explicitly restore each field to avoid Object.assign array-merge bugs
-      state.isLoggedIn = localStorage.getItem('treinox_ai_session_active') === 'true';
+      // isLoggedIn: prefer the dedicated session key, fall back to what was saved in state
+      const sessionActive = localStorage.getItem('treinox_ai_session_active') === 'true';
+      state.isLoggedIn = sessionActive || parsed.isLoggedIn === true;
       state.userEmail = parsed.userEmail || "";
       state.userName = parsed.userName || "";
       state.userProfile = parsed.userProfile || { age: null, weight: null, height: null, bmi: null };
       state.users = parsed.users || {};
       
-      // Limpeza solicitada de todos os usuários cadastrados
+      // Limpeza única de usuários legados (só corre uma vez, quando a flag não existe)
       if (!localStorage.getItem("treinox_ai_users_wiped_v1")) {
         state.users = {};
         state.isLoggedIn = false;
@@ -775,6 +776,8 @@ const loadStateFromStorage = () => {
     } catch (e) {
       console.error("Error parsing storage state, resetting.", e);
       state.history = [];
+      // Recover session even if JSON was corrupted
+      state.isLoggedIn = localStorage.getItem('treinox_ai_session_active') === 'true';
     }
   } else {
     // Set default if empty ONLY on first load (start with no card)
@@ -803,6 +806,14 @@ const saveStateToStorage = () => {
     }
 
     localStorage.setItem("treinox_ai_state", serialized);
+
+    // Manter chave de sessão sempre sincronizada com o estado atual
+    if (state.isLoggedIn) {
+      localStorage.setItem('treinox_ai_session_active', 'true');
+    } else {
+      localStorage.removeItem('treinox_ai_session_active');
+    }
+
     console.log(`💾 State salvo (${state.history.length} treinos no histórico)`);
   } catch (e) {
     if (e.name === 'QuotaExceededError') {
@@ -1304,21 +1315,24 @@ const renderActiveWorkoutExercise = () => {
   const navContainer = document.getElementById("workout-nav-controls");
   const isLast = session.currentExerciseIndex === splitData.exercises.length - 1;
   const isFirst = session.currentExerciseIndex === 0;
+  const totalEx = splitData.exercises.length;
+  const currentNum = session.currentExerciseIndex + 1;
 
   navContainer.innerHTML = `
-    <button class="btn-secondary" onclick="prevWorkoutExercise()" ${isFirst ? 'disabled style="opacity: 0.3;"' : ''}>
-      <span class="material-symbols-outlined">chevron_left</span> Anterior
-    </button>
-    
-    ${isLast ? `
-      <button class="btn-primary" onclick="finishWorkoutSession()" style="background: var(--success-grad); box-shadow: var(--glow-green); border-color: var(--success);">
-        <span class="material-symbols-outlined">celebration</span> Concluir Treino
+    <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
+      <div style="display: flex; gap: 0.75rem; justify-content: space-between; align-items: center;">
+        <button class="btn-secondary" onclick="prevWorkoutExercise()" ${isFirst ? 'disabled style="opacity: 0.3;"' : ''} style="flex: 1;">
+          <span class="material-symbols-outlined">chevron_left</span> Anterior
+        </button>
+        <span style="font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap;">${currentNum} / ${totalEx}</span>
+        <button class="btn-secondary" onclick="nextWorkoutExercise()" ${isLast ? 'disabled style="opacity: 0.3;"' : ''} style="flex: 1; justify-content: flex-end;">
+          Próximo <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+      </div>
+      <button class="btn-primary" onclick="finishWorkoutSession()" style="background: var(--success-grad); box-shadow: var(--glow-green); border-color: var(--success); width: 100%; justify-content: center; font-weight: 700; font-size: 1rem; padding: 0.9rem;">
+        <span class="material-symbols-outlined">check_circle</span> Concluir e Salvar Treino
       </button>
-    ` : `
-      <button class="btn-primary" onclick="nextWorkoutExercise()">
-        Próximo <span class="material-symbols-outlined">chevron_right</span>
-      </button>
-    `}
+    </div>
   `;
 };
 
@@ -1518,9 +1532,20 @@ const finishWorkoutSession = () => {
     });
   });
 
-  // If no sets completed, alert
+  // If no sets completed, alert and offer to auto-complete them
   if (!hasCompletedSet) {
-    if (!confirm("Você não marcou nenhuma série como concluída. Deseja mesmo concluir o treino assim?")) {
+    if (confirm("Você não marcou nenhuma série como concluída. Deseja marcar todas as séries deste treino como concluídas com os pesos atuais e salvá-lo?")) {
+      session.logs.forEach(exLog => {
+        exLog.sets.forEach(set => {
+          set.completed = true;
+          if (set.weight > maxWeight) {
+            maxWeight = set.weight;
+          }
+        });
+      });
+      hasCompletedSet = true;
+    } else {
+      // Cancel finish workout flow so they can manually check them or cancel
       return;
     }
   }
