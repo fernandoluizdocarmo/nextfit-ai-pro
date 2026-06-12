@@ -2131,7 +2131,8 @@ RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum 
 - Para prancha/abdominal, use reps em texto como "40 segundos"
 - Se days <= 2, retorne apenas treinoA e treinoB (deixe treinoC igual ao treinoB)
 - MUITO IMPORTANTE: Considere a idade e recuperação (40+ anos = menos volume, mais descanso)
-- MUITO IMPORTANTE: Adapte cargas ao IMC (sobrepeso = começar mais leve, abaixo do peso = pode focar em força)`;
+- MUITO IMPORTANTE: Adapte cargas ao IMC (sobrepeso = começar mais leve, abaixo do peso = pode focar em força)
+${emphasis || objective ? `- PRIORIDADE MÁXIMA (ÊNFASE/OBJETIVO): O usuário solicitou expressamente o objetivo "${objective}" e a ênfase "${emphasis || 'Nenhuma específica'}". Você DEVE dedicar exercícios específicos, prioridade na ordem do treino e maior volume para atender esse pedido. Se for uma melhoria de performance em atividade (ex: natação, corrida, lutas, etc), inclua exercícios focados em explosão, core ou fortalecimento articular úteis para essa atividade, podendo flexibilizar a regra de equilíbrio muscular para focar nessa prioridade.` : ''}`;
 };
 
 const showAILoadingOverlay = () => {
@@ -2267,20 +2268,46 @@ const generateIntelligentWorkout = async () => {
     updateAILoadingStatus("Conectando ao Gemini AI e analisando seu perfil...");
     const historySummary = buildHistorySummary();
 
-    // Compilar exercícios da ficha atual para evitar repetição na nova
-    const exercisesToAvoid = [];
+    // Compilar exercícios da ficha atual, ficha anterior e histórico recente para evitar repetição na nova
+    const exercisesToAvoidSet = new Set();
+    
+    // 1. Ficha Atual (que será substituída)
     if (state.currentFicha) {
       ["treinoA", "treinoB", "treinoC"].forEach(tKey => {
         const split = state.currentFicha[tKey];
         if (split && split.exercises) {
           split.exercises.forEach(ex => {
-            if (ex.id && !exercisesToAvoid.includes(ex.id)) {
-              exercisesToAvoid.push(ex.id);
-            }
+            if (ex.id) exercisesToAvoidSet.add(ex.id);
           });
         }
       });
     }
+
+    // 2. Ficha Anterior (se houver)
+    if (state.previousFicha) {
+      ["treinoA", "treinoB", "treinoC"].forEach(tKey => {
+        const split = state.previousFicha[tKey];
+        if (split && split.exercises) {
+          split.exercises.forEach(ex => {
+            if (ex.id) exercisesToAvoidSet.add(ex.id);
+          });
+        }
+      });
+    }
+
+    // 3. Histórico dos últimos 30 dias (garantir que não repete o que já treinou muito recentemente)
+    if (state.history && state.history.length > 0) {
+      const trintaDiasAtras = Date.now() - (30 * 24 * 60 * 60 * 1000);
+      state.history.forEach(session => {
+        if (session.timestamp > trintaDiasAtras && session.logs) {
+          session.logs.forEach(exLog => {
+            if (exLog.id) exercisesToAvoidSet.add(exLog.id);
+          });
+        }
+      });
+    }
+
+    const exercisesToAvoid = Array.from(exercisesToAvoidSet);
 
     const prompt = buildGeminiPrompt(name, sex, objective, level, days, time, emphasis, age, weight, height, bmi, historySummary, exercisesToAvoid);
 
