@@ -2847,7 +2847,9 @@ const getAlternativeExercise = (exId, previousExerciseIds) => {
   };
   
   const alt = alternatives[exId];
-  if (alt && previousExerciseIds.includes(exId)) {
+  // 50% de chance de usar a variação para garantir que a ficha nunca seja exatamente igual,
+  // ou 100% de chance se o exercício já estava na ficha anterior.
+  if (alt && (Math.random() > 0.5 || previousExerciseIds.includes(exId))) {
     return alt;
   }
   return exId;

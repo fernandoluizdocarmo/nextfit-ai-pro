@@ -1,14 +1,14 @@
 // sw.js - treinox.ai Service Worker
 // v11: Updated cache with modern design CSS (neon colors, responsive)
 
-const CACHE_NAME = "treinox-ai-cache-v25";
+const CACHE_NAME = "treinox-ai-cache-v26";
 
 // All static assets that must be pre-cached on install
 const ASSETS_TO_CACHE = [
   "/",
   "/index.html",
   "/style.css?v=23",
-  "/app.js?v=25",
+  "/app-v26.js",
   "/manifest.json",
   "/icon-192.png",
   "/icon-512.png"
