@@ -2141,7 +2141,7 @@ const renderActiveWorkoutExercise = () => {
 
   // Set header
   document.getElementById("workout-exercise-title").textContent = dbEx.name;
-  document.getElementById("workout-exercise-subtitle").textContent = `Exercício ${session.currentExerciseIndex + 1} de ${splitData.exercises.length} • Foco em ${dbEx.muscle}`;
+  // Subtitle will be updated later after loggedEx is loaded
   
   const exImage = dbEx.gif || `https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80`;
 
@@ -2191,6 +2191,24 @@ const renderActiveWorkoutExercise = () => {
     session.logs.push(loggedEx);
   }
 
+  const completedSetsCount = loggedEx.sets.filter(s => s.completed).length;
+  const isLocked = completedSetsCount > 0 && completedSetsCount < loggedEx.sets.length;
+
+  let optionsHtml = splitData.exercises.map((ex, idx) => {
+    const exDB = EXERCISES_DB[ex.id];
+    const exName = exDB ? exDB.name : `Exercício ${idx + 1}`;
+    return `<option value="${idx}" ${idx === session.currentExerciseIndex ? 'selected' : ''}>${idx + 1}. ${exName}</option>`;
+  }).join('');
+
+  document.getElementById("workout-exercise-subtitle").innerHTML = `
+    Exercício ${session.currentExerciseIndex + 1} de ${splitData.exercises.length} • Foco em ${dbEx.muscle}
+    <div style="margin-top: 8px;">
+      <select onchange="jumpWorkoutExercise(this.value)" ${isLocked ? 'disabled' : ''} style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-light); border-radius: 4px; padding: 4px 8px; font-size: 0.85rem; width: 100%; max-width: 300px; outline: none;">
+        ${optionsHtml}
+      </select>
+    </div>
+  `;
+
   loggedEx.sets.forEach((set) => {
     rowsHtml += `
       <div class="set-row ${set.completed ? 'completed' : ''}" id="set-row-${exRef.id}-${set.setNum}">
@@ -2238,16 +2256,16 @@ const renderActiveWorkoutExercise = () => {
   navContainer.innerHTML = `
     <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
       <div style="display: flex; gap: 0.75rem; justify-content: space-between; align-items: center;">
-        <button class="btn-secondary" onclick="prevWorkoutExercise()" ${isFirst ? 'disabled style="opacity: 0.3;"' : ''} style="flex: 1;">
+        <button class="btn-secondary" onclick="prevWorkoutExercise()" ${isFirst || isLocked ? 'disabled style="opacity: 0.3;"' : ''} style="flex: 1;">
           <span class="material-symbols-outlined">chevron_left</span> Anterior
         </button>
         <span style="font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap;">${currentNum} / ${totalEx}</span>
         ${isLast ? `
-        <button class="btn-secondary" onclick="showWorkoutCompletionModal()" style="flex: 1; justify-content: flex-end;">
+        <button class="btn-secondary" onclick="showWorkoutCompletionModal()" ${isLocked ? 'disabled style="opacity: 0.3;"' : ''} style="flex: 1; justify-content: flex-end;">
           Salvar <span class="material-symbols-outlined">check_circle</span>
         </button>
         ` : `
-        <button class="btn-secondary" onclick="nextWorkoutExercise()" style="flex: 1; justify-content: flex-end;">
+        <button class="btn-secondary" onclick="nextWorkoutExercise()" ${isLocked ? 'disabled style="opacity: 0.3;"' : ''} style="flex: 1; justify-content: flex-end;">
           Próximo <span class="material-symbols-outlined">chevron_right</span>
         </button>
         `}
@@ -2292,27 +2310,45 @@ const toggleSetCompletion = (exId, setNum, isChecked) => {
     // Check if this is the last exercise and last set of the split
     const splitData = state.currentFicha[`treino${session.split}`];
     const isLastExercise = session.currentExerciseIndex === splitData.exercises.length - 1;
-    const isLastSet = setNum === loggedEx.sets.length;
     
-    if (isLastExercise && isLastSet) {
-      // It's the end of the entire workout! Show completion modal instead of rest timer.
-      setTimeout(() => {
-        showWorkoutCompletionModal();
-      }, 600);
+    // Check if ALL sets are now completed
+    const allCompleted = loggedEx.sets.every(s => s.completed);
+    
+    if (allCompleted) {
+      if (isLastExercise) {
+        // It's the end of the entire workout! Show completion modal instead of rest timer.
+        setTimeout(() => {
+          showWorkoutCompletionModal();
+        }, 600);
+      } else {
+        // Prepare to auto-advance when rest timer finishes
+        session.pendingNextAuto = true;
+        
+        // Automatically trigger the Rest Timer!
+        const dbEx = EXERCISES_DB[exId];
+        if (dbEx && dbEx.rest > 0) {
+          setTimeout(() => {
+            openRestTimer(dbEx.rest, dbEx.name);
+          }, 500); // 500ms delay for visual feedback
+        }
+      }
     } else {
-      // Automatically trigger the Rest Timer!
+      // Just a normal set completed, not the last one
       const dbEx = EXERCISES_DB[exId];
       if (dbEx && dbEx.rest > 0) {
         setTimeout(() => {
           openRestTimer(dbEx.rest, dbEx.name);
-        }, 500); // 500ms delay for visual feedback
+        }, 500);
       }
     }
   } else {
     row.classList.remove("completed");
+    session.pendingNextAuto = false; // Cancel auto-advance if they uncheck
   }
 
   saveStateToStorage();
+  // Re-render to update lock states of dropdown and buttons
+  renderActiveWorkoutExercise();
 };
 
 // Video controls during execution
@@ -2359,6 +2395,15 @@ const prevWorkoutExercise = () => {
   const session = state.activeWorkout;
   if (session.currentExerciseIndex > 0) {
     session.currentExerciseIndex--;
+    renderActiveWorkoutExercise();
+  }
+};
+
+const jumpWorkoutExercise = (index) => {
+  const session = state.activeWorkout;
+  const newIndex = parseInt(index);
+  if (!isNaN(newIndex) && newIndex >= 0 && newIndex < state.currentFicha[`treino${session.split}`].exercises.length) {
+    session.currentExerciseIndex = newIndex;
     renderActiveWorkoutExercise();
   }
 };
@@ -2443,6 +2488,11 @@ const closeRestTimer = () => {
   clearInterval(timerInterval);
   timerInterval = null;
   document.getElementById("rest-timer-screen").classList.remove("active");
+  
+  if (state.activeWorkout && state.activeWorkout.pendingNextAuto) {
+    state.activeWorkout.pendingNextAuto = false;
+    nextWorkoutExercise();
+  }
 };
 
 const showWorkoutCompletionModal = () => {
@@ -2516,6 +2566,21 @@ const finishWorkoutSession = () => {
 
   // Add to state and save
   state.history.push(historyEntry);
+  
+  // Auto-select next split for the next workout session
+  if (state.currentFicha) {
+    const splits = Object.keys(state.currentFicha)
+      .filter(k => k.startsWith('treino'))
+      .map(k => k.replace('treino', ''))
+      .sort();
+    
+    if (splits.length > 0) {
+      const currentIndex = splits.indexOf(session.split);
+      const nextIndex = (currentIndex !== -1 ? currentIndex + 1 : 1) % splits.length;
+      state.currentSplit = splits[nextIndex];
+    }
+  }
+  
   state.activeWorkout = null;
   saveStateToStorage();
 
@@ -2583,6 +2648,21 @@ const quickSaveWorkout = (split) => {
 
   // Add to state and save
   state.history.push(historyEntry);
+  
+  // Auto-select next split for the next workout session
+  if (state.currentFicha) {
+    const splits = Object.keys(state.currentFicha)
+      .filter(k => k.startsWith('treino'))
+      .map(k => k.replace('treino', ''))
+      .sort();
+    
+    if (splits.length > 0) {
+      const currentIndex = splits.indexOf(split);
+      const nextIndex = (currentIndex !== -1 ? currentIndex + 1 : 1) % splits.length;
+      state.currentSplit = splits[nextIndex];
+    }
+  }
+  
   state.activeWorkout = null;
   saveStateToStorage();
 
@@ -2953,9 +3033,9 @@ const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis, ag
     .map(([group, ids]) => `${group}: ${ids.join(", ")}`)
     .join("\n");
 
-  const splitNames = days <= 2
-    ? "treinoA e treinoB (somente 2 treinos)"
-    : "treinoA, treinoB e treinoC (3 treinos no esquema A/B/C)";
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G'].slice(0, days);
+  const splitsArray = letters.map(l => `treino${l}`);
+  const splitNames = splitsArray.join(", ") + ` (${days} treinos no esquema ${letters.join("/")})`;
 
   const isFemale = sex && sex.toLowerCase().includes("feminino");
   const bmiCategory = getBMICategory(bmi);
@@ -3329,7 +3409,7 @@ RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum 
 - Cargas iniciais (weight) REALISTAS para nível ${level}, idade ${age}, peso ${weight}kg
 - Para cardio (esteira, bicicleta), use setsCount: 1 e reps em formato texto como "20 minutos"
 - Para prancha/abdominal, use reps em texto como "40 segundos"
-- Se days <= 2, retorne apenas treinoA e treinoB (deixe treinoC igual ao treinoB)
+- QUANTIDADE DE DIVISÕES: Você deve criar exatamente ${days} treinos, nomeados como ${splitsArray.join(", ")} no JSON. NUNCA crie menos nem mais treinos do que o solicitado.
 - MUITO IMPORTANTE: Considere a idade e recuperação (40+ anos = menos volume, mais descanso)
 - MUITO IMPORTANTE: Adapte cargas ao IMC (sobrepeso = começar mais leve, abaixo do peso = pode focar em força)
 ${emphasis || objective ? `- PRIORIDADE MÁXIMA (ÊNFASE/OBJETIVO): O usuário solicitou expressamente o objetivo "${objective}" e a ênfase "${emphasis || 'Nenhuma específica'}". Você DEVE seguir as orientações específicas da modalidade descritas acima, priorizando os exercícios-chave listados. Se for uma melhoria de performance em atividade esportiva, flexibilize a regra de equilíbrio muscular para focar na modalidade.` : ''}`;  
@@ -3473,7 +3553,7 @@ const generateIntelligentWorkout = async () => {
     
     // 1. Ficha Atual (que será substituída)
     if (state.currentFicha) {
-      ["treinoA", "treinoB", "treinoC"].forEach(tKey => {
+      Object.keys(state.currentFicha).filter(k => k.startsWith('treino')).forEach(tKey => {
         const split = state.currentFicha[tKey];
         if (split && split.exercises) {
           split.exercises.forEach(ex => {
@@ -3485,7 +3565,7 @@ const generateIntelligentWorkout = async () => {
 
     // 2. Ficha Anterior (se houver)
     if (state.previousFicha) {
-      ["treinoA", "treinoB", "treinoC"].forEach(tKey => {
+      Object.keys(state.previousFicha).filter(k => k.startsWith('treino')).forEach(tKey => {
         const split = state.previousFicha[tKey];
         if (split && split.exercises) {
           split.exercises.forEach(ex => {
@@ -3561,28 +3641,25 @@ const generateIntelligentWorkout = async () => {
       emphasis: emphasis || null,
       aiGenerated: true,
       aiRationale: aiData.aiRationale || null,
-      treinoA: {
-        name: aiData.treinoA?.name || "Treino A",
-        exercises: sanitizeExercises(aiData.treinoA?.exercises)
-      },
-      treinoB: {
-        name: aiData.treinoB?.name || "Treino B",
-        exercises: sanitizeExercises(aiData.treinoB?.exercises)
-      },
-      treinoC: {
-        name: aiData.treinoC?.name || "Treino C",
-        exercises: sanitizeExercises(aiData.treinoC?.exercises || aiData.treinoB?.exercises)
-      },
       createdAt: Date.now(),
       validityWeeks,
       expiresAt: Date.now() + validityWeeks * 7 * 24 * 60 * 60 * 1000
     };
 
-    // Ensure treinos have at least some exercises (fallback per-treino if AI messed up)
-    ["treinoA", "treinoB", "treinoC"].forEach(key => {
+    const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G'].slice(0, days);
+    letters.forEach(letter => {
+      const tKey = `treino${letter}`;
+      newFicha[tKey] = {
+        name: aiData[tKey]?.name || `Treino ${letter}`,
+        exercises: sanitizeExercises(aiData[tKey]?.exercises || aiData.treinoA?.exercises)
+      };
+    });
+
+    // Ensure treinos have at least some exercises (fallback per-treino se a IA errar)
+    Object.keys(newFicha).filter(k => k.startsWith('treino')).forEach(key => {
       if (!newFicha[key] || newFicha[key].exercises.length === 0) {
         console.warn(`[AI] ${key} ficou sem exercícios válidos, usando fallback heurístico`);
-        newFicha[key] = generateHeuristicFicha(objective, level, name, time)[key];
+        newFicha[key] = generateHeuristicFicha(objective, level, name, time)[key] || generateHeuristicFicha(objective, level, name, time).treinoA;
       }
     });
 
