@@ -307,7 +307,7 @@ const EXERCISES_DB = {
   "desenvolvimento_smith": {
     name: "Desenvolvimento no Smith",
     muscle: "Ombros",
-    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Smith_Machine_Overhead_Press/0.jpg",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Shoulder_Press/0.jpg",
     steps: [
       "Sente-se em um banco a 90° posicionado sob o Smith Machine.",
       "Segure a barra na altura dos ombros com pegada um pouco mais larga que a largura dos ombros.",
@@ -384,7 +384,7 @@ const EXERCISES_DB = {
   "prancha_abdominal": {
     name: "Prancha Abdominal",
     muscle: "Core",
-    gif: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Plank/0.jpg",
     steps: [
       "Apoie os antebraços e as pontas dos pés no chão.",
       "Mantenha o corpo alinhado e o abdômen contraído.",
@@ -409,7 +409,7 @@ const EXERCISES_DB = {
   "esteira": {
     name: "Cardio - Corrida na Esteira",
     muscle: "Cardio",
-    gif: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&q=80",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Jogging_Treadmill/0.jpg",
     steps: [
       "Suba na esteira, selecione a velocidade confortável de corrida.",
       "Mantenha uma passada firme e ritmada.",
@@ -421,7 +421,7 @@ const EXERCISES_DB = {
   "bicicleta_ergometrica": {
     name: "Cardio - Bicicleta Ergométrica",
     muscle: "Cardio",
-    gif: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=800&q=80",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Recumbent_Bike/0.jpg",
     steps: [
       "Ajuste o selim na altura do quadril ao lado da bicicleta.",
       "Sente-se e pedale em ritmo constante mantendo a resistência adequada.",
@@ -481,7 +481,7 @@ const EXERCISES_DB = {
   "belt_squat": {
       "name": "Belt Squat (Agachamento com Cinturão)",
       "muscle": "Pernas",
-      "gif": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Hack_Squat/0.jpg",
       "steps": [
           "Prenda o cinturão na polia baixa ou máquina de Belt Squat.",
           "Fique em pé com os pés na plataforma e coluna alinhada.",
@@ -841,7 +841,7 @@ const EXERCISES_DB = {
   "hang_barra_fixa": {
       "name": "Hang na Barra Fixa",
       "muscle": "Braços",
-      "gif": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/One_Handed_Hang/0.jpg",
       "steps": [
           "Segure na barra fixa e fique com o corpo suspenso.",
           "Ative as escápulas mantendo os ombros firmes longe das orelhas.",
@@ -1249,7 +1249,7 @@ const EXERCISES_DB = {
   "frog_pump": {
       "name": "Frog Pump",
       "muscle": "Glúteos",
-      "gif": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Butt_Lift_Bridge/0.jpg",
       "steps": [
           "Deite-se de costas, una as solas dos pés (posição de sapo) e traga-os perto do quadril.",
           "Eleve o quadril em direção ao teto contraindo fortemente os glúteos.",
