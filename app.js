@@ -278,6 +278,71 @@ const EXERCISES_DB = {
     rest: 60,
     tips: "Mantenha o abdômen ativado e a coluna ereta durante a puxada."
   },
+  "rotacao_externa": {
+    name: "Rotação Externa de Ombro com Halter",
+    muscle: "Ombros",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Dumbbell_Lying_Pronation/0.jpg",
+    steps: [
+      "Deite de lado em um banco ou fique de pé com o cotovelo a 90°.",
+      "Segure um halter leve com o cotovelo dobrado a 90° junto ao corpo.",
+      "Gire o ombro externamente, levantando o halter para cima.",
+      "Retorne lentamente à posição inicial de forma controlada."
+    ],
+    rest: 45,
+    tips: "Use cargas muito leves (1-3kg). Este exercício é preventivo e não deve causar dor."
+  },
+  "rotacao_interna": {
+    name: "Rotação Interna de Ombro na Polia",
+    muscle: "Ombros",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Cable_Internal_Rotation/0.jpg",
+    steps: [
+      "Fique de lado para a polia baixa com o cotovelo dobrado a 90°.",
+      "Puxe o cabo em direção ao abdômen girando o ombro internamente.",
+      "Mantenha o cotovelo fixo ao lado do corpo durante todo o movimento.",
+      "Retorne lentamente resistindo à carga."
+    ],
+    rest: 45,
+    tips: "Movimento de reabilitação do manguito rotador — use cargas leves e foque na contração."
+  },
+  "desenvolvimento_smith": {
+    name: "Desenvolvimento no Smith",
+    muscle: "Ombros",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Smith_Machine_Overhead_Press/0.jpg",
+    steps: [
+      "Sente-se em um banco a 90° posicionado sob o Smith Machine.",
+      "Segure a barra na altura dos ombros com pegada um pouco mais larga que a largura dos ombros.",
+      "Empurre a barra verticalmente até estender completamente os braços.",
+      "Desça controladamente até a altura dos ombros."
+    ],
+    rest: 75,
+    tips: "O guia da máquina estabiliza o movimento — ideal para iniciantes ou reabilitação."
+  },
+  "desenvolvimento_arnold": {
+    name: "Desenvolvimento Arnold com Halteres",
+    muscle: "Ombros",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Arnold_Dumbbell_Press/0.jpg",
+    steps: [
+      "Sente-se em banco com os halteres na frente do rosto, palmas voltadas para você.",
+      "Ao empurrar os halteres para cima, gire os pulsos externamente.",
+      "No topo, as palmas devem estar voltadas para frente com braços estendidos.",
+      "Reverta o movimento ao descer, terminando com as palmas voltadas para você."
+    ],
+    rest: 75,
+    tips: "O movimento rotacional ativa mais fibras do deltoide que o desenvolvimento tradicional."
+  },
+  "desenvolvimento_militar": {
+    name: "Desenvolvimento Militar com Barra",
+    muscle: "Ombros",
+    gif: "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Shoulder_Press/0.jpg",
+    steps: [
+      "Sente-se ou fique de pé com a barra na altura dos ombros, pegada larga.",
+      "Pressione a barra verticalmente acima da cabeça até estender os cotovelos.",
+      "Desça controladamente até a barra retornar à altura dos ombros.",
+      "Mantenha o core ativado e a lombar neutra durante todo o movimento."
+    ],
+    rest: 90,
+    tips: "Exercício composto fundamental para força de ombro — excelente para CrossFit e esportes de overhead."
+  },
   "remada_curvada": {
     name: "Remada Unilateral com Halter",
     muscle: "Costas",
@@ -2799,6 +2864,11 @@ const AVAILABLE_EXERCISES = {
   levantamento_terra: "Levantamento Terra com Barra (Costas/Pernas)",
   encolhimento_trapezio: "Encolhimento de Ombros (Costas/Trapézio)",
   face_pull: "Face Pull na Polia (Ombros/Costas)",
+  rotacao_externa: "Rotação Externa de Ombro com Halter (Ombros)",
+  rotacao_interna: "Rotação Interna de Ombro na Polia (Ombros)",
+  desenvolvimento_smith: "Desenvolvimento no Smith (Ombros)",
+  desenvolvimento_arnold: "Desenvolvimento Arnold com Halteres (Ombros)",
+  desenvolvimento_militar: "Desenvolvimento Militar com Barra (Ombros)",
   extensao_lombar: "Extensão Lombar (Core/Abdômen)",
   hip_thrust: "Elevação Pélvica (Hip Thrust) (Glúteos)",
   glute_bridge: "Ponte de Glúteo (Glúteos)",
@@ -2966,6 +3036,189 @@ ADAPTAÇÕES ESPECÍFICAS PARA HOMENS:
 - CARGA: Trabalhar com cargas mais desafiadoras para estimular ganho muscular
     `;
 
+  // ─── Sport-specific guidance detection ───────────────────────────────────
+  const sportText = `${emphasis || ''} ${objective || ''}`.toLowerCase();
+  let sportSpecificGuidance = '';
+
+  if (/trail|trilha|mountain run|corrida de monta/.test(sportText)) {
+    sportSpecificGuidance = `
+🏔️ MODALIDADE DETECTADA: TRAIL RUNNING / CORRIDA EM TRILHA
+PRIORIDADES ABSOLUTAS PARA TRAIL:
+1. PERNAS/POTÊNCIA: Agachamento búlgaro, step-up, afundo, leg press — força excêntrica para descidas íngremes
+2. GLÚTEOS/PROPULSÃO: Hip thrust, coice na polia, swing kettlebell — potência de subida
+3. PANTURRILHA/TORNOZELO: Panturrilha em pé, sentada, leg press — absorção de impacto e estabilidade
+4. CORE/ESTABILIDADE: Prancha, extensão lombar — equilíbrio em terreno irregular
+5. POSTERIOR DE COXA: Stiff, mesa flexora, terra romeno — prevenção de lesão e frenagem nas descidas
+EXERCÍCIOS-CHAVE: step_up, agachamento_bulgaro, afundo, hip_thrust, panturrilha_maquina, panturrilha_sentada, extensao_lombar, prancha_abdominal, stiff_barra, cadeira_flexora
+ADAPTAÇÕES TÉCNICAS:
+- Incluir 1 exercício de equilíbrio unilateral por sessão (step-up, búlgaro, afundo)
+- Usar reps mais altas (12-20) para resistência muscular
+- Descanso mais curto (30-45s) para simular esforço contínuo de corrida
+- REDUZIR foco em peito/braços — apenas manutenção
+- Se ≥3 dias: dedicar 1 sessão COMPLETA para pernas/core (Treino C = apenas pernas)`;
+  } else if (/corrida de rua|road run|5k|10k|meia maratona|maratona|running/.test(sportText)) {
+    sportSpecificGuidance = `
+🏃 MODALIDADE DETECTADA: CORRIDA DE RUA
+PRIORIDADES ABSOLUTAS PARA CORRIDA DE RUA:
+1. POSTERIOR DE COXA: Stiff, mesa flexora, terra romeno — principal motor da passada
+2. GLÚTEOS: Hip thrust, agachamento, afundo — propulsão e prevenção de lesão no joelho
+3. CORE: Prancha, extensão lombar — postura de corrida e economia de movimento
+4. PANTURRILHA: Panturrilha em pé e sentada — absorção de impacto
+5. QUADRÍCEPS: Leg press, cadeira extensora — força e suporte articular
+EXERCÍCIOS-CHAVE: stiff_barra, terra_romeno, hip_thrust, prancha_abdominal, extensao_lombar, panturrilha_maquina, leg_press, afundo, mesa_flexora
+ADAPTAÇÕES TÉCNICAS:
+- Priorizar exercícios unilaterais para corrigir desequilíbrios
+- Reps: 12-20 para resistência muscular de corredor
+- Evitar leg press muito pesado (pode encurtar flexores do quadril)
+- REDUZIR peito/braços ao mínimo`;
+  } else if (/natação|natacao|swim|nado/.test(sportText)) {
+    sportSpecificGuidance = `
+🏊 MODALIDADE DETECTADA: NATAÇÃO
+PRIORIDADES ABSOLUTAS PARA NATAÇÃO:
+1. COSTAS/LATÍSSIMO: Puxada frontal, barra fixa, remada — o principal motor do nado
+2. OMBROS/MANGUITO: Desenvolvimento, elevação lateral, rotação externa — prevenção de lesão no ombro
+3. CORE: Prancha, extensão lombar — ondulação e rotação do tronco
+4. TRÍCEPS: Tríceps pulley, francês — finalização da braçada
+5. PERNAS/GLÚTEOS: Agachamento, hip thrust — propulsão do kik
+EXERCÍCIOS-CHAVE: puxada_frente, barra_fixa_pronada, remada_curvada_barra, desenvolvimento_ombro, elevacao_lateral, rotacao_externa, prancha_abdominal, triceps_pulley, hip_thrust
+ADAPTAÇÕES TÉCNICAS:
+- OBRIGATÓRIO: Incluir rotação externa de ombro para prevenção de impingement
+- Foco em força de puxada (lat pulldown, remadas pesadas)
+- Core é fundamental — incluir em TODOS os treinos
+- Descanso moderado (45-60s) para resistência muscular`;
+  } else if (/futebol|football|soccer/.test(sportText)) {
+    sportSpecificGuidance = `
+⚽ MODALIDADE DETECTADA: FUTEBOL
+PRIORIDADES ABSOLUTAS PARA FUTEBOL:
+1. PERNAS/POTÊNCIA: Agachamento, leg press, afundo — sprint e chute
+2. GLÚTEOS: Hip thrust, agachamento búlgaro — explosão de arrancada
+3. CORE: Prancha, extensão lombar — mudança de direção e estabilidade
+4. POSTERIOR DE COXA: Stiff, mesa flexora — prevenção de lesão (músculo mais lesionado no futebol)
+5. PANTURRILHA: Panturrilha em pé — sprint e salto
+EXERCÍCIOS-CHAVE: agachamento_barra, leg_press, hip_thrust, agachamento_bulgaro, stiff_barra, mesa_flexora, prancha_abdominal, panturrilha_maquina, step_up
+ADAPTAÇÕES TÉCNICAS:
+- PRIORIDADE MÁXIMA ao posterior de coxa (prevenção de lesão)
+- Incluir exercícios unilaterais para desequilíbrio direita/esquerda
+- Reps explosivas: 6-10 para potência
+- REDUZIR peito/braços — apenas manutenção`;
+  } else if (/ciclismo|cicl|bike|biciclet|mtb|gravel/.test(sportText)) {
+    sportSpecificGuidance = `
+🚴 MODALIDADE DETECTADA: CICLISMO / MTB
+PRIORIDADES ABSOLUTAS PARA CICLISMO:
+1. QUADRÍCEPS: Agachamento, leg press, cadeira extensora — pedalada
+2. GLÚTEOS: Hip thrust, agachamento búlgaro, afundo — potência no pedal
+3. CORE/LOMBAR: Prancha, extensão lombar — posição aerodinâmica e estabilidade
+4. POSTERIOR DE COXA: Stiff, mesa flexora — pedalada de puxada e equilíbrio muscular
+5. COSTAS/OMBROS: Remada, desenvolvimento — postura no guidão e prevenção de cervicalgia
+EXERCÍCIOS-CHAVE: leg_press, agachamento_barra, hip_thrust, cadeira_extensora, extensao_lombar, prancha_abdominal, remada_curvada_barra, stiff_barra, desenvolvimento_ombro
+ADAPTAÇÕES TÉCNICAS:
+- Incluir exercícios de lombar e core em todos os treinos (postura no bike)
+- Reps: 10-15 para resistência muscular de ciclista
+- Equilibrar quadríceps e posterior (ciclistas têm quadríceps dominantes)`;
+  } else if (/mma|luta|boxe|jiu.?jitsu|muay thai|judo|wrestling|kick/.test(sportText)) {
+    sportSpecificGuidance = `
+🥊 MODALIDADE DETECTADA: LUTAS / ARTES MARCIAIS
+PRIORIDADES ABSOLUTAS PARA LUTAS:
+1. CORE/ROTAÇÃO: Prancha, extensão lombar — geração de torque nos golpes e resistência ao clinch
+2. COSTAS/PUXADA: Remada, puxada, barra fixa — clinch, projeções, guarda
+3. OMBROS/EXPLOSÃO: Desenvolvimento, elevação lateral — velocidade e potência dos golpes
+4. PERNAS/BASE: Agachamento, afundo, step-up — base de equilíbrio e take-downs
+5. BRAÇOS: Rosca direta, tríceps — resistência muscular para golpes repetidos
+EXERCÍCIOS-CHAVE: prancha_abdominal, extensao_lombar, remada_curvada_barra, puxada_frente, desenvolvimento_ombro, agachamento_barra, afundo, rosca_direta, triceps_pulley, farmers_walk
+ADAPTAÇÕES TÉCNICAS:
+- CORE em TODOS os treinos sem exceção
+- Exercícios compostos pesados para geração de potência
+- Incluir farmer's walk para grip e resistência
+- Reps: 6-12 para força e potência`;
+  } else if (/vôlei|volei|volleyball/.test(sportText)) {
+    sportSpecificGuidance = `
+🏐 MODALIDADE DETECTADA: VÔLEI
+PRIORIDADES ABSOLUTAS PARA VÔLEI:
+1. PERNAS/SALTO: Agachamento, leg press, step-up — potência de salto
+2. OMBROS: Desenvolvimento, elevação lateral, rotação externa — saque e cortada (prevenção de lesão)
+3. CORE: Prancha, extensão lombar — estabilidade e transferência de força
+4. GLÚTEOS: Hip thrust, agachamento búlgaro — salto e aterrissagem
+5. COSTAS: Remada, puxada — armação e defesa de braço
+EXERCÍCIOS-CHAVE: agachamento_barra, leg_press, hip_thrust, desenvolvimento_ombro, elevacao_lateral, rotacao_externa, prancha_abdominal, extensao_lombar, remada_curvada
+ADAPTAÇÕES TÉCNICAS:
+- OBRIGATÓRIO: rotação externa de ombro em todo treino de ombro
+- Foco em explosão: reps de 6-8 com qualidade máxima
+- Exercícios de aterrissagem e desaceleração (excêntrico do agachamento)`;
+  } else if (/tênis|tenis|padel|squash/.test(sportText)) {
+    sportSpecificGuidance = `
+🎾 MODALIDADE DETECTADA: TÊNIS / PADEL
+PRIORIDADES ABSOLUTAS PARA TÊNIS/PADEL:
+1. CORE/ROTAÇÃO: Prancha, extensão lombar — geração de potência nos golpes
+2. OMBROS: Desenvolvimento, elevação lateral, rotação externa — prevenção de lesão no ombro dominante
+3. PERNAS/AGILIDADE: Agachamento, afundo, step-up — movimentação lateral e sprints curtos
+4. COSTAS: Remada, puxada — equilíbrio do ombro de raquete e postura
+5. CORE OBLÍQUO: Prancha, extensão lombar — rotação de tronco no golpe
+EXERCÍCIOS-CHAVE: prancha_abdominal, extensao_lombar, rotacao_externa, desenvolvimento_ombro, remada_curvada_barra, agachamento_barra, afundo, elevacao_lateral, farmers_walk
+ADAPTAÇÕES TÉCNICAS:
+- OBRIGATÓRIO: trabalho bilateral de ombros para compensar o dominante
+- Core em todos os treinos
+- Exercícios unilaterais para equilibrar braço dominante vs não-dominante`;
+  } else if (/basquete|basquetbol|basketball/.test(sportText)) {
+    sportSpecificGuidance = `
+🏀 MODALIDADE DETECTADA: BASQUETE
+PRIORIDADES ABSOLUTAS PARA BASQUETE:
+1. PERNAS/SALTO: Agachamento, leg press, hip thrust — salto e sprint
+2. CORE: Prancha, extensão lombar — contato físico e mudança de direção
+3. OMBROS: Desenvolvimento, elevação lateral — arremesso e bloqueio
+4. POSTERIOR/JOELHO: Stiff, mesa flexora — prevenção de lesão
+5. COSTAS: Remada, puxada — luta pelo rebote e contato
+EXERCÍCIOS-CHAVE: agachamento_barra, leg_press, hip_thrust, step_up, prancha_abdominal, desenvolvimento_ombro, stiff_barra, mesa_flexora, remada_curvada
+ADAPTAÇÕES TÉCNICAS:
+- Explosão: reps de 6-10 com ênfase na fase concêntrica
+- Incluir exercícios unilaterais (step-up, búlgaro) para agilidade
+- Joelho: sempre incluir mesa flexora para equilíbrio quad/isquio`;
+  } else if (/crossfit|cross fit|wod|calistenia/.test(sportText)) {
+    sportSpecificGuidance = `
+🏋️ MODALIDADE DETECTADA: CROSSFIT / CALISTENIA
+PRIORIDADES ABSOLUTAS PARA CROSSFIT:
+1. FORÇA BÁSICA: Agachamento livre, levantamento terra, supino — base dos WODs
+2. PUXADA/BARRA FIXA: Barra fixa pronada e supinada, puxada — pull-ups e muscle-ups
+3. CORE: Prancha, extensão lombar — kipping e estabilidade geral
+4. OMBROS/OVERHEAD: Desenvolvimento militar, elevação — overhead press e push press
+5. POSTERIOR/MOBILIDADE: Stiff, terra romeno, extensão lombar — deadlifts e mobilidade
+EXERCÍCIOS-CHAVE: agachamento_barra, levantamento_terra, barra_fixa_pronada, barra_fixa_supinada, desenvolvimento_militar, prancha_abdominal, extensao_lombar, mergulho_paralelas, stiff_barra, farmers_walk
+ADAPTAÇÕES TÉCNICAS:
+- PRIORIDADE para movimentos funcionais compostos
+- Incluir barra fixa e mergulho em paralelas em todo treino de upper
+- Levantamento terra é essencial
+- Descanso mais curto (30-45s) para simular intensidade de WOD`;
+  } else if (/escalada|climb|boulder/.test(sportText)) {
+    sportSpecificGuidance = `
+🧗 MODALIDADE DETECTADA: ESCALADA
+PRIORIDADES ABSOLUTAS PARA ESCALADA:
+1. COSTAS/PUXADA: Barra fixa, puxada, remada — força de puxada vertical e horizontal
+2. ANTEBRAÇO/GRIP: Farmer's walk, hang na barra, rosca de punho — resistência de preensão
+3. CORE: Prancha, extensão lombar — manutenção de posição na parede
+4. OMBROS/ESTABILIDADE: Rotação externa, elevação lateral — prevenção de lesão
+5. PERNAS: Agachamento, afundo — empurrão nos pés na parede
+EXERCÍCIOS-CHAVE: barra_fixa_pronada, barra_fixa_supinada, barra_fixa_neutra, hang_barra_fixa, puxada_frente, remada_curvada, farmers_walk, rosca_punho, prancha_abdominal, rotacao_externa
+ADAPTAÇÕES TÉCNICAS:
+- OBRIGATÓRIO: hang na barra em todo treino de costas
+- Farmer's walk ou rosca de punho em todo treino
+- Rotação externa de ombro sempre (prevenção de luxação)
+- Reps mais altas (10-15) para resistência de escalador`;
+  } else if (/remo|rowing|caiaque|canoa/.test(sportText)) {
+    sportSpecificGuidance = `
+🚣 MODALIDADE DETECTADA: REMO / CAIAQUE
+PRIORIDADES ABSOLUTAS PARA REMO:
+1. COSTAS/PUXADA: Remada, puxada, barra fixa — principal motor da remada
+2. CORE/LOMBAR: Extensão lombar, prancha — transferência de força e postura
+3. PERNAS: Leg press, agachamento — impulsão da saída da remada
+4. OMBROS: Elevação lateral, rotação externa — prevenção de lesão
+5. BÍCEPS: Rosca direta, rosca martelo — fase final da puxada
+EXERCÍCIOS-CHAVE: remada_curvada_barra, remada_baixa_triangulo, puxada_frente, barra_fixa_pronada, extensao_lombar, prancha_abdominal, leg_press, rotacao_externa, rosca_direta
+ADAPTAÇÕES TÉCNICAS:
+- Remadas em TODOS os treinos de costas
+- Lombar e core são críticos — incluir extensão lombar sempre
+- Reps: 10-15 para resistência de atleta de remo`;
+  }
+  // ─────────────────────────────────────────────────────────────────────────
+
   return `Você é um personal trainer especialista em musculação. Crie uma ficha de treino ALTAMENTE PERSONALIZADA e PROFISSIONAL em JSON para o seguinte aluno:
 
 Nome: ${name}
@@ -3015,6 +3268,13 @@ ${exerciseList}
 ${ageSpecificGuidance}
 ${bodyCompositionGuidance}
 ${sexSpecificGuidance}
+
+${sportSpecificGuidance ? `
+═══════════════════════════════════════════
+🏅 ORIENTAÇÕES ESPECÍFICAS PARA A MODALIDADE DO ATLETA:
+═══════════════════════════════════════════
+${sportSpecificGuidance}
+` : ''}
 
 ${historySummary ? `INFORMAÇÕES DE HISTÓRICO DE TREINOS ANTERIORES:
 O aluno já realizou treinos com as seguintes cargas máximas recentemente. Use essas cargas como referência de força para progredir:
@@ -3072,7 +3332,7 @@ RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum 
 - Se days <= 2, retorne apenas treinoA e treinoB (deixe treinoC igual ao treinoB)
 - MUITO IMPORTANTE: Considere a idade e recuperação (40+ anos = menos volume, mais descanso)
 - MUITO IMPORTANTE: Adapte cargas ao IMC (sobrepeso = começar mais leve, abaixo do peso = pode focar em força)
-${emphasis || objective ? `- PRIORIDADE MÁXIMA (ÊNFASE/OBJETIVO): O usuário solicitou expressamente o objetivo "${objective}" e a ênfase "${emphasis || 'Nenhuma específica'}". Você DEVE dedicar exercícios específicos, prioridade na ordem do treino e maior volume para atender esse pedido. Se for uma melhoria de performance em atividade (ex: natação, corrida, lutas, etc), inclua exercícios focados em explosão, core ou fortalecimento articular úteis para essa atividade, podendo flexibilizar a regra de equilíbrio muscular para focar nessa prioridade.` : ''}`;
+${emphasis || objective ? `- PRIORIDADE MÁXIMA (ÊNFASE/OBJETIVO): O usuário solicitou expressamente o objetivo "${objective}" e a ênfase "${emphasis || 'Nenhuma específica'}". Você DEVE seguir as orientações específicas da modalidade descritas acima, priorizando os exercícios-chave listados. Se for uma melhoria de performance em atividade esportiva, flexibilize a regra de equilíbrio muscular para focar na modalidade.` : ''}`;  
 };
 
 const showAILoadingOverlay = () => {
