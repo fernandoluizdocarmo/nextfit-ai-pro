@@ -80,8 +80,8 @@ Use IDs reais de exercícios do nosso banco: supino_reto, agachamento_barra, leg
     return res.status(400).json({ error: "Prompt é obrigatório e deve ser texto válido." });
   }
 
-  if (prompt.length > 10000) {
-    return res.status(400).json({ error: "Prompt muito longo (máximo 10000 caracteres)." });
+  if (prompt.length > 20000) {
+    return res.status(400).json({ error: "Prompt muito longo (máximo 20000 caracteres)." });
   }
 
   const keyToLog = `${GROQ_API_KEY.slice(0, 6)}...${GROQ_API_KEY.slice(-4)}`;
