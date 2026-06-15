@@ -364,6 +364,738 @@ const EXERCISES_DB = {
     ],
     rest: 60,
     tips: "Evite balançar os quadris de um lado para o outro na pedalada."
+  },
+  "agachamento_frontal": {
+      "name": "Agachamento Frontal com Barra",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Front_Squat_Clean_Grip/0.jpg",
+      "steps": [
+          "Apoie a barra nos ombros anteriorizados cruzando os braços ou na pegada olímpica.",
+          "Desça mantendo o tronco o mais vertical possível para enfatizar os quadríceps.",
+          "Suba empurrando os calcanhares contra o solo."
+      ],
+      "rest": 60,
+      "tips": "Exige bastante mobilidade de punho e força no core para manter a coluna ereta."
+  },
+  "agachamento_sumo": {
+      "name": "Agachamento Sumô",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Sumo_Deadlift/0.jpg",
+      "steps": [
+          "Afaste os pés além da largura dos ombros com as pontas viradas para fora (~45 graus).",
+          "Desça o quadril de forma vertical, mantendo os joelhos alinhados com a ponta dos pés.",
+          "Retorne contraindo os glúteos e a parte interna da coxa."
+      ],
+      "rest": 60,
+      "tips": "Excelente ativação de adutores e glúteos. Mantenha o peito aberto o tempo todo."
+  },
+  "agachamento_smith": {
+      "name": "Agachamento no Smith",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Smith_Machine_Bench_Press/0.jpg",
+      "steps": [
+          "Posicione-se under a barra do Smith com os pés ligeiramente à frente.",
+          "Destrave a barra girando os punhos e realize o agachamento controladamente.",
+          "Empurre a plataforma/solo para retornar à posição inicial."
+      ],
+      "rest": 60,
+      "tips": "Excelente para focar na coxa reduzindo a carga de estabilização da coluna."
+  },
+  "leg_press_horizontal": {
+      "name": "Leg Press Horizontal",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Leg_Press/0.jpg",
+      "steps": [
+          "Sente-se no aparelho e apoie os pés na plataforma na largura dos ombros.",
+          "Destrave a plataforma e flexione os joelhos controladamente trazendo-os ao peito.",
+          "Empurre a plataforma estendendo as pernas sem bloquear totalmente os joelhos."
+      ],
+      "rest": 60,
+      "tips": "Mantenha a lombar apoiada firme no encosto do banco em todo o percurso."
+  },
+  "belt_squat": {
+      "name": "Belt Squat (Agachamento com Cinturão)",
+      "muscle": "Pernas",
+      "gif": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+      "steps": [
+          "Prenda o cinturão na polia baixa ou máquina de Belt Squat.",
+          "Fique em pé com os pés na plataforma e coluna alinhada.",
+          "Realize o agachamento mantendo o quadril para trás e o peso nos calcanhares."
+      ],
+      "rest": 60,
+      "tips": "Ótimo para quem tem problemas na coluna, pois elimina totalmente a carga axial sobre os ombros."
+  },
+  "afundo": {
+      "name": "Afundo com Halteres",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Dumbbell_Lunges/0.jpg",
+      "steps": [
+          "Fique em pé com um halter em cada mão nas laterais do corpo.",
+          "Dê um passo à frente mantendo a outra perna atrás.",
+          "Desça o joelho de trás em direção ao chão até quase tocá-lo."
+      ],
+      "rest": 60,
+      "tips": "Mantenha o alinhamento do joelho da frente com a ponta do pé para evitar lesões."
+  },
+  "passada": {
+      "name": "Passada Caminhando",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Bodyweight_Walking_Lunge/0.jpg",
+      "steps": [
+          "Dê um passo à frente flexionando os joelhos em afundo.",
+          "Impulsione o corpo para frente trazendo a perna de trás em um novo passo à frente.",
+          "Caminhe de forma fluida alternando as pernas."
+      ],
+      "rest": 60,
+      "tips": "Foque na estabilidade e equilíbrio mantendo o core contraído."
+  },
+  "agachamento_bulgaro": {
+      "name": "Agachamento Búlgaro",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Split_Squat_with_Dumbbells/0.jpg",
+      "steps": [
+          "Apoie o peito de um pé atrás em um banco plano ou degrau elevado.",
+          "Com a perna da frente, realize o agachamento descendo o quadril de forma linear.",
+          "Empurre o chão com a perna da frente para retornar."
+      ],
+      "rest": 60,
+      "tips": "Foco intenso no quadríceps e glúteo. Não deixe o tronco curvar excessivamente para a frente."
+  },
+  "step_up": {
+      "name": "Step-up (Subida no Banco)",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Step-up_with_Knee_Raise/0.jpg",
+      "steps": [
+          "Apoie um pé totalmente em cima de um banco resistente.",
+          "Suba estendendo a perna de apoio até ficar totalmente ereto sobre o banco.",
+          "Desça de forma lenta resistindo à gravidade com a mesma perna."
+      ],
+      "rest": 60,
+      "tips": "Tente não dar impulso com o pé que ficou no chão, faça a força apenas com a perna de cima."
+  },
+  "cadeira_flexora": {
+      "name": "Cadeira Flexora",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Seated_Leg_Curl/0.jpg",
+      "steps": [
+          "Sente-se no aparelho alinhando os joelhos com o eixo de rotação da máquina.",
+          "Flexione os joelhos trazendo o rolo para baixo e para trás.",
+          "Retorne estendendo as pernas de forma lenta e controlada."
+      ],
+      "rest": 60,
+      "tips": "Mantenha o quadril e a lombar bem pressionados no encosto do assento."
+  },
+  "good_morning": {
+      "name": "Good Morning com Barra",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Good_Morning/0.jpg",
+      "steps": [
+          "Apoie la barra nos ombros (trapézio) exatamente como no agachamento.",
+          "Com leve flexão nos joelhos, incline o tronco à frente empurrando o quadril para trás.",
+          "Retorne contraindo fortemente os glúteos e posterior de coxa."
+      ],
+      "rest": 60,
+      "tips": "Excelente para a cadeia posterior. Mantenha a coluna neutra e a lombar ativada o tempo todo."
+  },
+  "cadeira_abdutora": {
+      "name": "Cadeira Abdutora",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Thigh_Abductor/0.jpg",
+      "steps": [
+          "Sente-se na máquina apoiando a lateral externa das coxas nas almofadas.",
+          "Afaste as pernas contra a resistência empurrando para as laterais.",
+          "Retorne de forma controlada mantendo a tensão."
+      ],
+      "rest": 60,
+      "tips": "Para focar mais no glúteo médio, incline ligeiramente o tronco para a frente."
+  },
+  "cadeira_adutora": {
+      "name": "Cadeira Adutora",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Thigh_Adductor/0.jpg",
+      "steps": [
+          "Sente-se afastando as pernas e apoiando a lateral interna das coxas.",
+          "Feche as pernas contra a resistência até aproximar as almofadas.",
+          "Abra lentamente resistindo ao retorno do peso."
+      ],
+      "rest": 60,
+      "tips": "Trabalha a parte interna da coxa (adutores). Mantenha movimentos fluidos e sem trancos."
+  },
+  "panturrilha_sentada": {
+      "name": "Panturrilha Sentada",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Seated_Calf_Raise/0.jpg",
+      "steps": [
+          "Sente-se na máquina, posicione o apoio sobre as coxas e a ponta dos pés no degrau.",
+          "Eleve os calcanhares para liberar a trava de segurança.",
+          "Desça os calcanhares para alongar e suba até a contração máxima da panturrilha."
+      ],
+      "rest": 60,
+      "tips": "Trabalha especificamente o músculo sóleo. Faça pausas de 1s no topo e embaixo."
+  },
+  "panturrilha_leg_press": {
+      "name": "Panturrilha no Leg Press",
+      "muscle": "Pernas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Calf_Press/0.jpg",
+      "steps": [
+          "Sente-se no Leg Press, apoie apenas a ponta dos pés na borda inferior da plataforma.",
+          "Realize a flexão plantar empurrando a plataforma apenas com os pés.",
+          "Retorne alongando a panturrilha controladamente."
+      ],
+      "rest": 60,
+      "tips": "Mantenha os joelhos semi-flexionados (destravados) e não faça força com as pernas."
+  },
+  "rosca_alternada": {
+      "name": "Rosca Alternada com Halteres",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Dumbbell_Alternate_Bicep_Curl/0.jpg",
+      "steps": [
+          "Fique em pé segurando os halteres com as palmas voltadas para o corpo.",
+          "Suba um halter rotacionando o punho para cima (supinação) no meio do caminho.",
+          "Desça controladamente e repita com o outro braço."
+      ],
+      "rest": 60,
+      "tips": "Mantenha o cotovelo fixo ao lado do corpo, evitando jogá-lo para frente."
+  },
+  "rosca_scott": {
+      "name": "Rosca Scott com Barra EZ",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Preacher_Curl/0.jpg",
+      "steps": [
+          "Apoie os braços no banco Scott, mantendo as axilas firmes no topo do encosto.",
+          "Segure a barra EZ com as palmas para cima e flexione os braços trazendo a barra.",
+          "Desça lentamente resistindo ao peso."
+      ],
+      "rest": 60,
+      "tips": "Evite estender os cotovelos a 100% na descida para preservar o tendão do bíceps."
+  },
+  "rosca_concentrada": {
+      "name": "Rosca Concentrada com Halter",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Concentration_Curls/0.jpg",
+      "steps": [
+          "Sente-se no banco, afaste as pernas e apoie o cotovelo no interno da coxa correspondente.",
+          "Flexione o braço trazendo o halter em direção ao ombro.",
+          "Desça lentamente controlando o peso."
+      ],
+      "rest": 60,
+      "tips": "Isolamento extremo de bíceps. Evite mover o tronco durante a execução."
+  },
+  "rosca_polia": {
+      "name": "Rosca Direta na Polia",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Standing_Biceps_Cable_Curl/0.jpg",
+      "steps": [
+          "De pé, de frente para a polia baixa, segurando a barra reta ou curva.",
+          "Flexione os braços trazendo as mãos em direção aos ombros.",
+          "Retorne estendendo lentamente resistindo ao cabo."
+      ],
+      "rest": 60,
+      "tips": "O cabo mantém a tensão mecânica constante durante todo o arco do movimento."
+  },
+  "rosca_inversa": {
+      "name": "Rosca Inversa com Halteres",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Standing_Dumbbell_Reverse_Curl/0.jpg",
+      "steps": [
+          "Segure halteres à frente das coxas com pegada pronada (palmas para trás).",
+          "Flexione os cotovelos trazendo o peso para cima.",
+          "Desça de forma lenta e controlada."
+      ],
+      "rest": 60,
+      "tips": "Foco no braquiorradial (antebraço) e parte externa do bíceps."
+  },
+  "rosca_21": {
+      "name": "Rosca 21 com Barra EZ",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/EZ-Bar_Curl/0.jpg",
+      "steps": [
+          "Faça 7 repetições parciais saindo debaixo até a metade.",
+          "Faça mais 7 repetições parciais da metade até o topo.",
+          "Finalize com 7 repetições completas por toda a amplitude."
+      ],
+      "rest": 60,
+      "tips": "Excelente técnica de sobrecarga metabólica. Controle o ritmo e evite impulsos."
+  },
+  "rosca_spider": {
+      "name": "Rosca Spider",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Spider_Curl/0.jpg",
+      "steps": [
+          "Deite-se de bruços em um banco inclinado a 45 graus com braços estendidos ao solo.",
+          "Segure a barra EZ e flexione os cotovelos elevando a carga.",
+          "Desça lentamente controlando a extensão."
+      ],
+      "rest": 60,
+      "tips": "Por ter os braços pendidos à frente, isola o bíceps removendo qualquer ajuda do ombro."
+  },
+  "rosca_inclinada": {
+      "name": "Rosca Inclinada com Halteres",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Incline_Dumbbell_Curl/0.jpg",
+      "steps": [
+          "Sente-se em um banco inclinado a 45 graus segurando halteres nas laterais do corpo.",
+          "Mantendo os ombros para trás, flexione os cotovelos trazendo os pesos.",
+          "Desça controladamente sentindo o alongamento do bíceps."
+      ],
+      "rest": 60,
+      "tips": "Enfatiza a cabeça longa do bíceps devido à posição de pré-alongamento."
+  },
+  "triceps_barra": {
+      "name": "Tríceps no Pulley com Barra",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Triceps_Pushdown_-_V-Bar_Attachment/0.jpg",
+      "steps": [
+          "Em pé na polia alta, segure a barra reta ou em V com as palmas para baixo.",
+          "Mantendo os cotovelos rentes ao corpo, empurre a barra estendendo totalmente os braços.",
+          "Retorne flexionando controladamente até o peito."
+      ],
+      "rest": 60,
+      "tips": "Permite trabalhar com cargas mais elevadas em comparação com a corda."
+  },
+  "triceps_frances": {
+      "name": "Tríceps Francês com Halter",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Standing_One-Arm_Dumbbell_Triceps_Extension/0.jpg",
+      "steps": [
+          "Fique em pé ou sentado segurando o halter acima da cabeça com o braço estendido.",
+          "Flexione o cotovelo descendo o halter por trás da nuca de forma controlada.",
+          "Estenda o braço apontando o cotovelo para o alto para retornar."
+      ],
+      "rest": 60,
+      "tips": "Excelente estímulo para a porção longa do tríceps. Mantenha o cotovelo fechado."
+  },
+  "triceps_coice": {
+      "name": "Tríceps Coice com Halter",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Tricep_Dumbbell_Kickback/0.jpg",
+      "steps": [
+          "Incline o tronco à frente apoiando uma mão e o joelho em um banco plano.",
+          "Mantenha o cotovelo do braço livre colado à costela e flexionado a 90 graus.",
+          "Estenda o cotovelo para trás até alinhar o braço completamente paralelo ao chão."
+      ],
+      "rest": 60,
+      "tips": "Evite movimentar o ombro ou balançar o halter. O movimento deve ser 100% no cotovelo."
+  },
+  "supino_fechado": {
+      "name": "Supino Fechado com Barra",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Close-Grip_Barbell_Bench_Press/0.jpg",
+      "steps": [
+          "Deite-se no banco plano e segure a barra com pegada na largura dos ombros.",
+          "Desça a barra lentamente direcionando os cotovelos para baixo rente às costelas.",
+          "Empurre a barra estendendo os braços com foco no tríceps."
+      ],
+      "rest": 60,
+      "tips": "Evite uma pegada excessivamente fechada para não sobrecarregar as articulações dos punhos."
+  },
+  "mergulho_paralelas": {
+      "name": "Mergulho nas Paralelas",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Dips_-_Triceps_Version/0.jpg",
+      "steps": [
+          "Sustente o corpo nas barras paralelas mantendo os cotovelos travados.",
+          "Flexione os cotovelos descendo o corpo até formar um ângulo reto nos braços.",
+          "Empurre firmemente de volta para cima estendendo as articulações."
+      ],
+      "rest": 60,
+      "tips": "Mantenha o tronco o mais vertical possível para direcionar o esforço aos tríceps."
+  },
+  "triceps_unilateral_polia": {
+      "name": "Tríceps Unilateral na Polia",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Standing_Low-Pulley_One-Arm_Triceps_Extension/0.jpg",
+      "steps": [
+          "Posicione-se em frente à polia alta segurando o cabo sem manopla.",
+          "Estenda o braço puxando o cabo para baixo até contrair totalmente o tríceps.",
+          "Retorne de forma controlada até o ponto de flexão máxima."
+      ],
+      "rest": 60,
+      "tips": "Excelente para corrigir assimetrias de força muscular entre os membros."
+  },
+  "triceps_banco": {
+      "name": "Tríceps no Banco",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Bench_Dips/0.jpg",
+      "steps": [
+          "Apoie as mãos na borda de um banco plano e os calcanhares no chão (ou outro banco).",
+          "Flexione os cotovelos descendo o quadril rente ao banco traseiro.",
+          "Suba estendendo totalmente os braços empurrando o banco."
+      ],
+      "rest": 60,
+      "tips": "Mantenha o abdômen ativado e evite afastar o tronco do banco durante a execução."
+  },
+  "extensao_acima_cabeca": {
+      "name": "Extensão de Tríceps acima da Cabeça",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Triceps_Overhead_Extension_with_Rope/0.jpg",
+      "steps": [
+          "Segure a corda na polia média/alta, dê um passo à frente de costas para a máquina.",
+          "Estenda os braços à frente, acima da linha da cabeça, puxando a corda.",
+          "Retorne flexionando os cotovelos controladamente por trás da cabeça."
+      ],
+      "rest": 60,
+      "tips": "Garante alongamento máximo da porção longa do tríceps sob tensão contínua."
+  },
+  "rosca_punho": {
+      "name": "Rosca de Punho",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Palms-Down_Wrist_Curl_Over_A_Bench/0.jpg",
+      "steps": [
+          "Apoie os antebraços em um banco segurando os halteres com as palmas para cima.",
+          "Flexione apenas os punhos puxando a carga em direção ao antebraço.",
+          "Desça estendendo os punhos de forma controlada."
+      ],
+      "rest": 60,
+      "tips": "Excelente isolamento para os músculos flexores do antebraço."
+  },
+  "rosca_inversa_punho": {
+      "name": "Rosca Inversa de Punho",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench/0.jpg",
+      "steps": [
+          "Apoie os antebraços em um banco segurando halteres com as palmas para baixo.",
+          "Estenda os punhos trazendo as costas das mãos para cima.",
+          "Retorne lentamente alongando a porção extensora do antebraço."
+      ],
+      "rest": 60,
+      "tips": "Foque nos extensores do antebraço. Faça movimentos curtos e precisos."
+  },
+  "farmers_walk": {
+      "name": "Farmer's Walk",
+      "muscle": "Braços",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Farmers_Walk/0.jpg",
+      "steps": [
+          "Segure um halter pesado em cada mão e mantenha os ombros alinhados.",
+          "Caminhe a distância ou tempo estipulados mantendo postura ereta e abdômen contraído.",
+          "Mantenha passos curtos e ritmo firme."
+      ],
+      "rest": 60,
+      "tips": "Fortalece intensamente a pegada, trapézios, antebraços e estabilizadores do core."
+  },
+  "hang_barra_fixa": {
+      "name": "Hang na Barra Fixa",
+      "muscle": "Braços",
+      "gif": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+      "steps": [
+          "Segure na barra fixa e fique com o corpo suspenso.",
+          "Ative as escápulas mantendo os ombros firmes longe das orelhas.",
+          "Mantenha a sustentação e respiração estáveis pelo tempo estipulado."
+      ],
+      "rest": 60,
+      "tips": "Excelente para a saúde dos ombros, descompressão da coluna e força de pegada."
+  },
+  "supino_inclinado_barra": {
+      "name": "Supino Inclinado com Barra",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Incline_Bench_Press_-_Medium_Grip/0.jpg",
+      "steps": [
+          "Deite-se no banco inclinado e segure a barra em pegada média.",
+          "Retire a barra e desça-a controladamente até encostar na linha superior do peito.",
+          "Empurre verticalmente de volta até estender os braços."
+      ],
+      "rest": 60,
+      "tips": "Enfatiza a porção clavicular (superior) do peitoral."
+  },
+  "supino_declinado": {
+      "name": "Supino Declinado com Barra",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Decline_Barbell_Bench_Press/0.jpg",
+      "steps": [
+          "Prenda os pés nos rolos e deite no banco declinado.",
+          "Desça a barra controladamente em direção ao peitoral inferior.",
+          "Empurre estendendo os braços mantendo a força no peito."
+      ],
+      "rest": 60,
+      "tips": "Trabalha a parte inferior do peitoral, reduzindo a ativação dos ombros."
+  },
+  "supino_halter": {
+      "name": "Supino Reto com Halteres",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Dumbbell_Bench_Press/0.jpg",
+      "steps": [
+          "Deite no banco plano segurando os halteres com os cotovelos a 90 graus.",
+          "Empurre os halteres para cima aproximando-os levemente no topo.",
+          "Desça controladamente alongando o peito ao máximo."
+      ],
+      "rest": 60,
+      "tips": "Permite maior amplitude de movimento e ajuste anatômico das articulações em comparação com a barra."
+  },
+  "supino_smith": {
+      "name": "Supino no Smith",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Smith_Machine_Bench_Press/0.jpg",
+      "steps": [
+          "Deite sob a barra do Smith de forma centralizada.",
+          "Destrave a barra e desça até quase tocar o peitoral.",
+          "Empurre verticalmente estendendo os cotovelos."
+      ],
+      "rest": 60,
+      "tips": "Excelente para trabalhar com falha concêntrica devido às travas de segurança da guia metálica."
+  },
+  "crucifixo_reto": {
+      "name": "Crucifixo Reto com Halteres",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Dumbbell_Flyes/0.jpg",
+      "steps": [
+          "Deite no banco plano segurando os halteres com os braços estendidos e palmas viradas uma para a outra.",
+          "Abra os braços lateralmente mantendo leve flexão nos cotovelos para isolar.",
+          "Feche os braços unindo os halteres de volta no topo."
+      ],
+      "rest": 60,
+      "tips": "Evite dobrar os cotovelos em excesso para não transformar o movimento em supino."
+  },
+  "crucifixo_inclinado": {
+      "name": "Crucifixo Inclinado com Halteres",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Incline_Dumbbell_Flyes/0.jpg",
+      "steps": [
+          "Deite no banco inclinado segurando os halteres.",
+          "Abra os braços em arco lateral controlando a descida do peso.",
+          "Feche os braços contraindo o peitoral superior."
+      ],
+      "rest": 60,
+      "tips": "Concentre a força no peito e evite encostar os halteres no topo para manter a tensão ativa."
+  },
+  "crucifixo_declinado": {
+      "name": "Crucifixo Declinado com Halteres",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Decline_Dumbbell_Flyes/0.jpg",
+      "steps": [
+          "Deite no banco declinado e segure os halteres.",
+          "Abra lateralmente sentindo o alongamento do peito inferior.",
+          "Feche subindo os pesos com controle."
+      ],
+      "rest": 60,
+      "tips": "Mantenha a estabilidade dos pés nas travas do banco."
+  },
+  "flexao_braço": {
+      "name": "Flexão de Braços",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Pushups/0.jpg",
+      "steps": [
+          "Apoie as mãos e as pontas dos pés no chão com o corpo em prancha alinhada.",
+          "Flexione os cotovelos descendo o peito até próximo ao solo.",
+          "Empurre o chão estendendo os braços de volta ao topo."
+      ],
+      "rest": 60,
+      "tips": "Mantenha o abdômen ativado para evitar a queda ou elevação excessiva do quadril."
+  },
+  "pullover": {
+      "name": "Pullover com Halter",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Bent-Arm_Dumbbell_Pullover/0.jpg",
+      "steps": [
+          "Deite de costas no banco reto apoiando as costas e segurando o halter acima do peito.",
+          "Desça o halter para trás da cabeça mantendo os cotovelos semi-flexionados.",
+          "Puxe o halter de volta à posição inicial sobre o peito."
+      ],
+      "rest": 60,
+      "tips": "Trabalha tanto a porção inferior do peitoral quanto os músculos latíssimos do dorso."
+  },
+  "barra_fixa_pronada": {
+      "name": "Barra Fixa Pronada (Pull-up)",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Pullups/0.jpg",
+      "steps": [
+          "Segure a barra com pegada pronada (palmas para a frente) mais aberta que os ombros.",
+          "Puxe o corpo para cima até passar o queixo da altura da barra.",
+          "Desça lentamente resistindo à gravidade até estender os braços."
+      ],
+      "rest": 60,
+      "tips": "Foque em puxar direcionando os cotovelos para baixo, ativando as dorsais."
+  },
+  "barra_fixa_supinada": {
+      "name": "Barra Fixa Supinada (Chin-up)",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Chin-Up/0.jpg",
+      "steps": [
+          "Segure a barra com pegada supinada (palmas voltadas para você) na largura dos ombros.",
+          "Puxe o corpo trazendo o peito em direção à barra.",
+          "Desça lentamente alongando as costas."
+      ],
+      "rest": 60,
+      "tips": "Excelente ativação de bíceps em conjunto com o latíssimo do dorso."
+  },
+  "puxada_fechada": {
+      "name": "Puxada Frontal Fechada",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Close-Grip_Front_Lat_Pulldown/0.jpg",
+      "steps": [
+          "Segure o puxador triângulo na polia alta da máquina.",
+          "Puxe o puxador em direção ao peitoral inferior inclinando o tronco levemente para trás.",
+          "Retorne estendendo totalmente os braços controlando o peso."
+      ],
+      "rest": 60,
+      "tips": "Isola os músculos dorsais médios e o redondo maior. Mantenha os ombros para baixo."
+  },
+  "pulldown_corda": {
+      "name": "Pulldown na Polia com Corda",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Rope_Straight-Arm_Pulldown/0.jpg",
+      "steps": [
+          "Em pé de frente para a polia alta, incline o tronco segurando a corda com braços estendidos.",
+          "Puxe a corda para baixo trazendo as mãos ao lado do quadril com cotovelos semi-flexionados fixos.",
+          "Retorne lentamente alongando as costas."
+      ],
+      "rest": 60,
+      "tips": "Excelente isolamento das dorsais sem fadigar o bíceps."
+  },
+  "remada_curvada_barra": {
+      "name": "Remada Curvada com Barra",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Bent_Over_Barbell_Row/0.jpg",
+      "steps": [
+          "Incline o tronco à frente a ~45 graus destravando os joelhos e alinhando as costas.",
+          "Puxe a barra em direção ao abdômen inferior (linha do umbigo).",
+          "Desça a barra de forma controlada até estender os braços."
+      ],
+      "rest": 60,
+      "tips": "Mantenha o abdômen travado e a lombar rígida para estabilizar a carga."
+  },
+  "remada_unilateral": {
+      "name": "Remada Unilateral com Halter (Serrote)",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/One-Arm_Dumbbell_Row/0.jpg",
+      "steps": [
+          "Apoie um joelho e a mão do mesmo lado em um banco plano, mantendo a coluna reta.",
+          "Puxe o halter com o outro braço trazendo o cotovelo em direção ao quadril.",
+          "Desça o halter controladamente permitindo o alongamento da dorsal."
+      ],
+      "rest": 60,
+      "tips": "Puxe o peso focando em acionar as costas primeiro, evitando tensionar o bíceps antes do tempo."
+  },
+  "remada_cavalinho": {
+      "name": "Remada Cavalinho (T-bar)",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/T-Bar_Row_with_Handle/0.jpg",
+      "steps": [
+          "Posicione os pés na plataforma e incline o tronco segurando o puxador.",
+          "Puxe o peso trazendo a barra em direção ao abdômen médio.",
+          "Estenda os braços controlando o retorno da carga."
+      ],
+      "rest": 60,
+      "tips": "Mantenha a coluna ereta e evite dar trancos com o quadril durante a puxada."
+  },
+  "remada_articulada_maquina": {
+      "name": "Remada Articulada na Máquina",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Leverage_Iso_Row/0.jpg",
+      "steps": [
+          "Ajuste a altura do banco e apoie o peitoral no suporte frontal.",
+          "Puxe as manoplas contraindo as costas e aproximando as escápulas.",
+          "Retorne lentamente alongando as dorsais."
+      ],
+      "rest": 60,
+      "tips": "Excelente para treinar costas de forma pesada e segura eliminando estresse na lombar."
+  },
+  "remada_invertida": {
+      "name": "Remada Invertida",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Inverted_Row/0.jpg",
+      "steps": [
+          "Posicione-se embaixo de uma barra fixa ajustada na altura do quadril.",
+          "Segure na barra suspensa com calcanhares no chão e corpo em prancha rígida.",
+          "Puxe o peitoral em direção à barra contraindo as costas."
+      ],
+      "rest": 60,
+      "tips": "Excelente exercício com peso corporal para fortalecimento da postura escapular."
+  },
+  "levantamento_terra": {
+      "name": "Levantamento Terra com Barra",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Deadlift/0.jpg",
+      "steps": [
+          "Posicione-se com as canelas próximas à barra no chão, pés na largura do quadril.",
+          "Segure la barra, ative as escápulas e empurre o solo estendendo o corpo.",
+          "Retorne descendo o quadril e a barra rente às pernas de forma firme."
+      ],
+      "rest": 60,
+      "tips": "Exercício composto de força máxima. A coluna lombar nunca deve flexionar/curvar durante o movimento."
+  },
+  "encolhimento_trapezio": {
+      "name": "Encolhimento de Ombros",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Shrug/0.jpg",
+      "steps": [
+          "Fique em pé segurando barra ou halteres à frente.",
+          "Eleve os ombros verticalmente na direção das orelhas.",
+          "Desça de forma controlada alongando a musculatura superior."
+      ],
+      "rest": 60,
+      "tips": "Não rotacione os ombros; o movimento correto é puramente vertical para cima e para baixo."
+  },
+  "face_pull": {
+      "name": "Face Pull na Polia",
+      "muscle": "Ombros",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Face_Pull/0.jpg",
+      "steps": [
+          "Ajuste a corda na polia na altura do rosto.",
+          "Puxe a corda em direção à testa, afastando os braços e rotacionando os punhos para fora.",
+          "Retorne controladamente sentindo a ativação dos ombros posteriores."
+      ],
+      "rest": 60,
+      "tips": "Excelente exercício corretivo para postura e estabilidade da articulação glenoumeral."
+  },
+  "extensao_lombar": {
+      "name": "Extensão Lombar (Banco Romano)",
+      "muscle": "Core",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Hyperextensions_Back_Extensions/0.jpg",
+      "steps": [
+          "Apoie o quadril no suporte do banco romano travando os tornozelos.",
+          "Incline o tronco para baixo mantendo a coluna ereta.",
+          "Suba o tronco ativando glúteos e eretores da espinha."
+      ],
+      "rest": 60,
+      "tips": "Evite realizar uma hiperextensão excessiva no topo (jogar as costas muito para trás)."
+  },
+  "hip_thrust": {
+      "name": "Elevação Pélvica (Hip Thrust)",
+      "muscle": "Glúteos",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Hip_Thrust/0.jpg",
+      "steps": [
+          "Apoie a parte superior das costas em um banco plano.",
+          "Posicione a barra acolchoada na linha do quadril.",
+          "Empurre o quadril para cima apoiando a força nos calcanhares."
+      ],
+      "rest": 60,
+      "tips": "O principal construtor de glúteos. Faça força direcionando os joelhos para fora."
+  },
+  "glute_bridge": {
+      "name": "Ponte de Glúteo",
+      "muscle": "Glúteos",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Glute_Bridge/0.jpg",
+      "steps": [
+          "Deite-se no colchonete com joelhos dobrados e pés firmes no chão.",
+          "Eleve o quadril em direção ao teto contraindo fortemente os glúteos.",
+          "Desça lentamente até tocar levemente o solo."
+      ],
+      "rest": 60,
+      "tips": "Ótima ativação para quem quer trabalhar glúteos sem sobrecarregar a lombar."
+  },
+  "coice_polia": {
+      "name": "Glúteo Coice na Polia",
+      "muscle": "Glúteos",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Glute_Kickback/0.jpg",
+      "steps": [
+          "Prenda a tornozeleira na polia baixa e fique de frente para o aparelho.",
+          "Incline levemente o tronco e empurre a perna estendida para trás e para cima.",
+          "Retorne controladamente segurando a carga."
+      ],
+      "rest": 60,
+      "tips": "Evite curvar ou girar a coluna lombar; o movimento deve se concentrar no glúteo."
+  },
+  "swing_kettlebell": {
+      "name": "Swing com Kettlebell",
+      "muscle": "Glúteos",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/One-Arm_Kettlebell_Swings/0.jpg",
+      "steps": [
+          "Com o kettlebell entre as pernas, empurre o quadril para trás inclinando o tronco.",
+          "Estenda o quadril de forma explosiva jogando o peso para frente até a altura dos ombros.",
+          "Deixe o peso retornar flexionando o quadril."
+      ],
+      "rest": 60,
+      "tips": "O movimento de swing deve ser gerado pelo quadril e glúteos, não pelos ombros ou braços."
   }
 };
 
@@ -1715,7 +2447,71 @@ const AVAILABLE_EXERCISES = {
   prancha_abdominal: "Prancha Abdominal (Core/Abdômen)",
   abdominal_infra: "Abdominal Infra no Banco (Core/Abdômen)",
   esteira: "Cardio - Corrida na Esteira (Cardio)",
-  bicicleta_ergometrica: "Cardio - Bicicleta Ergométrica (Cardio)"
+  bicicleta_ergometrica: "Cardio - Bicicleta Ergométrica (Cardio)",
+  agachamento_frontal: "Agachamento Frontal com Barra (Pernas)",
+  agachamento_sumo: "Agachamento Sumô (Pernas/Glúteos)",
+  agachamento_smith: "Agachamento no Smith (Pernas)",
+  leg_press_horizontal: "Leg Press Horizontal (Pernas)",
+  belt_squat: "Belt Squat (Agachamento com Cinturão) (Pernas)",
+  afundo: "Afundo com Halteres (Pernas/Glúteos)",
+  passada: "Passada Caminhando (Pernas/Glúteos)",
+  agachamento_bulgaro: "Agachamento Búlgaro (Pernas/Glúteos)",
+  step_up: "Step-up (Subida no Banco) (Pernas/Glúteos)",
+  cadeira_flexora: "Cadeira Flexora (Pernas)",
+  good_morning: "Good Morning com Barra (Pernas)",
+  cadeira_abdutora: "Cadeira Abdutora (Pernas/Glúteos)",
+  cadeira_adutora: "Cadeira Adutora (Pernas)",
+  panturrilha_sentada: "Panturrilha Sentada (Panturrilha)",
+  panturrilha_leg_press: "Panturrilha no Leg Press (Panturrilha)",
+  rosca_alternada: "Rosca Alternada com Halteres (Bíceps)",
+  rosca_scott: "Rosca Scott com Barra EZ (Bíceps)",
+  rosca_concentrada: "Rosca Concentrada com Halter (Bíceps)",
+  rosca_polia: "Rosca Direta na Polia (Bíceps)",
+  rosca_inversa: "Rosca Inversa com Halteres (Bíceps/Antebraço)",
+  rosca_21: "Rosca 21 com Barra EZ (Bíceps)",
+  rosca_spider: "Rosca Spider (Bíceps)",
+  rosca_inclinada: "Rosca Inclinada com Halteres (Bíceps)",
+  triceps_barra: "Tríceps no Pulley com Barra (Tríceps)",
+  triceps_frances: "Tríceps Francês com Halter (Tríceps)",
+  triceps_coice: "Tríceps Coice com Halter (Tríceps)",
+  supino_fechado: "Supino Fechado com Barra (Tríceps/Peito)",
+  mergulho_paralelas: "Mergulho nas Paralelas (Tríceps/Peito)",
+  triceps_unilateral_polia: "Tríceps Unilateral na Polia (Tríceps)",
+  triceps_banco: "Tríceps no Banco (Tríceps)",
+  extensao_acima_cabeca: "Extensão de Tríceps acima da Cabeça (Tríceps)",
+  rosca_punho: "Rosca de Punho (Antebraço)",
+  rosca_inversa_punho: "Rosca Inversa de Punho (Antebraço)",
+  farmers_walk: "Farmer's Walk (Antebraço/Core)",
+  hang_barra_fixa: "Hang na Barra Fixa (Antebraço/Costas)",
+  supino_inclinado_barra: "Supino Inclinado com Barra (Peito)",
+  supino_declinado: "Supino Declinado com Barra (Peito)",
+  supino_halter: "Supino Reto com Halteres (Peito)",
+  supino_smith: "Supino no Smith (Peito)",
+  crucifixo_reto: "Crucifixo Reto com Halteres (Peito)",
+  crucifixo_inclinado: "Crucifixo Inclinado com Halteres (Peito)",
+  crucifixo_declinado: "Crucifixo Declinado com Halteres (Peito)",
+  crossover_alto: "Crossover Alto na Polia (Peito)",
+  crossover_medio: "Crossover Médio na Polia (Peito)",
+  crossover_baixo: "Crossover Baixo na Polia (Peito)",
+  flexao_braço: "Flexão de Braços (Peito)",
+  pullover: "Pullover com Halter (Peito/Costas)",
+  barra_fixa_pronada: "Barra Fixa Pronada (Costas)",
+  barra_fixa_supinada: "Barra Fixa Supinada (Costas)",
+  puxada_fechada: "Puxada Frontal Fechada (Costas)",
+  pulldown_corda: "Pulldown na Polia com Corda (Costas)",
+  remada_curvada_barra: "Remada Curvada com Barra (Costas)",
+  remada_unilateral: "Remada Unilateral com Halter (Serrote) (Costas)",
+  remada_cavalinho: "Remada Cavalinho (T-bar) (Costas)",
+  remada_articulada_maquina: "Remada Articulada na Máquina (Costas)",
+  remada_invertida: "Remada Invertida (Costas)",
+  levantamento_terra: "Levantamento Terra com Barra (Costas/Pernas)",
+  encolhimento_trapezio: "Encolhimento de Ombros (Costas/Trapézio)",
+  face_pull: "Face Pull na Polia (Ombros/Costas)",
+  extensao_lombar: "Extensão Lombar (Core/Abdômen)",
+  hip_thrust: "Elevação Pélvica (Hip Thrust) (Glúteos)",
+  glute_bridge: "Ponte de Glúteo (Glúteos)",
+  coice_polia: "Glúteo Coice na Polia (Glúteos)",
+  swing_kettlebell: "Swing com Kettlebell (Glúteos/Core)"
 };
 
 const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis, age, weight, height, bmi, historySummary = "") => {
