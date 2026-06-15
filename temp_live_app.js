@@ -1096,6 +1096,126 @@ const EXERCISES_DB = {
       ],
       "rest": 60,
       "tips": "O movimento de swing deve ser gerado pelo quadril e glúteos, não pelos ombros ou braços."
+  },
+  "flexao_inclinada": {
+      "name": "Flexão Inclinada",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Pushups/0.jpg",
+      "steps": [
+          "Apoie as mãos em uma superfície elevada (banco ou caixa) mais aberta que a largura dos ombros.",
+          "Mantenha o corpo alinhado em prancha e desça o peito em direção à borda.",
+          "Empurre de volta estendendo os braços."
+      ],
+      "rest": 60,
+      "tips": "Excelente variação para iniciantes ou para finalizar o treino reduzindo a intensidade."
+  },
+  "flexao_declinada": {
+      "name": "Flexão Declinada",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Decline_Push-Up/0.jpg",
+      "steps": [
+          "Apoie as pontas dos pés em um banco ou superfície elevada e as mãos no chão.",
+          "Desça o peito em direção ao chão mantendo o corpo rígido em prancha.",
+          "Empurre o chão para retornar à posição inicial."
+      ],
+      "rest": 60,
+      "tips": "Aumenta significativamente a carga de trabalho na porção superior do peito e ombro anterior."
+  },
+  "flexao_diamante": {
+      "name": "Flexão Diamante",
+      "muscle": "Peito",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Pushups_Close_and_Wide_Hand_Positions/0.jpg",
+      "steps": [
+          "Posicione as mãos próximas no chão, unindo polegares e indicadores em formato de diamante.",
+          "Desça o peito mantendo os cotovelos bem fechados e rentes às costelas.",
+          "Empurre estendendo totalmente os braços focando no tríceps."
+      ],
+      "rest": 60,
+      "tips": "Foco extremo no tríceps e na porção interna do peitoral."
+  },
+  "barra_fixa_neutra": {
+      "name": "Barra Fixa Neutra",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Pullups/0.jpg",
+      "steps": [
+          "Segure a barra pelas manoplas paralelas em pegada neutra.",
+          "Puxe o corpo para cima até o queixo passar as mãos flexionando os cotovelos.",
+          "Desça controladamente alongando totalmente a musculatura dorsal."
+      ],
+      "rest": 60,
+      "tips": "Pegada anatômica mais segura e confortável para quem tem desconforto nos punhos ou ombros."
+  },
+  "puxada_articulada": {
+      "name": "Puxada Articulada",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Leverage_High_Row/0.jpg",
+      "steps": [
+          "Sente-se no aparelho articulado ajustando o rolo nos joelhos.",
+          "Segure as manoplas e puxe-as de forma independente para baixo e para trás.",
+          "Retorne controladamente sentindo o alongamento da dorsal."
+      ],
+      "rest": 60,
+      "tips": "A articulação independente ajuda a corrigir assimetrias musculares e de força entre os lados."
+  },
+  "terra_romeno": {
+      "name": "Levantamento Terra Romeno",
+      "muscle": "Costas",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Romanian_Deadlift/0.jpg",
+      "steps": [
+          "Fique em pé segurando a barra na linha das coxas na pegada pronada.",
+          "Incline o tronco mantendo a barra colada nas pernas e empurrando o quadril para trás.",
+          "Suba estendendo o quadril contraindo fortemente os glúteos e posterior."
+      ],
+      "rest": 60,
+      "tips": "Diferente do Stiff, permite leve flexão nos joelhos para maximizar a ativação glútea."
+  },
+  "coice_maquina": {
+      "name": "Glúteo Coice na Máquina",
+      "muscle": "Glúteos",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Glute_Kickback/0.jpg",
+      "steps": [
+          "Posicione-se no aparelho apoiando o peito no suporte e o pé na placa.",
+          "Empurre a placa para trás e para cima estendendo a coxa contra a resistência.",
+          "Retorne de forma controlada resistindo à carga."
+      ],
+      "rest": 60,
+      "tips": "Mantenha o abdômen contraído para evitar hiperextensão da lombar no topo da contração."
+  },
+  "frog_pump": {
+      "name": "Frog Pump",
+      "muscle": "Glúteos",
+      "gif": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+      "steps": [
+          "Deite-se de costas, una as solas dos pés (posição de sapo) e traga-os perto do quadril.",
+          "Eleve o quadril em direção ao teto contraindo fortemente os glúteos.",
+          "Desça de forma controlada até quase tocar o colchonete."
+      ],
+      "rest": 60,
+      "tips": "Isolador de glúteos puro. Excelente para ativação pré-treino."
+  },
+  "cable_pull_through": {
+      "name": "Cable Pull-Through",
+      "muscle": "Glúteos",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Pull_Through/0.jpg",
+      "steps": [
+          "Fique de costas para a polia baixa, segurando a corda por entre as pernas.",
+          "Flexione o quadril inclinando o tronco com joelhos destravados.",
+          "Estenda o quadril empurrando-o para a frente e contraindo glúteos."
+      ],
+      "rest": 60,
+      "tips": "Mova-se apenas no quadril (dobradiça). Os braços servem apenas como cabos de conexão."
+  },
+  "kickback_caneleira": {
+      "name": "Glúteo Kickback com Caneleira",
+      "muscle": "Glúteos",
+      "gif": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Glute_Kickback/0.jpg",
+      "steps": [
+          "Fique em quatro apoios no colchonete.",
+          "Eleve uma perna estendida para trás e para cima, esmagando o glúteo no pico.",
+          "Desça lentamente controlando o peso da caneleira."
+      ],
+      "rest": 60,
+      "tips": "Mantenha o tronco e pescoço alinhados. Execute o movimento sem balançar o corpo."
   }
 };
 
@@ -2511,7 +2631,17 @@ const AVAILABLE_EXERCISES = {
   hip_thrust: "Elevação Pélvica (Hip Thrust) (Glúteos)",
   glute_bridge: "Ponte de Glúteo (Glúteos)",
   coice_polia: "Glúteo Coice na Polia (Glúteos)",
-  swing_kettlebell: "Swing com Kettlebell (Glúteos/Core)"
+  swing_kettlebell: "Swing com Kettlebell (Glúteos/Core)",
+  flexao_inclinada: "Flexão Inclinada (Peito)",
+  flexao_declinada: "Flexão Declinada (Peito)",
+  flexao_diamante: "Flexão Diamante (Peito)",
+  barra_fixa_neutra: "Barra Fixa Neutra (Costas)",
+  puxada_articulada: "Puxada Articulada (Costas)",
+  terra_romeno: "Levantamento Terra Romeno (Costas/Glúteos)",
+  coice_maquina: "Glúteo Coice na Máquina (Glúteos)",
+  frog_pump: "Frog Pump (Glúteos)",
+  cable_pull_through: "Cable Pull-Through (Glúteos)",
+  kickback_caneleira: "Glúteo Kickback com Caneleira (Glúteos)"
 };
 
 const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis, age, weight, height, bmi, historySummary = "") => {
