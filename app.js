@@ -2865,8 +2865,22 @@ const buildGeminiPrompt = (name, sex, objective, level, days, time, emphasis, ag
 
   const config = levelConfig[level] || levelConfig["Intermediário"];
   const numExercises = config.exercisesPerSession;
-  const exerciseList = Object.entries(AVAILABLE_EXERCISES)
-    .map(([id, desc]) => `- ${id}: ${desc}`)
+
+  // Compact grouped exercise list to keep prompt under 10k chars
+  const exerciseGroups = {
+    "PERNAS/GLÚTEOS": ["agachamento_barra","agachamento_frontal","agachamento_sumo","agachamento_smith","agachamento_hack","belt_squat","leg_press","leg_press_horizontal","cadeira_extensora","cadeira_flexora","mesa_flexora","stiff_barra","terra_romeno","good_morning","afundo","passada","agachamento_bulgaro","step_up","cadeira_abdutora","cadeira_adutora","hip_thrust","glute_bridge","coice_polia","coice_maquina","swing_kettlebell","cable_pull_through","kickback_caneleira","frog_pump"],
+    "PANTURRILHA": ["panturrilha_maquina","panturrilha_sentada","panturrilha_leg_press"],
+    "PEITO": ["supino_reto","supino_inclinado_barra","supino_declinado","supino_halter","supino_smith","supino_fechado","crucifixo_reto","crucifixo_inclinado","crucifixo_declinado","crucifixo_polia","crossover_alto","crossover_medio","crossover_baixo","peck_deck","flexao_braço","flexao_inclinada","flexao_declinada","flexao_diamante","pullover"],
+    "COSTAS": ["puxada_frente","puxada_fechada","pulldown_corda","puxada_articulada","barra_fixa_pronada","barra_fixa_supinada","barra_fixa_neutra","hang_barra_fixa","remada_curvada","remada_curvada_barra","remada_unilateral","remada_baixa_triangulo","remada_cavalinho","remada_articulada_maquina","remada_invertida","levantamento_terra","encolhimento_trapezio","extensao_lombar"],
+    "OMBROS": ["desenvolvimento_ombro","desenvolvimento_smith","desenvolvimento_arnold","elevacao_lateral","elevacao_frontal","remada_alta","face_pull","rotacao_externa","rotacao_interna","desenvolvimento_militar"],
+    "BÍCEPS": ["rosca_direta","rosca_alternada","rosca_martelo","rosca_scott","rosca_concentrada","rosca_polia","rosca_inversa","rosca_21","rosca_spider","rosca_inclinada"],
+    "TRÍCEPS": ["triceps_pulley","triceps_barra","triceps_testa","triceps_frances","triceps_coice","mergulho_paralelas","triceps_unilateral_polia","triceps_banco","extensao_acima_cabeca"],
+    "ANTEBRAÇO": ["rosca_punho","rosca_inversa_punho","farmers_walk"],
+    "CORE/ABDÔMEN": ["prancha_abdominal","abdominal_infra","extensao_lombar"],
+    "CARDIO": ["esteira","bicicleta_ergometrica"]
+  };
+  const exerciseList = Object.entries(exerciseGroups)
+    .map(([group, ids]) => `${group}: ${ids.join(", ")}`)
     .join("\n");
 
   const splitNames = days <= 2
@@ -2993,9 +3007,9 @@ ${time > 45 && time <= 60 ? `SESSÃO PADRÃO (${time} min): ${numExercises} exer
 ${time > 60 && time <= 90 ? `SESSÃO LONGA (${time} min): ${numExercises} exercícios com aquecimento. Pode incluir cardio (10-15min). Descanso: 60-90s.` : ''}
 ${time > 90 ? `SESSÃO EXTENSA (${time} min): ${numExercises} exercícios completos. Cardio incluído se pertinente ao objetivo. Descanso: 90-120s para compostos pesados.` : ''}
 
-IMPORTANTE: Use APENAS os IDs exatos da lista abaixo. Não invente exercícios novos.
+IMPORTANTE: Use APENAS os IDs exatos da lista abaixo, agrupados por grupo muscular. Não invente IDs novos.
 
-EXERCÍCIOS DISPONÍVEIS:
+EXERCÍCIOS DISPONÍVEIS (por grupo):
 ${exerciseList}
 
 ${ageSpecificGuidance}
