@@ -3404,7 +3404,7 @@ RETORNE APENAS um objeto JSON válido com exatamente esta estrutura (sem nenhum 
 - NÍVEL ${level.toUpperCase()}: As cargas, séries e complexidade DEVEM corresponder exatamente ao nível
 - TEMPO ${time}min: Adapte o volume ao tempo disponível (${numExercises} exercícios devem caber em ${time} minutos)
 - Distribua os grupos musculares seguindo as prioridades para ${sex}
-- EQUILÍBRIO PEITO/COSTAS: Se o treino agrupar Peito e Costas (ou Peito, Costas e Ombros), coloque rigorosamente a mesma quantidade de exercícios de costas e de peito (ex: 2 de costas e 2 de peito). Nunca desbalanceie o treino a favor de costas ou peito.
+- EQUILÍBRIO DE GRUPOS MUSCULARES: Se o treino agrupar Peito e Ombro (ex: Push Day), garanta uma proporção justa e NUNCA deixe o treino desproporcional (ex: 3 de peito e 2 de ombro, e não 4 de peito e 1 de ombro). Se agrupar Peito e Costas, coloque rigorosamente a mesma quantidade de exercícios para ambos.
 - TREINO DE PERNAS LIMPO: O treino de Pernas (geralmente Treino C) deve conter APENAS exercícios de pernas, glúteos e panturrilhas (e opcionalmente cardio ou core). É estritamente PROIBIDO incluir exercícios de braço (bíceps, tríceps, antebraço) ou de tronco superior no treino de Pernas.
 - Cargas iniciais (weight) REALISTAS para nível ${level}, idade ${age}, peso ${weight}kg
 - Para cardio (esteira, bicicleta), use setsCount: 1 e reps em formato texto como "20 minutos"
@@ -3655,11 +3655,10 @@ const generateIntelligentWorkout = async () => {
       };
     });
 
-    // Ensure treinos have at least some exercises (fallback per-treino se a IA errar)
+        // Ensure treinos have at least some exercises
     Object.keys(newFicha).filter(k => k.startsWith('treino')).forEach(key => {
       if (!newFicha[key] || newFicha[key].exercises.length === 0) {
-        console.warn(`[AI] ${key} ficou sem exercícios válidos, usando fallback heurístico`);
-        newFicha[key] = generateHeuristicFicha(objective, level, name, time)[key] || generateHeuristicFicha(objective, level, name, time).treinoA;
+        throw new Error(`A IA não gerou exercícios válidos para o treino ${key.replace('treino', '')}.`);
       }
     });
 
@@ -3688,23 +3687,35 @@ const generateIntelligentWorkout = async () => {
     alert(`🤖 Ficha "${newFicha.name}" gerada com sucesso pela IA Gemini!${rationaleMsg}`);
     navigateTo("dashboard");
 
-  } catch (aiError) {
-    console.error("[AI] Erro na geração com Gemini:", aiError.message);
+    } catch (aiError) {
+    console.error("[AI] Erro na geração:", aiError.message);
     hideAILoadingOverlay();
 
-    // Fallback to heuristic
-    console.log("[AI] Usando gerador heurístico como fallback...");
-    generateHeuristicWorkout({
-      name, sex, objective, level, days, time, emphasis,
-      validityWeeks,
-      fallbackReason: aiError.message
-    });
+    let userMessage = "Ocorreu um erro inesperado ao tentar gerar sua ficha. Tente novamente.";
+    const errMsg = aiError.message || "";
+    
+    if (errMsg.includes("timeout") || errMsg.includes("Timeout")) {
+      userMessage = "A IA demorou demais para responder. Verifique sua conexão e tente novamente.";
+    } else if (errMsg.includes("FetchError") || errMsg.includes("connect") || errMsg.includes("network") || errMsg.includes("Failed to fetch")) {
+      userMessage = "Não foi possível conectar ao servidor. Verifique sua conexão com a internet.";
+    } else if (errMsg.includes("JSON") || errMsg.includes("Unexpected token") || errMsg.includes("parse")) {
+      userMessage = "A IA gerou uma resposta inesperada ou incompleta. Tente novamente em alguns segundos.";
+    } else if (errMsg.includes("503") || errMsg.includes("indisponível") || errMsg.includes("unavailable")) {
+      userMessage = "O serviço de IA está temporariamente indisponível. Tente novamente em alguns minutos.";
+    } else {
+      userMessage = `A IA não pôde gerar sua ficha: ${errMsg}. Tente novamente.`;
+    }
+
+    showAIErrorModal(userMessage);
   } finally {
     isGeneratingWorkout = false;
   }
 };
 
 window.handleGenerateWorkout = generateIntelligentWorkout;
+
+/* 
+=== HEURISTIC WORKOUT GENERATION FUNCTIONS DISABLED ===
 
 const generateHeuristicFicha = (objective, level, name = "Atleta", time = 60) => {
   const getExerciseCount = (lvl, tm) => {
@@ -4212,6 +4223,27 @@ const dismissExpirationModal = () => {
 const renewFichaFromExpiration = () => {
   dismissExpirationModal();
   navigateTo("generator");
+};
+
+
+=======================================================
+*/
+
+const closeAIErrorModal = () => {
+  const modal = document.getElementById("ai-error-modal");
+  if (modal) modal.classList.remove("active");
+};
+window.closeAIErrorModal = closeAIErrorModal;
+
+const showAIErrorModal = (message) => {
+  const modal = document.getElementById("ai-error-modal");
+  const modalText = document.getElementById("ai-error-modal-text");
+  if (modalText) {
+    modalText.innerHTML = message;
+  }
+  if (modal) {
+    modal.classList.add("active");
+  }
 };
 
 const checkFichaExpiration = () => {
@@ -4868,3 +4900,14 @@ window.toggleMobileMenu = (forceState) => {
   }
 })();
 
+// Animate static free-exercise-db images by swapping 0.jpg and 1.jpg
+setInterval(() => {
+  document.querySelectorAll('img').forEach(img => {
+    if (img.src && img.src.includes('free-exercise-db') && (img.src.endsWith('0.jpg') || img.src.endsWith('1.jpg'))) {
+      if (!img.dataset.lastSwap || Date.now() - parseInt(img.dataset.lastSwap) > 1000) {
+        img.src = img.src.endsWith('0.jpg') ? img.src.replace('0.jpg', '1.jpg') : img.src.replace('1.jpg', '0.jpg');
+        img.dataset.lastSwap = Date.now();
+      }
+    }
+  });
+}, 500);

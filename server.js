@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 // ─── Groq API Key (via env var or hardcoded fallback for local dev) ─────────
 const GROQ_API_KEY = process.env.GROQ_API_KEY || ("gsk_" + "nkG59culNuyYvbJZ5bel" + "WGdyb3FYL9V4Bpko6Dm4oJhrgYfZoOyI");
-const GROQ_MODEL = "llama-3.1-8b-instant";
+const GROQ_MODEL = "llama-3.3-70b-versatile";
 const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
 const API_TIMEOUT = 30000; // 30 segundos
 
@@ -96,8 +96,8 @@ Use IDs reais de exercícios do nosso banco: supino_reto, agachamento_barra, leg
           content: prompt
         }
       ],
-      temperature: 0.7,
-      max_tokens: 2048
+      temperature: 0.4,
+      max_tokens: 4096
     });
 
     const responseText = await new Promise((resolve, reject) => {

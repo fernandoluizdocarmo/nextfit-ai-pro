@@ -722,6 +722,28 @@
     </div>
   </div>
 
+  <!-- AI GENERATION ERROR MODAL -->
+  <div class="expiration-modal-overlay" id="ai-error-modal">
+    <div class="expiration-modal-card">
+      <div class="expiration-modal-icon" style="color: var(--danger);">
+        <span class="material-symbols-outlined" style="font-size: 3.5rem;">error</span>
+      </div>
+      <h2 class="expiration-modal-title">Falha na Geração com IA</h2>
+      <p class="expiration-modal-text" id="ai-error-modal-text">
+        Ocorreu um erro ao tentar criar sua ficha personalizada com a inteligência artificial.
+      </p>
+      <div class="expiration-modal-info">
+        <span class="material-symbols-outlined" style="color: var(--warning);">info</span>
+        <span>Seus dados do formulário foram preservados para que você possa tentar novamente.</span>
+      </div>
+      <div class="expiration-modal-buttons">
+        <button class="btn-primary" onclick="closeAIErrorModal()" style="flex: 1; justify-content: center; background-color: var(--danger); color: var(--text-primary); border-color: var(--danger);">
+          <span class="material-symbols-outlined">refresh</span> Tentar Novamente
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="app.js?v=30"></script>
 </body>
 </html>
